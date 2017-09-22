@@ -6,7 +6,7 @@ import net.wimpi.modbus.msg.ReadInputDiscretesResponse;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.util.BitVector;
 
-public class EntradaDigital {
+public class ModbusEntradaDigital {
     
     public static BitVector ler(TCPMasterConnection con, int ref, int count){
                 

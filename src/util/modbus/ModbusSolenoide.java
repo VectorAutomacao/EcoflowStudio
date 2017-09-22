@@ -10,7 +10,7 @@ import net.wimpi.modbus.msg.WriteMultipleCoilsResponse;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.util.BitVector;
 
-public class Solenoide {
+public class ModbusSolenoide {
     
     public static boolean escrever(TCPMasterConnection con, int ref, boolean valor){
         

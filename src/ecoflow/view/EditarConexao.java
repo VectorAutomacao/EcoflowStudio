@@ -28,6 +28,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         conexao = controleConexao.getConexao();
         tfIp.setText(conexao.getIp() );
         tfPorta.setText(Integer.toString(conexao.getPorta() ) );
+        tfTimeOut.setText(Integer.toString(conexao.getTimeOut() ) );
     }
 
     /**
@@ -45,6 +46,8 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         tfIp = new javax.swing.JTextField();
         tfPorta = new javax.swing.JTextField();
         btAplicar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        tfTimeOut = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -62,12 +65,18 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setText("TimeOut:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btAplicar)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfIp, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -75,22 +84,24 @@ public class EditarConexao extends javax.swing.JInternalFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfPorta, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfTimeOut, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btAplicar)
-                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfIp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfPorta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(tfTimeOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(btAplicar)
                 .addContainerGap())
         );
@@ -110,9 +121,14 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarActionPerformed
-        if(!tfIp.getText().trim().isEmpty() && !tfPorta.getText().trim().isEmpty() ){
+        if(
+            !tfIp.getText().trim().isEmpty() && 
+            !tfPorta.getText().trim().isEmpty() &&
+            !tfTimeOut.getText().trim().isEmpty()
+        ){
             conexao.setIp(tfIp.getText().trim() );
             conexao.setPorta(Integer.parseInt(tfPorta.getText().trim() ) );
+            conexao.setTimeOut(Integer.parseInt(tfTimeOut.getText().trim() ) );
             controleConexao.setConexao(conexao);            
         }
     }//GEN-LAST:event_btAplicarActionPerformed
@@ -122,8 +138,10 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     private javax.swing.JButton btAplicar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField tfIp;
     private javax.swing.JTextField tfPorta;
+    private javax.swing.JTextField tfTimeOut;
     // End of variables declaration//GEN-END:variables
 }

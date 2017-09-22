@@ -11,7 +11,7 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.procimg.Register;
 import net.wimpi.modbus.procimg.SimpleRegister;
 
-public class Registro {
+public class ModbusRegistro {
     
     public static boolean escrever(TCPMasterConnection con, int ref, int valor){
         /* Variáveis ​​para armazenar os parâmetros 

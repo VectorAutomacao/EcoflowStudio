@@ -7,58 +7,58 @@ package ecoflow.controle;
 
 import ecoflow.modelo.Conexao;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author vinicius
  */
 public class ControleConexao {
-    private static Conexao conexao = new Conexao();
     private static String NOMEARQUIVO = "./properties/conexao.properties";
+    private static String NOMEIP = "prop.ip";
+    private static String NOMEPORTA = "prop.porta";
+    private static String NOMETIMEOUT = "prop.timeout";
     
-    public static Conexao getConexao(){
+    public Conexao getConexao(){
+        Conexao conexao = new Conexao();
         Properties props = new Properties();
         
+        //Le arquivo properties
         try {
             FileInputStream file = new FileInputStream(NOMEARQUIVO);
             props.load(file);
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao ler arquivo properties", "Alerta", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(ControleConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        conexao.setIp(props.getProperty("prop.ip") );
-        conexao.setPorta(Integer.parseInt(props.getProperty("prop.porta") ) );
+        //Alterando o objeto conexão
+        conexao.setIp(props.getProperty(NOMEIP) );
+        conexao.setPorta(Integer.parseInt(props.getProperty(NOMEPORTA) ) );
+        conexao.setTimeOut( Integer.parseInt(props.getProperty(NOMETIMEOUT) ) );
+        
         return conexao;
     }
 
-    public static void setConexao(Conexao conexao){
-        //Alterando properties
+    public void setConexao(Conexao conexao){
         Properties props = new Properties();
         
+        //Escrever no arquivo properties
         try {
             FileOutputStream fileOut = new FileOutputStream(NOMEARQUIVO);
-            props.setProperty("prop.ip", conexao.getIp() );
-            props.setProperty("prop.porta", Integer.toString(conexao.getPorta() ) );
+            props.setProperty(NOMEIP, conexao.getIp() );
+            props.setProperty(NOMEPORTA, Integer.toString(conexao.getPorta() ) );
+            props.setProperty(NOMETIMEOUT, Integer.toString(conexao.getTimeOut() ) );
             props.store(fileOut, null);
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao escrever arquivo properties", "Alerta", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(ControleConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        ControleConexao.conexao = conexao;
     }
-    
-    public static Properties getProp(String arquivo) throws IOException {
-        Properties props = new Properties();
-        FileInputStream file = new FileInputStream(arquivo);
-        props.load(file);
-        return props;
-
-    }
-    
+       
 }

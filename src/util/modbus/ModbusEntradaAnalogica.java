@@ -6,7 +6,7 @@ import net.wimpi.modbus.msg.ReadInputRegistersResponse;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import net.wimpi.modbus.procimg.InputRegister;
 
-public class EntradaAnalogica {
+public class ModbusEntradaAnalogica {
     
     public static InputRegister[] ler(TCPMasterConnection con, int ref, int count){
         

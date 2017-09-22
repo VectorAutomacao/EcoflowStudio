@@ -16,6 +16,15 @@ public class Conexao {
     
     private String ip;
     private int porta;
+    private int timeOut;
+
+    public int getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
+    }
 
     public String getIp() {
         return ip;

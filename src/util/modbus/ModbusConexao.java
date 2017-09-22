@@ -3,7 +3,7 @@ package util.modbus;
 import java.net.InetAddress;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
-public class Conexao {
+public class ModbusConexao {
     
     public static TCPMasterConnection configurar(String ip, int porta) throws Exception{
                     
