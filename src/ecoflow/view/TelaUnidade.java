@@ -5,8 +5,13 @@
  */
 package ecoflow.view;
 
+import ecoflow.controle.ControleConexao;
+import ecoflow.controle.ControleUnidade;
+import ecoflow.modelo.Conexao;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -15,7 +20,9 @@ import javax.swing.table.TableRowSorter;
  */
 public class TelaUnidade extends javax.swing.JInternalFrame {
     
-    UnidadesTableModel unidadesTableModel = new UnidadesTableModel();
+    UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
+    ControleUnidade     controleUnidade     = new ControleUnidade();
+    ControleConexao     controleConexao     = new ControleConexao();
     
     /**
      * Creates new form Unidade
@@ -23,8 +30,19 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
     public TelaUnidade() {
         initComponents();
         
+        Conexao conexao;
+        List<Unidade> unidades = new ArrayList<>();
+        
+        //Configurando tbUnidades
         tbUnidades.setModel(unidadesTableModel);
-        tbUnidades.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Oedenar tbUnidades
+        tbUnidades.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+        
+        //Configurando a conexao
+        conexao = controleConexao.getConexao();
+        controleUnidade.setTcpMasterConnection(conexao);
+        
+        unidades = controleUnidade.getUnidades();
+        unidadesTableModel.setUnidades(unidades);
     }
 
     /**
@@ -46,6 +64,10 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
         btInserir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
+
+        setClosable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jLabel1.setText("Nome:");
 
@@ -75,7 +97,7 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btInserir)
@@ -108,7 +130,7 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btInserir)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

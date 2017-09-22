@@ -13,9 +13,37 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 @XStreamAlias("unidade")
 public class Unidade {
+    
+    private int porta;
     private String nome;
-    private int leitura;
+    private int lpp;
+    private Boolean habilitado;
     private int servico;
+    private int leitura;
+
+    public int getPorta() {
+        return porta;
+    }
+
+    public void setPorta(int porta) {
+        this.porta = porta;
+    }
+
+    public int getLpp() {
+        return lpp;
+    }
+
+    public void setLpp(int lpp) {
+        this.lpp = lpp;
+    }
+
+    public Boolean getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Boolean habilitado) {
+        this.habilitado = habilitado;
+    }
 
     public String getNome() {
         return nome;

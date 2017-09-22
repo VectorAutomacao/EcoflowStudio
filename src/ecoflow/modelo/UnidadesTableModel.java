@@ -74,4 +74,9 @@ public class UnidadesTableModel extends AbstractTableModel{
         this.fireTableRowsDeleted(linha, linha);
     }
     
+    public void setUnidades(List<Unidade> uns){
+        this.listaUnidades = uns;
+        this.fireTableDataChanged();
+    }
+    
 }

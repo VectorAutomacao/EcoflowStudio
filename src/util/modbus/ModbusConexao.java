@@ -1,11 +1,12 @@
 package util.modbus;
 
 import java.net.InetAddress;
+import javax.swing.JOptionPane;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 public class ModbusConexao {
     
-    public static TCPMasterConnection configurar(String ip, int porta) throws Exception{
+    public static TCPMasterConnection configurar(String ip, int porta){
                     
         try {    
             /* As instâncias importantes das classes mencionadas anteriormente */
@@ -22,8 +23,9 @@ public class ModbusConexao {
             return con;
             
         } catch (Exception ex) {
-            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao criar a conexão!", "Alerta", JOptionPane.ERROR_MESSAGE);
             System.out.println("Erro ao criar a conexão!");
+            ex.printStackTrace();
             
             return null;
         }

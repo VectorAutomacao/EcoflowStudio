@@ -50,7 +50,6 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         tfTimeOut = new javax.swing.JTextField();
 
         setClosable(true);
-        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
 

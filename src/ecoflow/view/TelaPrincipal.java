@@ -55,6 +55,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         patTelaPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         imConexao = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -79,8 +81,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(patTelaPrincipal);
 
-        jMenu1.setText("File");
+        jMenu1.setText("Arquivo");
         jMenuBar1.add(jMenu1);
+
+        jMenu4.setText("Em Campo");
+
+        jMenuItem1.setText("Buscar Leituras da Central");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu4);
 
         jMenu2.setText("Editar");
 
@@ -94,7 +108,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Sobre");
+        jMenu3.setText("Ajuda");
 
         imSobre.setText("Sobre");
         imSobre.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +147,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         EditarConexao editarConexao = new EditarConexao();
         chamarInternalFrame(editarConexao, false);
     }//GEN-LAST:event_imConexaoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        TelaUnidade telaUnidade = new TelaUnidade();
+        chamarInternalFrame(telaUnidade, false);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,7 +194,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JDesktopPane patTelaPrincipal;
     // End of variables declaration//GEN-END:variables
