@@ -7,9 +7,10 @@ package ecoflow.view;
 
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Conexao;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,14 +19,19 @@ import java.util.logging.Logger;
 public class EditarConexao extends javax.swing.JInternalFrame {
     
     ControleConexao controleConexao = new ControleConexao();
-    Conexao         conexao = new Conexao();
+    Conexao         conexao         = new Conexao();
     
     /**
      * Creates new form EditarConexao
      */
     public EditarConexao() {
         initComponents();
-        conexao = controleConexao.getConexao();
+        try {
+            conexao = controleConexao.getConexao();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo de configurações com problema.", "Erro", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(EditarConexao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         tfIp.setText(conexao.getIp() );
         tfPorta.setText(Integer.toString(conexao.getPorta() ) );
         tfTimeOut.setText(Integer.toString(conexao.getTimeOut() ) );
@@ -128,7 +134,12 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             conexao.setIp(tfIp.getText().trim() );
             conexao.setPorta(Integer.parseInt(tfPorta.getText().trim() ) );
             conexao.setTimeOut(Integer.parseInt(tfTimeOut.getText().trim() ) );
-            controleConexao.setConexao(conexao);            
+            try {           
+                controleConexao.setConexao(conexao);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao salvar no arquivo de configurações", "Erro", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(EditarConexao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btAplicarActionPerformed
 

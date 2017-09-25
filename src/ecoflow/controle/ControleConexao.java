@@ -10,9 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,18 +21,13 @@ public class ControleConexao {
     private static String NOMEPORTA = "prop.porta";
     private static String NOMETIMEOUT = "prop.timeout";
     
-    public Conexao getConexao(){
+    public Conexao getConexao() throws IOException{
         Conexao conexao = new Conexao();
         Properties props = new Properties();
         
         //Le arquivo properties
-        try {
-            FileInputStream file = new FileInputStream(NOMEARQUIVO);
-            props.load(file);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao ler arquivo properties", "Alerta", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(ControleConexao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FileInputStream file = new FileInputStream(NOMEARQUIVO);
+        props.load(file);
         
         //Alterando o objeto conexão
         conexao.setIp(props.getProperty(NOMEIP) );
@@ -45,20 +37,16 @@ public class ControleConexao {
         return conexao;
     }
 
-    public void setConexao(Conexao conexao){
+    public void setConexao(Conexao conexao) throws IOException{
         Properties props = new Properties();
         
         //Escrever no arquivo properties
-        try {
-            FileOutputStream fileOut = new FileOutputStream(NOMEARQUIVO);
-            props.setProperty(NOMEIP, conexao.getIp() );
-            props.setProperty(NOMEPORTA, Integer.toString(conexao.getPorta() ) );
-            props.setProperty(NOMETIMEOUT, Integer.toString(conexao.getTimeOut() ) );
-            props.store(fileOut, null);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao escrever arquivo properties", "Alerta", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(ControleConexao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        FileOutputStream fileOut = new FileOutputStream(NOMEARQUIVO);
+        props.setProperty(NOMEIP, conexao.getIp() );
+        props.setProperty(NOMEPORTA, Integer.toString(conexao.getPorta() ) );
+        props.setProperty(NOMETIMEOUT, Integer.toString(conexao.getTimeOut() ) );
+        props.store(fileOut, null);
+         
     }
        
 }

@@ -1,5 +1,6 @@
 package util.modbus;
 
+import javax.swing.JOptionPane;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
 import net.wimpi.modbus.msg.ReadMultipleRegistersResponse;
@@ -40,12 +41,14 @@ public class ModbusRegistro {
                 return true;
             }else{
                 System.out.println("Erro ao escrever no unico registro! referencia ou valor não corresponde.");
+                JOptionPane.showMessageDialog(null, "Erro ao escrever no unico registro! referencia ou valor não corresponde.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false; 
             }
             
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao escrever no unico registro!");
+            JOptionPane.showMessageDialog(null, "Erro ao escrever no unico registro!", "Erro", JOptionPane.ERROR_MESSAGE);
             
             return false;
         }
@@ -83,12 +86,14 @@ public class ModbusRegistro {
                 return true;
             }else{
                 System.out.println("Erro ao escrever nos multiplos registro! referencia ou quantidade valores não corresponde.");
+                JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro! referencia ou quantidade valores não corresponde.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Erro ao escrever nos multiplos registro!");
+            JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
             
             return false;
         }
@@ -131,8 +136,9 @@ public class ModbusRegistro {
             return valores;
             
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Erro ao ler multiplos registro!");
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
             
             return null;
         }
