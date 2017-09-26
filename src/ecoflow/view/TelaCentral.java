@@ -41,6 +41,10 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         centralTableModel.setCentrais(listaCentral);
         
     }
+    
+    public Central getCentral(){
+        return listaCentral.get(tbCentral.getSelectedRow() );
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,7 +152,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -204,7 +208,10 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
             }            
         }else{
-            System.out.println("Qtd clicks: " + evt.getClickCount() );
+            if(tbCentral.getSelectedRow() != -1 ){
+                TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                TelaPrincipal.chamarInternalFrame(telaRemota, true);
+            }
         }
     }//GEN-LAST:event_tbCentralMouseClicked
 

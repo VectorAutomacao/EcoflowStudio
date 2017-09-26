@@ -22,7 +22,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author vinicius
  */
-public class TelaUnidade extends javax.swing.JInternalFrame {
+public class TelaLeitura extends javax.swing.JInternalFrame {
     
     UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
     ControleUnidade     controleUnidade     = new ControleUnidade();
@@ -31,7 +31,7 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
     /**
      * Creates new form Unidade
      */
-    public TelaUnidade() {
+    public TelaLeitura() {
         initComponents();
         
         Conexao conexao;
@@ -49,7 +49,7 @@ public class TelaUnidade extends javax.swing.JInternalFrame {
             unidadesTableModel.setUnidades(unidades);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Arquivo de configurações com problema.", "Erro", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(TelaUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }

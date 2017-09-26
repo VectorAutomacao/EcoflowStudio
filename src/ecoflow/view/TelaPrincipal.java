@@ -25,11 +25,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
     
     //Metodo para chamar internal frames
-    private void chamarInternalFrame(JInternalFrame jiFrame, Boolean maximizado){
+    public static void chamarInternalFrame(JInternalFrame jiFrame, Boolean maximizado){
         for(JInternalFrame frame: patTelaPrincipal.getAllFrames() ){
+            /*Metodo para abrir a mesma janela uma unica vez
             if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
                 return;
-            }
+            }*/
+            //Fecha todas as janelas
+            frame.dispose();
         }
         
         //Resolução da DesktopPane
@@ -159,13 +162,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_imConexaoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        TelaUnidade telaUnidade = new TelaUnidade();
-        chamarInternalFrame(telaUnidade, false);
+        TelaLeitura telaUnidade = new TelaLeitura();
+        chamarInternalFrame(telaUnidade, true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
         TelaCentral telaCentral = new TelaCentral();
-        chamarInternalFrame(telaCentral, false);
+        chamarInternalFrame(telaCentral, true);
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
 
     /**
@@ -214,6 +217,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JDesktopPane patTelaPrincipal;
+    private static javax.swing.JDesktopPane patTelaPrincipal;
     // End of variables declaration//GEN-END:variables
 }
