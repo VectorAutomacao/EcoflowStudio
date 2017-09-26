@@ -1,0 +1,22 @@
+<list>
+  <central>
+    <id>1</id>
+    <nome>Nome01</nome>
+    <remotas/>
+  </central>
+  <central>
+    <id>2</id>
+    <nome>Nome02</nome>
+    <remotas/>
+  </central>
+  <central>
+    <id>3</id>
+    <nome>Nome03</nome>
+    <remotas/>
+  </central>
+  <central>
+    <id>4</id>
+    <nome>Nome04</nome>
+    <remotas/>
+  </central>
+</list>

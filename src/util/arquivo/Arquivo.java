@@ -82,20 +82,15 @@ public class Arquivo {
         return (caminhoArquivo);
     }
     
-    public static void salvar(String caminho,String xml){
+    public static void salvar(String caminho,String texto) throws FileNotFoundException{
         
-        try {
-            File file = new File(caminho);
-            PrintWriter print;
-            print = new PrintWriter(file);
-            
-            print.write(xml);
-            print.flush();
-            print.close();
-            
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Arquivo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        File file = new File(caminho);
+        PrintWriter print;
+        print = new PrintWriter(file);
+
+        print.write(texto);
+        print.flush();
+        print.close();
         
     }
     

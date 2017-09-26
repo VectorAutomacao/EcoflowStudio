@@ -136,8 +136,9 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             conexao.setTimeOut(Integer.parseInt(tfTimeOut.getText().trim() ) );
             try {           
                 controleConexao.setConexao(conexao);
+                JOptionPane.showMessageDialog(null, "Configurações salvo com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao salvar no arquivo de configurações", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Problemas ao salvar no arquivo de configurações", "Erro", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(EditarConexao.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -16,10 +16,10 @@ import java.util.Properties;
  * @author vinicius
  */
 public class ControleConexao {
-    private static String NOMEARQUIVO = "./properties/conexao.properties";
-    private static String NOMEIP = "prop.ip";
-    private static String NOMEPORTA = "prop.porta";
-    private static String NOMETIMEOUT = "prop.timeout";
+    private final String NOMEARQUIVO = "./properties/conexao.properties";
+    private final String NOMEIP = "prop.ip";
+    private final String NOMEPORTA = "prop.porta";
+    private final String NOMETIMEOUT = "prop.timeout";
     
     public Conexao getConexao() throws IOException{
         Conexao conexao = new Conexao();

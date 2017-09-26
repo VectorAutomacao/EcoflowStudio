@@ -5,6 +5,7 @@
  */
 package ecoflow.modelo;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  *
  * @author vinicius
  */
+@XStreamAlias("remota")
 public class Remota {
     
     private int id;

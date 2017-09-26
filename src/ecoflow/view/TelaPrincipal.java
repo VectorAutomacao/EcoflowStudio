@@ -55,6 +55,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         patTelaPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        imCadastrarCentral = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -82,6 +83,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(patTelaPrincipal);
 
         jMenu1.setText("Arquivo");
+
+        imCadastrarCentral.setText("Cadastrar Central");
+        imCadastrarCentral.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imCadastrarCentralActionPerformed(evt);
+            }
+        });
+        jMenu1.add(imCadastrarCentral);
+
         jMenuBar1.add(jMenu1);
 
         jMenu4.setText("Em Campo");
@@ -153,6 +163,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         chamarInternalFrame(telaUnidade, false);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
+        TelaCentral telaCentral = new TelaCentral();
+        chamarInternalFrame(telaCentral, false);
+    }//GEN-LAST:event_imCadastrarCentralActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -189,6 +204,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem imCadastrarCentral;
     private javax.swing.JMenuItem imConexao;
     private javax.swing.JMenuItem imSobre;
     private javax.swing.JMenu jMenu1;
