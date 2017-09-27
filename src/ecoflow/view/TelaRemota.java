@@ -13,7 +13,7 @@ import ecoflow.modelo.Central;
  */
 public class TelaRemota extends javax.swing.JInternalFrame {
     
-    Central central = new Central();
+    private Central central = new Central();
 
     /**
      * Creates new form TelaRemota

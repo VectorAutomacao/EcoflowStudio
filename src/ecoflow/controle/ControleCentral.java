@@ -8,6 +8,7 @@ package ecoflow.controle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import ecoflow.modelo.Central;
+import ecoflow.modelo.Conexao;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,7 +16,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.wimpi.modbus.net.TCPMasterConnection;
 import util.arquivo.Arquivo;
+import util.modbus.ModbusConexao;
+import util.modbus.ModbusRegistro;
 
 /**
  *
@@ -23,7 +27,28 @@ import util.arquivo.Arquivo;
  */
 public class ControleCentral {
     
+    private final int CONTADOR = 1;
+    private final int REFERENCIA = 0;
     private final String NOMEARQUIVO = "./arquivos/listaCentral.xml";
+    
+    TCPMasterConnection tcpMasterConnection;
+    
+    public void setTcpMasterConnection(Conexao c){
+        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
+        tcpMasterConnection.setTimeout(c.getTimeOut() );
+    }
+    
+    public int getIdCentral(){
+        int[] respostas = new int[CONTADOR];
+        
+        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIA, CONTADOR);
+        
+        return respostas[0];
+    }
+    
+    public void setIdCentral(Central c){
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIA, c.getId() );
+    }
     
     public void criarLista(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
@@ -95,10 +120,8 @@ public class ControleCentral {
         return false;
     }
     
-    public void setListaCentralNome(int index, String nome, List<Central> listaCentral){
-        Central c = listaCentral.get(index);
-        c.setNome(nome);
+    public void setListaCentralNome(int index, Central c, List<Central> listaCentral){
         listaCentral.set(index, c);
     }
-    
+        
 }

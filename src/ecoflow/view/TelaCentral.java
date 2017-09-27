@@ -6,10 +6,15 @@
 package ecoflow.view;
 
 import ecoflow.controle.ControleCentral;
+import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.CentralTableModel;
+import ecoflow.modelo.Conexao;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 
@@ -22,12 +27,15 @@ public class TelaCentral extends javax.swing.JInternalFrame {
     CentralTableModel   centralTableModel   = new CentralTableModel();
     List<Central>       listaCentral        = new ArrayList<>();
     ControleCentral     controleCentral     = new ControleCentral();
+    ControleConexao     controleConexao     = new ControleConexao();
     
     /**
      * Creates new form TelaCentral
      */
     public TelaCentral() {
         initComponents();
+        
+        Conexao conexao;
         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
@@ -40,10 +48,38 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         listaCentral = controleCentral.getLista();
         centralTableModel.setCentrais(listaCentral);
         
+        //Configurando a conexao
+        try {
+            conexao = controleConexao.getConexao();
+            controleCentral.setTcpMasterConnection(conexao);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo de configurações com problema.", "Erro", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     public Central getCentral(){
         return listaCentral.get(tbCentral.getSelectedRow() );
+    }
+    
+    private void adicionarNovaCentral(Central c){
+        if( !controleCentral.igual(c, listaCentral) ){
+            //Escrever na central
+            controleCentral.setIdCentral(c);
+            
+            //Adiciona listaCentral
+            listaCentral.add(c);
+
+            //Salvar listaCentral no xml
+            controleCentral.saveLista(listaCentral);
+
+            //Atualizar tbCentral
+            centralTableModel.setCentrais(listaCentral);
+
+        }else{
+            JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -57,11 +93,13 @@ public class TelaCentral extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        tfId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         tfNome = new javax.swing.JTextField();
         btAlterar = new javax.swing.JButton();
         btAdicionar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        tfId = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCentral = new javax.swing.JTable();
 
@@ -89,17 +127,24 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             }
         });
 
+        btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("*Identificador é valor único e numérico");
+
+        tfId.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btAdicionar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btAlterar))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -107,8 +152,16 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btAdicionar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btAlterar)))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,13 +169,15 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAlterar)
-                    .addComponent(btAdicionar))
+                    .addComponent(btAdicionar)
+                    .addComponent(btExcluir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -152,7 +207,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -161,7 +216,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -170,30 +225,32 @@ public class TelaCentral extends javax.swing.JInternalFrame {
 
     private void btAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarActionPerformed
         // TODO add your handling code here:
-        Central central = new Central();
+        Central c = new Central();
         
         if(
             !tfId.getText().isEmpty() &&
             !tfNome.getText().isEmpty()
         ){
-            //Configura objeto central
-            central.setId( Integer.parseInt(tfId.getText().trim() ) );
-            central.setNome(tfNome.getText().trim() );
-            
-            if( !controleCentral.igual(central, listaCentral) ){
+            if(controleCentral.getIdCentral() == 0){
+                //Configura objeto central
+                c.setId( Integer.parseInt(tfId.getText().trim() ) );
+                c.setNome(tfNome.getText().trim() );
 
-                //Adiciona listaCentral
-                listaCentral.add(central);
-
-                //Salvar listaCentral no xml
-                controleCentral.saveLista(listaCentral);
-                
-                //Atualizar tbCentral
-                centralTableModel.setCentrais(listaCentral);
-                
+                adicionarNovaCentral(c);
             }else{
-                JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Inválido", JOptionPane.ERROR_MESSAGE);
-            }
+                //Configura objeto central
+                c.setId(controleCentral.getIdCentral() );
+                c.setNome(tfNome.getText().trim() );
+                
+                if(!controleCentral.igual(c, listaCentral) ){
+                    //Altera lista de centrais
+                    listaCentral.remove(tbCentral.getSelectedRow() );                
+
+                    adicionarNovaCentral(c);                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                }
+            }            
             
         }else{
             JOptionPane.showMessageDialog(null, "Identificador ou Nome em branco", "Inválido", JOptionPane.ERROR_MESSAGE);
@@ -208,41 +265,89 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
             }            
         }else{
-            if(tbCentral.getSelectedRow() != -1 ){
+            if(
+                tbCentral.getSelectedRow() != -1 &&
+                controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId()
+             ){
                 TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
                 TelaPrincipal.chamarInternalFrame(telaRemota, true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_tbCentralMouseClicked
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
         // TODO add your handling code here:
+        Central c = new Central();
+        
         if(
             tbCentral.getSelectedRow() != -1 &&
-            !tfNome.getText().isEmpty()
+            !tfId.getText().isEmpty() &&
+            !tfNome.getText().isEmpty() &&
+            !controleCentral.igual(c, listaCentral)
         ){
+            if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                //configurar objeto central
+                c.setId( Integer.parseInt(tfId.getText().trim()) );
+                c.setNome(tfNome.getText().trim() );
+
+                //Escrever na central
+                controleCentral.setIdCentral(c);
+
+                //Altera lista de centrais
+                controleCentral.setListaCentralNome( tbCentral.getSelectedRow(), c, listaCentral);
+
+                //Atualiza tabela
+                centralTableModel.setCentrais(listaCentral);
+
+                //Salva lista
+                controleCentral.saveLista(listaCentral);
+
+                //limpar textField
+                tfId.setText("");
+                tfNome.setText("");
+            }else{
+                JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Identicador ou nome invalido ou linha na tabela não selecionada.", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btAlterarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        // TODO add your handling code here:
+        if(tbCentral.getSelectedRow() != -1){
+            
             //Altera lista de centrais
-            controleCentral.setListaCentralNome( tbCentral.getSelectedRow(), tfNome.getText().trim(), listaCentral);
+            listaCentral.remove(tbCentral.getSelectedRow() );
+            
             //Atualiza tabela
             centralTableModel.setCentrais(listaCentral);
+            
             //Salva lista
             controleCentral.saveLista(listaCentral);
+            
             //limpar textField
             tfId.setText("");
             tfNome.setText("");
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma linha na tabela.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_btAlterarActionPerformed
+    }//GEN-LAST:event_btExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdicionar;
     private javax.swing.JButton btAlterar;
+    private javax.swing.JButton btExcluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbCentral;
-    private javax.swing.JTextField tfId;
+    private javax.swing.JFormattedTextField tfId;
     private javax.swing.JTextField tfNome;
     // End of variables declaration//GEN-END:variables
 }

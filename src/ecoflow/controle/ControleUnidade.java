@@ -19,9 +19,9 @@ import util.modbus.ModbusRegistro;
  */
 public class ControleUnidade {
     
-    private int CONTADOR = 100; //Quantidade de leituras
-    private int REFERENCIA = 0; //Inicio da leitura
-    private int FATORMULTIPLICATIVO = 10000;
+    private final int CONTADOR = 32; //Quantidade de leituras
+    private final int REFERENCIA = 2; //Inicio da leitura
+    private final int FATORMULTIPLICATIVO = 10000; //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
     
