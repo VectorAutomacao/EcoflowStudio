@@ -30,6 +30,7 @@ public class ControleConexao {
     private final int CONTADOR = 1;
     private final int REFERENCIA = 0;
     
+    //Leitura do arquivo properties de conexão
     public Conexao getConexao(){
         Conexao conexao = new Conexao();
         Properties props = new Properties();
@@ -50,7 +51,8 @@ public class ControleConexao {
         
         return conexao;
     }
-
+    
+    //Edita arquivo properties de conexão
     public void setConexao(Conexao conexao) throws IOException{
         Properties props = new Properties();
         
@@ -63,20 +65,24 @@ public class ControleConexao {
          
     }
     
+    //Retorna conexão TCP master configurada
     public TCPMasterConnection getTcpMasterConnection(){
         TCPMasterConnection tcpMasterConnection;
         Conexao c = getConexao();
         
+        //Configura conexão TCP master
         tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
         tcpMasterConnection.setTimeout(c.getTimeOut() );
         
         return tcpMasterConnection;
     }
     
+    //Testa conexão TCP
     public Boolean testarConexao(){
         int[] respostas = new int[CONTADOR];
         TCPMasterConnection tcp = getTcpMasterConnection();
         
+        //le um registro da central
         respostas = ModbusRegistro.ler(tcp, REFERENCIA, CONTADOR);
         
         if(respostas != null){

@@ -30,21 +30,26 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         //Busca parametros no arquivo properties
         conexao = controleConexao.getConexao();
         
+        //Preenche os campos textField
         tfIp.setText(conexao.getIp() );
         tfPorta.setText(Integer.toString(conexao.getPorta() ) );
         tfTimeOut.setText(Integer.toString(conexao.getTimeOut() ) );
     }
     
     private Boolean setConexao(){
+        //Verifica se campos não estão nulos
         if(
             !tfIp.getText().trim().isEmpty() && 
             !tfPorta.getText().trim().isEmpty() &&
             !tfTimeOut.getText().trim().isEmpty()
         ){
+            //Configura objeto conexão
             conexao.setIp(tfIp.getText().trim() );
             conexao.setPorta(Integer.parseInt(tfPorta.getText().trim() ) );
             conexao.setTimeOut(Integer.parseInt(tfTimeOut.getText().trim() ) );
-            try {           
+            
+            try {
+                //Edita o arquivos properties
                 controleConexao.setConexao(conexao);
                 return true;
             } catch (IOException ex) {

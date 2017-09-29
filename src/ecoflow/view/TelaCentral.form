@@ -81,7 +81,7 @@
                           <Component id="btAlterar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="104" max="32767" attributes="0"/>
+                  <EmptySpace pref="87" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -146,7 +146,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="*Identificador &#xe9; valor &#xfa;nico e num&#xe9;rico"/>
+            <Property name="text" type="java.lang.String" value="*Identificador &#xe9; um valor &#xfa;nico e num&#xe9;rico"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="tfId">

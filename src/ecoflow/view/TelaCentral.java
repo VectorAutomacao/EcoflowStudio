@@ -86,6 +86,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
                 return;
             }*/
+            
             //Fecha todas as janelas
             frame.dispose();
         }
@@ -152,7 +153,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setText("*Identificador é valor único e numérico");
+        jLabel3.setText("*Identificador é um valor único e numérico");
 
         tfId.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
@@ -179,7 +180,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                         .addComponent(btAdicionar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAlterar)))
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,20 +281,20 @@ public class TelaCentral extends javax.swing.JInternalFrame {
 
     private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCentralMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount() < 2){
-            if(tbCentral.getSelectedRow() != -1 ){
+        //Verifica se uma linha foi selecionada
+        if(tbCentral.getSelectedRow() != -1 ){
+            //Verifica o duplo click do mouse
+            if(evt.getClickCount() < 2){
                 tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
-                tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
-            }            
-        }else{
-            if(
-                tbCentral.getSelectedRow() != -1 &&
-                controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId()
-             ){
-                TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                chamarInternalFrame(desktopPane,telaRemota, true);
+                tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );                    
             }else{
-                JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                //Verifica se central selecionada na tabela é mesma conectada
+                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                    TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                    chamarInternalFrame(desktopPane,telaRemota, true);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_tbCentralMouseClicked
@@ -302,12 +303,14 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Central c = new Central();
         
+        //Verifica se campos são não nulos e se uma linha na tabela central foi selecionado
         if(
             tbCentral.getSelectedRow() != -1 &&
             !tfId.getText().isEmpty() &&
             !tfNome.getText().isEmpty() &&
             !controleCentral.igual(c, listaCentral)
         ){
+            //Verifica se central selecionada na tabela e a mesma central conectada
             if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
                 //configurar objeto central
                 c.setId( Integer.parseInt(tfId.getText().trim()) );

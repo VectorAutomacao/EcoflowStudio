@@ -35,6 +35,7 @@ public class ControleCentral {
         this.tcpMasterConnection = tcp;
     }
     
+    //Busca id na central
     public int getIdCentral(){
         int[] respostas = new int[CONTADOR];
         
@@ -43,22 +44,25 @@ public class ControleCentral {
         return respostas[0];
     }
     
+    //Configura id na central
     public void setIdCentral(Central c){
         ModbusRegistro.escrever(tcpMasterConnection, REFERENCIA, c.getId() );
     }
     
+    //Cria o arquivo listaCentral.xml senão existir
     public void criarLista(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
         
-        //Inicia driver do xstream
-        XStream xstream = new XStream( new DomDriver() );
-        // Auto detectar alias das classes
-        xstream.autodetectAnnotations(true);
-        
-        //Cria string xml
-        String xml = xstream.toXML(listaCentral);
-        
+        //Verifica se arquivo já existe
         if(!file.exists() ){
+            //Inicia driver do xstream
+            XStream xstream = new XStream( new DomDriver() );
+            // Auto detectar alias das classes
+            xstream.autodetectAnnotations(true);
+
+            //Cria string xml
+            String xml = xstream.toXML(listaCentral);
+        
             try {
                 Arquivo.salvar(NOMEARQUIVO, xml);
                 
@@ -69,6 +73,7 @@ public class ControleCentral {
         }
     }
     
+    //Salva a listaCentral.xml
     public void saveLista(List<Central> listaCentral){        
         //Inicia driver do xstream
         XStream xstream = new XStream( new DomDriver() );
@@ -85,6 +90,7 @@ public class ControleCentral {
         }
     }
     
+    //Leitura do arquvo listaCentral.xml
     public List getLista(){
         try {
             //Recupera o arquivo de leitura
@@ -107,6 +113,7 @@ public class ControleCentral {
                        
     }
     
+    //Verifica por id se central já existe na List
     public Boolean igual(Central central, List<Central> listaCentral){
         
         for(Central c: listaCentral ){
@@ -117,6 +124,7 @@ public class ControleCentral {
         return false;
     }
     
+    //Alterar Central na List
     public void setListaCentralNome(int index, Central c, List<Central> listaCentral){
         listaCentral.set(index, c);
     }

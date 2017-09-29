@@ -5,12 +5,10 @@
  */
 package ecoflow.controle;
 
-import ecoflow.modelo.Conexao;
 import ecoflow.modelo.Unidade;
 import java.util.ArrayList;
 import java.util.List;
 import net.wimpi.modbus.net.TCPMasterConnection;
-import util.modbus.ModbusConexao;
 import util.modbus.ModbusRegistro;
 
 /**

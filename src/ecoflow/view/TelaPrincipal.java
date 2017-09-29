@@ -6,7 +6,7 @@
 package ecoflow.view;
 
 import java.awt.Dimension;
-import javax.swing.JDesktopPane;
+import java.awt.Toolkit;
 import javax.swing.JInternalFrame;
 
 /**
@@ -20,9 +20,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
      */
     public TelaPrincipal() {
         initComponents();
-        
-        //Maximiza tela
-        this.setExtendedState(MAXIMIZED_BOTH);        
+                
     }
     
     //Metodo para chamar internal frames
@@ -32,6 +30,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
             if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
                 return;
             }*/
+            
             //Fecha todas as janelas
             frame.dispose();
         }
@@ -69,6 +68,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ecoflow Studio");
+        setExtendedState(MAXIMIZED_BOTH);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/ecoflow/imagem/ECOFlow.png"));
 
         jScrollPane1.setBorder(null);
 
