@@ -9,14 +9,11 @@ import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.CentralTableModel;
-import ecoflow.modelo.Conexao;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
  *
@@ -35,7 +32,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
     public TelaCentral() {
         initComponents();
         
-        Conexao conexao;
+        TCPMasterConnection tcp;
         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
@@ -49,13 +46,9 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         centralTableModel.setCentrais(listaCentral);
         
         //Configurando a conexao
-        try {
-            conexao = controleConexao.getConexao();
-            controleCentral.setTcpMasterConnection(conexao);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Arquivo de configurações com problema.", "Erro", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp);
+        
         
     }
     

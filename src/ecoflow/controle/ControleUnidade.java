@@ -24,19 +24,9 @@ public class ControleUnidade {
     private final int FATORMULTIPLICATIVO = 10000; //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
-    
-    public ControleUnidade(){
-        
-    }
-    
-    public ControleUnidade(Conexao c){
-        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
-        tcpMasterConnection.setTimeout(c.getTimeOut() );
-    }
-    
-    public void setTcpMasterConnection(Conexao c){
-        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
-        tcpMasterConnection.setTimeout(c.getTimeOut() );
+   
+    public void setTcpMasterConnection(TCPMasterConnection tcp ){
+        this.tcpMasterConnection = tcp;
     }
     
     public List<Unidade> getUnidades(){

@@ -7,16 +7,12 @@ package ecoflow.view;
 
 import ecoflow.controle.ControleConexao;
 import ecoflow.controle.ControleUnidade;
-import ecoflow.modelo.Conexao;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
  *
@@ -34,7 +30,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     public TelaLeitura() {
         initComponents();
         
-        Conexao conexao;
+        TCPMasterConnection tcp;
         List<Unidade> unidades = new ArrayList<>();
         
         //Configurando tbUnidades
@@ -42,15 +38,10 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         tbUnidades.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
         
         //Configurando a conexao
-        try {
-            conexao = controleConexao.getConexao();
-            controleUnidade.setTcpMasterConnection(conexao);
-            unidades = controleUnidade.getUnidades();
-            unidadesTableModel.setUnidades(unidades);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Arquivo de configurações com problema.", "Erro", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        tcp = controleConexao.getTcpMasterConnection();
+        controleUnidade.setTcpMasterConnection(tcp);
+        unidades = controleUnidade.getUnidades();
+        unidadesTableModel.setUnidades(unidades);
         
     }
 

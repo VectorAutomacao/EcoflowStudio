@@ -8,7 +8,6 @@ package ecoflow.controle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import ecoflow.modelo.Central;
-import ecoflow.modelo.Conexao;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,7 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.arquivo.Arquivo;
-import util.modbus.ModbusConexao;
 import util.modbus.ModbusRegistro;
 
 /**
@@ -33,9 +31,8 @@ public class ControleCentral {
     
     TCPMasterConnection tcpMasterConnection;
     
-    public void setTcpMasterConnection(Conexao c){
-        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
-        tcpMasterConnection.setTimeout(c.getTimeOut() );
+    public void setTcpMasterConnection(TCPMasterConnection tcp ){
+        this.tcpMasterConnection = tcp;
     }
     
     public int getIdCentral(){

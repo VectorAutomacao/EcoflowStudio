@@ -10,6 +10,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.wimpi.modbus.net.TCPMasterConnection;
+import util.modbus.ModbusConexao;
+import util.modbus.ModbusRegistro;
 
 /**
  *
@@ -21,13 +27,21 @@ public class ControleConexao {
     private final String NOMEPORTA = "prop.porta";
     private final String NOMETIMEOUT = "prop.timeout";
     
-    public Conexao getConexao() throws IOException{
+    private final int CONTADOR = 1;
+    private final int REFERENCIA = 0;
+    
+    public Conexao getConexao(){
         Conexao conexao = new Conexao();
         Properties props = new Properties();
         
         //Le arquivo properties
-        FileInputStream file = new FileInputStream(NOMEARQUIVO);
-        props.load(file);
+        try {
+            FileInputStream file = new FileInputStream(NOMEARQUIVO);
+            props.load(file);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Arquivo de configurações não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(ControleConexao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         //Alterando o objeto conexão
         conexao.setIp(props.getProperty(NOMEIP) );
@@ -47,6 +61,29 @@ public class ControleConexao {
         props.setProperty(NOMETIMEOUT, Integer.toString(conexao.getTimeOut() ) );
         props.store(fileOut, null);
          
+    }
+    
+    public TCPMasterConnection getTcpMasterConnection(){
+        TCPMasterConnection tcpMasterConnection;
+        Conexao c = getConexao();
+        
+        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
+        tcpMasterConnection.setTimeout(c.getTimeOut() );
+        
+        return tcpMasterConnection;
+    }
+    
+    public Boolean testarConexao(){
+        int[] respostas = new int[CONTADOR];
+        TCPMasterConnection tcp = getTcpMasterConnection();
+        
+        respostas = ModbusRegistro.ler(tcp, REFERENCIA, CONTADOR);
+        
+        if(respostas != null){
+            return true;
+        }else{
+            return false;
+        }        
     }
        
 }
