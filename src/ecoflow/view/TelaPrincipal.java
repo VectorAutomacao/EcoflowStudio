@@ -6,6 +6,7 @@
 package ecoflow.view;
 
 import java.awt.Dimension;
+import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 /**
@@ -21,12 +22,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
         initComponents();
         
         //Maximiza tela
-        this.setExtendedState(MAXIMIZED_BOTH);
+        this.setExtendedState(MAXIMIZED_BOTH);        
     }
     
     //Metodo para chamar internal frames
-    public static void chamarInternalFrame(JInternalFrame jiFrame, Boolean maximizado){
-        for(JInternalFrame frame: patTelaPrincipal.getAllFrames() ){
+    private void chamarInternalFrame(JInternalFrame jiFrame, Boolean maximizado){
+        for(JInternalFrame frame: this.dpTelaPrincipal.getAllFrames() ){
             /*Metodo para abrir a mesma janela uma unica vez
             if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
                 return;
@@ -36,15 +37,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         }
         
         //Resolução da DesktopPane
-        Dimension resolucao = patTelaPrincipal.getSize();
+        Dimension resolucao = this.dpTelaPrincipal.getSize();
         if(maximizado){
             jiFrame.setSize(resolucao);   
             jiFrame.setLocation(0, 0);
         }
-        patTelaPrincipal.add(jiFrame);
+        this.dpTelaPrincipal.add(jiFrame);
         jiFrame.setVisible(true);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,7 +56,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        patTelaPrincipal = new javax.swing.JDesktopPane();
+        dpTelaPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         imCadastrarCentral = new javax.swing.JMenuItem();
@@ -68,22 +69,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ecoflow Studio");
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jScrollPane1.setBorder(null);
 
-        javax.swing.GroupLayout patTelaPrincipalLayout = new javax.swing.GroupLayout(patTelaPrincipal);
-        patTelaPrincipal.setLayout(patTelaPrincipalLayout);
-        patTelaPrincipalLayout.setHorizontalGroup(
-            patTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+        dpTelaPrincipal.setMinimumSize(new java.awt.Dimension(800, 600));
+
+        javax.swing.GroupLayout dpTelaPrincipalLayout = new javax.swing.GroupLayout(dpTelaPrincipal);
+        dpTelaPrincipal.setLayout(dpTelaPrincipalLayout);
+        dpTelaPrincipalLayout.setHorizontalGroup(
+            dpTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
-        patTelaPrincipalLayout.setVerticalGroup(
-            patTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 318, Short.MAX_VALUE)
+        dpTelaPrincipalLayout.setVerticalGroup(
+            dpTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(patTelaPrincipal);
+        jScrollPane1.setViewportView(dpTelaPrincipal);
 
         jMenu1.setText("Arquivo");
 
@@ -167,7 +169,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
-        TelaCentral telaCentral = new TelaCentral();
+        TelaCentral telaCentral = new TelaCentral(dpTelaPrincipal);
         chamarInternalFrame(telaCentral, true);
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
 
@@ -207,6 +209,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane dpTelaPrincipal;
     private javax.swing.JMenuItem imCadastrarCentral;
     private javax.swing.JMenuItem imConexao;
     private javax.swing.JMenuItem imSobre;
@@ -217,6 +220,5 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JDesktopPane patTelaPrincipal;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,8 +9,11 @@ import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.CentralTableModel;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
@@ -21,6 +24,7 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  */
 public class TelaCentral extends javax.swing.JInternalFrame {
     
+    JDesktopPane        desktopPane         = new JDesktopPane();
     CentralTableModel   centralTableModel   = new CentralTableModel();
     List<Central>       listaCentral        = new ArrayList<>();
     ControleCentral     controleCentral     = new ControleCentral();
@@ -29,10 +33,11 @@ public class TelaCentral extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaCentral
      */
-    public TelaCentral() {
+    public TelaCentral(JDesktopPane dp) {
         initComponents();
         
         TCPMasterConnection tcp;
+        this.desktopPane = dp;
         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
@@ -73,6 +78,26 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
+    }
+    
+    private void chamarInternalFrame(JDesktopPane desktopPane, JInternalFrame jiFrame, Boolean maximizado){
+        for(JInternalFrame frame: desktopPane.getAllFrames() ){
+            /*Metodo para abrir a mesma janela uma unica vez
+            if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
+                return;
+            }*/
+            //Fecha todas as janelas
+            frame.dispose();
+        }
+        
+        //Resolução da DesktopPane
+        Dimension resolucao = desktopPane.getSize();
+        if(maximizado){
+            jiFrame.setSize(resolucao);   
+            jiFrame.setLocation(0, 0);
+        }
+        desktopPane.add(jiFrame);
+        jiFrame.setVisible(true);
     }
 
     /**
@@ -220,11 +245,13 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Central c = new Central();
         
+        //Verifica se campos textFiel não estão em branco
         if(
             !tfId.getText().isEmpty() &&
             !tfNome.getText().isEmpty()
-        ){
-            if(controleCentral.getIdCentral() == 0){
+        ){  
+             //Verifica se central possui id
+            if(controleCentral.getIdCentral() == 0){   
                 //Configura objeto central
                 c.setId( Integer.parseInt(tfId.getText().trim() ) );
                 c.setNome(tfNome.getText().trim() );
@@ -235,7 +262,8 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 c.setId(controleCentral.getIdCentral() );
                 c.setNome(tfNome.getText().trim() );
                 
-                if(!controleCentral.igual(c, listaCentral) ){
+                //Verifica se central já esta cadastrado
+                if(!controleCentral.igual(c, listaCentral) ){   
                     //Altera lista de centrais
                     listaCentral.remove(tbCentral.getSelectedRow() );                
 
@@ -263,7 +291,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId()
              ){
                 TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                TelaPrincipal.chamarInternalFrame(telaRemota, true);
+                chamarInternalFrame(desktopPane,telaRemota, true);
             }else{
                 JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
             }

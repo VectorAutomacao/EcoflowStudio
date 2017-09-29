@@ -9,7 +9,7 @@ import ecoflow.modelo.Central;
 
 /**
  *
- * @author v1n1c
+ * @author vinicius
  */
 public class TelaRemota extends javax.swing.JInternalFrame {
     
