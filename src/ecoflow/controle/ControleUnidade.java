@@ -29,14 +29,25 @@ public class ControleUnidade {
     
     public List<Unidade> getUnidades(){
         List<Unidade> unidades = new ArrayList<>();
-        int[] respostas = new int[CONTADOR];
+        int[] remotas = new int[1];
+        int[] leituras = new int[CONTADOR];
+        int referencia = REFERENCIA;
         
-        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIA, CONTADOR);
+        remotas = ModbusRegistro.ler(tcpMasterConnection, 1, 1);
         
-        for(int i = 0; i < CONTADOR; i += 2){
-            Unidade unidade = new Unidade();
-            unidade.setLeitura( respostas[i] + respostas[i + 1] * FATORMULTIPLICATIVO );
-            unidades.add(unidade);
+        //Leitura por quantidade de remotas
+        for(int j = 0; j < remotas[0]; j++){
+            
+            //Leitura de uma remota
+            leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, CONTADOR);
+            
+            //Converte o double word
+            for(int i = 0; i < CONTADOR; i += 2){
+                Unidade unidade = new Unidade();
+                unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
+                unidades.add(unidade);
+            }
+            referencia += CONTADOR;
         }
         
         return unidades;

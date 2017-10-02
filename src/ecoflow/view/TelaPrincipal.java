@@ -5,9 +5,8 @@
  */
 package ecoflow.view;
 
-import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JInternalFrame;
+import util.outros.View;
 
 /**
  *
@@ -21,28 +20,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public TelaPrincipal() {
         initComponents();
                 
-    }
-    
-    //Metodo para chamar internal frames
-    private void chamarInternalFrame(JInternalFrame jiFrame, Boolean maximizado){
-        for(JInternalFrame frame: this.dpTelaPrincipal.getAllFrames() ){
-            /*Metodo para abrir a mesma janela uma unica vez
-            if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
-                return;
-            }*/
-            
-            //Fecha todas as janelas
-            frame.dispose();
-        }
-        
-        //Resolução da DesktopPane
-        Dimension resolucao = this.dpTelaPrincipal.getSize();
-        if(maximizado){
-            jiFrame.setSize(resolucao);   
-            jiFrame.setLocation(0, 0);
-        }
-        this.dpTelaPrincipal.add(jiFrame);
-        jiFrame.setVisible(true);
     }
     
     /**
@@ -70,20 +47,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setTitle("Ecoflow Studio");
         setExtendedState(MAXIMIZED_BOTH);
         setIconImage(Toolkit.getDefaultToolkit().getImage("./src/ecoflow/imagem/ECOFlow.png"));
+        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jScrollPane1.setBorder(null);
 
-        dpTelaPrincipal.setMinimumSize(new java.awt.Dimension(800, 600));
+        dpTelaPrincipal.setPreferredSize(new java.awt.Dimension(600, 300));
 
         javax.swing.GroupLayout dpTelaPrincipalLayout = new javax.swing.GroupLayout(dpTelaPrincipal);
         dpTelaPrincipal.setLayout(dpTelaPrincipalLayout);
         dpTelaPrincipalLayout.setHorizontalGroup(
             dpTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
         );
         dpTelaPrincipalLayout.setVerticalGroup(
             dpTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 447, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(dpTelaPrincipal);
@@ -142,11 +120,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
         );
 
         pack();
@@ -155,23 +133,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void imSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imSobreActionPerformed
         Sobre sobre = new Sobre();
-        chamarInternalFrame(sobre, false);
+        View.chamarInternalFrame(dpTelaPrincipal,sobre, false);
     }//GEN-LAST:event_imSobreActionPerformed
 
     private void imConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imConexaoActionPerformed
         // TODO add your handling code here:
         EditarConexao editarConexao = new EditarConexao();
-        chamarInternalFrame(editarConexao, false);
+        View.chamarInternalFrame(dpTelaPrincipal, editarConexao, false);
     }//GEN-LAST:event_imConexaoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         TelaLeitura telaUnidade = new TelaLeitura();
-        chamarInternalFrame(telaUnidade, true);
+        View.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
         TelaCentral telaCentral = new TelaCentral(dpTelaPrincipal);
-        chamarInternalFrame(telaCentral, true);
+        View.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
 
     /**

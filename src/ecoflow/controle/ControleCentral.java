@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.wimpi.modbus.net.TCPMasterConnection;
-import util.arquivo.Arquivo;
+import util.outros.Arquivo;
 import util.modbus.ModbusRegistro;
 
 /**

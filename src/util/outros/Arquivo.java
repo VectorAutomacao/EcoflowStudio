@@ -1,4 +1,4 @@
-package util.arquivo;
+package util.outros;
 
 import java.io.File;
 import java.io.FileNotFoundException;

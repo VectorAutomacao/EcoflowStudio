@@ -17,6 +17,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
+import util.outros.View;
 
 /**
  *
@@ -79,27 +80,6 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
-    private void chamarInternalFrame(JDesktopPane desktopPane, JInternalFrame jiFrame, Boolean maximizado){
-        for(JInternalFrame frame: desktopPane.getAllFrames() ){
-            /*Metodo para abrir a mesma janela uma unica vez
-            if(frame.getClass().toString().equalsIgnoreCase(jiFrame.getClass().toString() ) ){
-                return;
-            }*/
-            
-            //Fecha todas as janelas
-            frame.dispose();
-        }
-        
-        //Resolução da DesktopPane
-        Dimension resolucao = desktopPane.getSize();
-        if(maximizado){
-            jiFrame.setSize(resolucao);   
-            jiFrame.setLocation(0, 0);
-        }
-        desktopPane.add(jiFrame);
-        jiFrame.setVisible(true);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -125,6 +105,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
+        setPreferredSize(new java.awt.Dimension(600, 400));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -291,7 +272,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 //Verifica se central selecionada na tabela é mesma conectada
                 if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
                     TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                    chamarInternalFrame(desktopPane,telaRemota, true);
+                    View.chamarInternalFrame(desktopPane,telaRemota, true);
                 }else{
                     JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }
