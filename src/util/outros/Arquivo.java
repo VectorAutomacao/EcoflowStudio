@@ -18,7 +18,7 @@ public class Arquivo {
         JFileChooser arquivo;
 
         retorno = 0;
-        arquivo = new JFileChooser(new File("."));
+        arquivo = new JFileChooser();
 
         // TIPO DE OPERACAO A SER REALIZADA
         switch (operacao) {

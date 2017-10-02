@@ -9,8 +9,12 @@ import ecoflow.controle.ControleConexao;
 import ecoflow.controle.ControleUnidade;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
@@ -55,6 +59,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btLeitura = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUnidades = new javax.swing.JTable();
 
@@ -72,6 +77,14 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
             }
         });
 
+        btSalvar.setText("Salvar");
+        btSalvar.setEnabled(false);
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -79,13 +92,17 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btLeitura)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btSalvar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btLeitura)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btLeitura)
+                    .addComponent(btSalvar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -110,7 +127,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 609, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -131,11 +148,25 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         
         unidades = controleUnidade.getUnidades();
         unidadesTableModel.setUnidades(unidades);
+        
+        //Ativa botão salvar
+        btSalvar.setEnabled(true);
     }//GEN-LAST:event_btLeituraActionPerformed
+
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        try {
+            // TODO add your handling code here:
+            controleUnidade.saveXLS(unidades);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Problema ao salvar o arquivo. Tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btLeitura;
+    private javax.swing.JButton btSalvar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbUnidades;
