@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
 public class UnidadesTableModel extends AbstractTableModel{
     
     private List<Unidade> listaUnidades = new ArrayList<>();
-    private String colunas[] = {"Nome", "Serviço", "Leitura"};
+    private String colunas[] = {"Porta", "Nome", "LPP", "Serviço", "Leitura", "Habilitado"};
 
     @Override
     public String getColumnName(int column) {
@@ -37,41 +37,20 @@ public class UnidadesTableModel extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0:
-                return listaUnidades.get(rowIndex).getNome();
+                return listaUnidades.get(rowIndex).getPorta();
             case 1:
-                return listaUnidades.get(rowIndex).getServico();
+                return listaUnidades.get(rowIndex).getNome();
             case 2:
+                return listaUnidades.get(rowIndex).getLpp();
+            case 3:
+                return listaUnidades.get(rowIndex).getServico();
+            case 4:
                 return listaUnidades.get(rowIndex).getLeitura();
+            case 5:
+                return listaUnidades.get(rowIndex).getHabilitado();
         }
         
         return null;
-    }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        switch(columnIndex){
-            case 0:
-                listaUnidades.get(rowIndex).setNome((String) aValue);
-                break;
-            case 1:
-                listaUnidades.get(rowIndex).setServico(Integer.parseInt( (String) aValue ) );
-                break;
-            case 2:
-                listaUnidades.get(rowIndex).setLeitura(Integer.parseInt( (String) aValue ));
-                break;
-        }
-        
-        this.fireTableRowsUpdated(rowIndex, rowIndex);
-    }
-    
-    public void addRow(Unidade un){
-        this.listaUnidades.add(un);
-        this.fireTableDataChanged();
-    }
-    
-    public void removeRow(int linha){
-        this.listaUnidades.remove(linha);
-        this.fireTableRowsDeleted(linha, linha);
     }
     
     public void setUnidades(List<Unidade> uns){

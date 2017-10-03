@@ -5,7 +5,17 @@
  */
 package ecoflow.view;
 
+import ecoflow.controle.ControleCentral;
+import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
+import ecoflow.modelo.Remota;
+import ecoflow.modelo.RemotasTableModel;
+import ecoflow.modelo.Unidade;
+import ecoflow.modelo.UnidadesTableModel;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
  *
@@ -13,7 +23,14 @@ import ecoflow.modelo.Central;
  */
 public class TelaRemota extends javax.swing.JInternalFrame {
     
+    
     private Central central = new Central();
+    
+    private RemotasTableModel   remotasTableModel   = new RemotasTableModel();
+    private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
+    
+    private ControleCentral     controleCentral     = new ControleCentral();
+    private ControleConexao     controleConexao     = new ControleConexao();
 
     /**
      * Creates new form TelaRemota
@@ -21,8 +38,28 @@ public class TelaRemota extends javax.swing.JInternalFrame {
     public TelaRemota(Central c) {
         initComponents();
         
-        this.central = c;
-        System.out.println("ID: " + central.getId() + " Nome: " + central.getNome() );
+        TCPMasterConnection tcp;
+        List<Remota> remotas = new ArrayList<>();
+        
+        //Configurando a conexao
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp);
+        
+        //Configurar central
+        central = c;
+        remotas = controleCentral.getRemotas();
+        central.setRemotas(remotas);
+               
+        //Configurar tbRemota
+        tbRemota.setModel(remotasTableModel);
+        tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
+        remotasTableModel.setRemotas(remotas);
+        
+        //Configurar tbUnidade
+        tbUnidade.setModel(unidadesTableModel);
+        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordena tbUnidade
+        
+        
     }
 
     /**
@@ -34,20 +71,81 @@ public class TelaRemota extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbRemota = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbUnidade = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+
         setClosable(true);
+        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setPreferredSize(new java.awt.Dimension(600, 400));
+
+        tbRemota.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tbRemota);
+
+        tbUnidade.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tbUnidade);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 96, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 668, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 375, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -55,5 +153,10 @@ public class TelaRemota extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tbRemota;
+    private javax.swing.JTable tbUnidade;
     // End of variables declaration//GEN-END:variables
 }

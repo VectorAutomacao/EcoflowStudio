@@ -35,7 +35,7 @@ public class View {
             try {
                 jiFrame.setSelected(true);
                 //diz que a janela interna é maximizável   
-                jiFrame.setMaximizable(true);   
+                //jiFrame.setMaximizable(true);   
                 //set o tamanho máximo dela, que depende da janela pai   
                 jiFrame.setMaximum(true); 
             } catch (PropertyVetoException ex) {

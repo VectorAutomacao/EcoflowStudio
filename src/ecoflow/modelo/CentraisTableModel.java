@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author vinicius
  */
-public class CentralTableModel extends AbstractTableModel{
+public class CentraisTableModel extends AbstractTableModel{
     private List<Central> listaCentral = new ArrayList<>();
     private String colunas[] = {"Identificador", "Nome"};
 
@@ -43,26 +43,7 @@ public class CentralTableModel extends AbstractTableModel{
         
         return null;
     }
-
-    @Override
-    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        switch(columnIndex){
-            case 0:
-                listaCentral.get(rowIndex).setId(Integer.parseInt( (String) aValue ) );
-                break;
-            case 1:
-                listaCentral.get(rowIndex).setNome((String) aValue);
-                break;
-        }
         
-        this.fireTableRowsUpdated(rowIndex, rowIndex);
-    }
-    
-    public void addRow(Central c){
-        this.listaCentral.add(c);
-        this.fireTableDataChanged();
-    }
-    
     public void setCentrais(List<Central> lc){
         this.listaCentral = lc;
         this.fireTableDataChanged();

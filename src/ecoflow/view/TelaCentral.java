@@ -8,7 +8,7 @@ package ecoflow.view;
 import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
-import ecoflow.modelo.CentralTableModel;
+import ecoflow.modelo.CentraisTableModel;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +25,13 @@ import util.outros.View;
  */
 public class TelaCentral extends javax.swing.JInternalFrame {
     
-    JDesktopPane        desktopPane         = new JDesktopPane();
-    CentralTableModel   centralTableModel   = new CentralTableModel();
-    List<Central>       listaCentral        = new ArrayList<>();
-    ControleCentral     controleCentral     = new ControleCentral();
-    ControleConexao     controleConexao     = new ControleConexao();
+    private JDesktopPane        desktopPane         = new JDesktopPane();
+    private CentraisTableModel  centralTableModel   = new CentraisTableModel();
+    
+    private List<Central>       listaCentral        = new ArrayList<>();
+    
+    private ControleCentral     controleCentral     = new ControleCentral();
+    private ControleConexao     controleConexao     = new ControleConexao();
     
     /**
      * Creates new form TelaCentral
@@ -37,8 +39,8 @@ public class TelaCentral extends javax.swing.JInternalFrame {
     public TelaCentral(JDesktopPane dp) {
         initComponents();
         
-        TCPMasterConnection tcp;
         this.desktopPane = dp;
+        TCPMasterConnection tcp;
         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);

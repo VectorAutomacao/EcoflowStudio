@@ -17,9 +17,9 @@ public class Unidade {
     private int porta;
     private String nome;
     private int lpp;
-    private Boolean habilitado;
     private int servico;
     private int leitura;
+    private Boolean habilitado;
 
     public int getPorta() {
         return porta;

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.Arquivo;
 import util.modbus.ModbusRegistro;
 
@@ -23,30 +22,22 @@ import util.modbus.ModbusRegistro;
  *
  * @author vinicius
  */
-public class ControleCentral {
+public class ControleCentral extends ControleRemota{
     
-    private final int CONTADOR = 1;
-    private final int REFERENCIA = 0;
     private final String NOMEARQUIVO = "./arquivos/listaCentral.xml";
-    
-    TCPMasterConnection tcpMasterConnection;
-    
-    public void setTcpMasterConnection(TCPMasterConnection tcp ){
-        this.tcpMasterConnection = tcp;
-    }
-    
+        
     //Busca id na central
     public int getIdCentral(){
-        int[] respostas = new int[CONTADOR];
+        int[] respostas = new int[1];
         
-        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIA, CONTADOR);
+        respostas = ModbusRegistro.ler(tcpMasterConnection, 0, 1);
         
         return respostas[0];
     }
     
     //Configura id na central
     public void setIdCentral(Central c){
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIA, c.getId() );
+        ModbusRegistro.escrever(tcpMasterConnection, 0, c.getId() );
     }
     
     //Cria o arquivo listaCentral.xml senão existir

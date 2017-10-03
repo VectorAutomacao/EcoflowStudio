@@ -24,11 +24,11 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  */
 public class TelaLeitura extends javax.swing.JInternalFrame {
     
-    List<Unidade>       unidades            = new ArrayList<>();
+    private List<Unidade>       unidades            = new ArrayList<>();
     
-    UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
-    ControleUnidade     controleUnidade     = new ControleUnidade();
-    ControleConexao     controleConexao     = new ControleConexao();
+    private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
+    private ControleUnidade     controleUnidade     = new ControleUnidade();
+    private ControleConexao     controleConexao     = new ControleConexao();
     
     /**
      * Creates new form Unidade
@@ -40,8 +40,12 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         
         
         //Configurando tbUnidades
-        tbUnidades.setModel(unidadesTableModel);
-        tbUnidades.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+        tbUnidade.setModel(unidadesTableModel);
+        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna LPP
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna Serviço
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(2) ); //Remove coluna Habilitado
         
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
@@ -61,7 +65,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         btLeitura = new javax.swing.JButton();
         btSalvar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbUnidades = new javax.swing.JTable();
+        tbUnidade = new javax.swing.JTable();
 
         setClosable(true);
         setMaximizable(true);
@@ -106,7 +110,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tbUnidades.setModel(new javax.swing.table.DefaultTableModel(
+        tbUnidade.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -117,7 +121,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tbUnidades);
+        jScrollPane1.setViewportView(tbUnidade);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,7 +160,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         try {
             // TODO add your handling code here:
-            controleUnidade.saveXLS(unidades);
+            controleUnidade.saveUnidadesXLS(unidades);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Problema ao salvar o arquivo. Tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,6 +173,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private javax.swing.JButton btSalvar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tbUnidades;
+    private javax.swing.JTable tbUnidade;
     // End of variables declaration//GEN-END:variables
 }

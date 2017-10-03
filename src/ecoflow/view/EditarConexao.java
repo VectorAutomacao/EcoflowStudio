@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class EditarConexao extends javax.swing.JInternalFrame {
     
-    ControleConexao controleConexao = new ControleConexao();
-    Conexao         conexao         = new Conexao();
+    private ControleConexao controleConexao = new ControleConexao();
+    private Conexao         conexao         = new Conexao();
     
     /**
      * Creates new form EditarConexao

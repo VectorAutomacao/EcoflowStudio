@@ -24,9 +24,9 @@ import util.outros.Arquivo;
  */
 public class ControleUnidade {
     
-    private final int CONTADOR = 32; //Quantidade de leituras
-    private final int REFERENCIA = 2; //Inicio da leitura
-    private final int FATORMULTIPLICATIVO = 10000; //fator multiplicativo para o segundo registro
+    final int CONTADOR = 32; //Quantidade de leituras
+    final int REFERENCIA = 2; //Inicio da leitura
+    final int FATORMULTIPLICATIVO = 10000; //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
    
@@ -34,6 +34,7 @@ public class ControleUnidade {
         this.tcpMasterConnection = tcp;
     }
     
+    //Retorna todos as unidades da central
     public List<Unidade> getUnidades(){
         List<Unidade> unidades = new ArrayList<>();
         int[] remotas = new int[1];
@@ -60,7 +61,29 @@ public class ControleUnidade {
         return unidades;
     }
     
-    public void saveXLS(List<Unidade> unidades) throws FileNotFoundException, IOException{
+    //Retorna unidades de uma remota
+    public List<Unidade> getUnidades(int remota){
+        List<Unidade> unidades = new ArrayList<>();
+        int[] leituras = new int[CONTADOR];
+        int referencia;
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIA + CONTADOR * remota;
+
+        //Leitura de uma remota
+        leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, CONTADOR);
+
+        //Converte o double word
+        for(int i = 0; i < CONTADOR; i += 2){
+            Unidade unidade = new Unidade();
+            unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
+            unidades.add(unidade);
+        }
+        
+        return unidades;
+    }
+    
+    public void saveUnidadesXLS(List<Unidade> unidades) throws FileNotFoundException, IOException{
         int contador = 1;
         
         //Ecolhe local do arquivo para salvar
@@ -72,9 +95,9 @@ public class ControleUnidade {
             // cria a planilha
             HSSFSheet plan = wb.createSheet("Leitura");
             
-            // cria a linha na planilha o parametro da função create row é a linha
+            // cria a linha de titulos
             HSSFRow rowTitle = plan.createRow(0);
-            // cria a célula na planilha
+            // cria a célula com nomes
             rowTitle.createCell((short) 0).setCellValue("Nome");
             rowTitle.createCell((short) 1).setCellValue("Leitura");
             
