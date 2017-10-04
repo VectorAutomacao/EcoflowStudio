@@ -37,7 +37,7 @@ public class RemotasTableModel extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0:
-                return "Remota " + (listaRemota.get(rowIndex).getId() + 1 );
+                return "Remota " + listaRemota.get(rowIndex).getId();
         }
         
         return null;

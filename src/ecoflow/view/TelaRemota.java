@@ -10,10 +10,8 @@ import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.Remota;
 import ecoflow.modelo.RemotasTableModel;
-import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
@@ -25,6 +23,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
     
     
     private Central central = new Central();
+    private Remota  remota  = new Remota();
     
     private RemotasTableModel   remotasTableModel   = new RemotasTableModel();
     private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
@@ -39,7 +38,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         initComponents();
         
         TCPMasterConnection tcp;
-        List<Remota> remotas = new ArrayList<>();
         
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
@@ -47,19 +45,17 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         
         //Configurar central
         central = c;
-        remotas = controleCentral.getRemotas();
-        central.setRemotas(remotas);
+        controleCentral.getRemotasLeituras(c.getRemotas() );
                
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
         tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
-        remotasTableModel.setRemotas(remotas);
+        remotasTableModel.setRemotas(c.getRemotas() );
         
         //Configurar tbUnidade
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordena tbUnidade
-        
-        
+                
     }
 
     /**
@@ -76,9 +72,29 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tbUnidade = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        cbHabilitadoUnidade = new javax.swing.JCheckBox();
+        ccServicoUnidade = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        ccLppUnidade = new javax.swing.JComboBox<>();
+        btAplicarUnidade = new javax.swing.JButton();
+        tfLeituraUnidade = new javax.swing.JFormattedTextField();
+        tfNomeUnidade = new javax.swing.JFormattedTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        cbHabilitadoUnidades = new javax.swing.JCheckBox();
+        ccLppUnidades = new javax.swing.JComboBox<>();
+        btAplicarUnidades = new javax.swing.JButton();
+        ccServicoUnidades = new javax.swing.JComboBox<>();
+        tfNomeUnidades = new javax.swing.JFormattedTextField();
+        tfLeituraUnidades = new javax.swing.JFormattedTextField();
 
         setClosable(true);
-        setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
         setPreferredSize(new java.awt.Dimension(600, 400));
@@ -94,6 +110,11 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbRemota.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbRemotaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbRemota);
 
         tbUnidade.setModel(new javax.swing.table.DefaultTableModel(
@@ -109,17 +130,164 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         ));
         jScrollPane2.setViewportView(tbUnidade);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Unidade"));
+
+        jLabel7.setText("Leitura:");
+
+        jLabel5.setText("Serviço:");
+
+        jLabel6.setText("Lpp:");
+
+        cbHabilitadoUnidade.setText("Habilitado");
+
+        ccServicoUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        ccServicoUnidade.setPreferredSize(new java.awt.Dimension(37, 20));
+
+        jLabel8.setText("Nome:");
+
+        ccLppUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "10" }));
+        ccLppUnidade.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        btAplicarUnidade.setText("Aplicar");
+
+        tfLeituraUnidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
+        try {
+            tfNomeUnidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("UUU")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(tfNomeUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ccLppUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbHabilitadoUnidade)
+                        .addGap(18, 18, 18)
+                        .addComponent(btAplicarUnidade)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 96, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ccLppUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbHabilitadoUnidade)
+                    .addComponent(btAplicarUnidade)
+                    .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfNomeUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Unidades"));
+
+        jLabel1.setText("Nome:");
+
+        jLabel2.setText("Lpp:");
+
+        jLabel3.setText("Serviço:");
+
+        jLabel4.setText("Leitura:");
+
+        cbHabilitadoUnidades.setText("Habilitado");
+
+        ccLppUnidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "10" }));
+        ccLppUnidades.setPreferredSize(new java.awt.Dimension(50, 20));
+
+        btAplicarUnidades.setText("Aplicar");
+        btAplicarUnidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAplicarUnidadesActionPerformed(evt);
+            }
+        });
+
+        ccServicoUnidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        ccServicoUnidades.setPreferredSize(new java.awt.Dimension(37, 20));
+
+        try {
+            tfNomeUnidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("UUU")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        tfLeituraUnidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(tfNomeUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ccLppUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ccServicoUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(tfLeituraUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbHabilitadoUnidades)
+                        .addGap(18, 18, 18)
+                        .addComponent(btAplicarUnidades)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ccLppUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccServicoUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbHabilitadoUnidades)
+                    .addComponent(btAplicarUnidades)
+                    .addComponent(tfNomeUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfLeituraUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,34 +297,79 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
+        // TODO add your handling code here:
+        
+        //Verifica se uma linha foi selecionada
+        if(tbRemota.getSelectedRow() != -1){
+            remota = central.getRemota(tbRemota.getSelectedRow() );
+            unidadesTableModel.setUnidades(remota.getUnidades() );
+        }
+    }//GEN-LAST:event_tbRemotaMouseClicked
+
+    private void btAplicarUnidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarUnidadesActionPerformed
+        // TODO add your handling code here:
+        
+        if(tbRemota.getSelectedRow() != -1){
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Selecione uma remota", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btAplicarUnidadesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAplicarUnidade;
+    private javax.swing.JButton btAplicarUnidades;
+    private javax.swing.JCheckBox cbHabilitadoUnidade;
+    private javax.swing.JCheckBox cbHabilitadoUnidades;
+    private javax.swing.JComboBox<String> ccLppUnidade;
+    private javax.swing.JComboBox<String> ccLppUnidades;
+    private javax.swing.JComboBox<String> ccServicoUnidade;
+    private javax.swing.JComboBox<String> ccServicoUnidades;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tbRemota;
     private javax.swing.JTable tbUnidade;
+    private javax.swing.JFormattedTextField tfLeituraUnidade;
+    private javax.swing.JFormattedTextField tfLeituraUnidades;
+    private javax.swing.JFormattedTextField tfNomeUnidade;
+    private javax.swing.JFormattedTextField tfNomeUnidades;
     // End of variables declaration//GEN-END:variables
 }

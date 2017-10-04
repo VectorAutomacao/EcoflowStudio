@@ -130,6 +130,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         });
 
         btExcluir.setText("Excluir");
+        btExcluir.setEnabled(false);
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirActionPerformed(evt);
@@ -180,7 +181,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                     .addComponent(btAlterar)
                     .addComponent(btAdicionar)
                     .addComponent(btExcluir))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         tbCentral.setModel(new javax.swing.table.DefaultTableModel(
@@ -314,6 +315,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 //limpar textField
                 tfId.setText("");
                 tfNome.setText("");
+                
             }else{
                 JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
             }

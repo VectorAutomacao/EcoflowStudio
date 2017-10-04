@@ -36,8 +36,8 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Configura id na central
-    public void setIdCentral(Central c){
-        ModbusRegistro.escrever(tcpMasterConnection, 0, c.getId() );
+    public Boolean setIdCentral(Central c){
+        return ModbusRegistro.escrever(tcpMasterConnection, 0, c.getId() );
     }
     
     //Cria o arquivo listaCentral.xml senão existir

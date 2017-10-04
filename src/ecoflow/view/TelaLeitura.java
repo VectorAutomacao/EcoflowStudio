@@ -150,7 +150,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
-        unidades = controleUnidade.getUnidades();
+        controleUnidade.getUnidadesLeituras(unidades);
         unidadesTableModel.setUnidades(unidades);
         
         //Ativa botão salvar

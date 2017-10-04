@@ -35,37 +35,39 @@ public class ControleUnidade {
     }
     
     //Retorna todos as unidades da central
-    public List<Unidade> getUnidades(){
-        List<Unidade> unidades = new ArrayList<>();
+    public void getUnidadesLeituras(List<Unidade> unidades){
         int[] remotas = new int[1];
         int[] leituras = new int[CONTADOR];
         int referencia = REFERENCIA;
+        int contar;
         
         remotas = ModbusRegistro.ler(tcpMasterConnection, 1, 1);
         
         //Leitura por quantidade de remotas
         for(int j = 0; j < remotas[0]; j++){
+            contar = 0;
             
             //Leitura de uma remota
             leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, CONTADOR);
             
             //Converte o double word
             for(int i = 0; i < CONTADOR; i += 2){
+                contar++;
+                
                 Unidade unidade = new Unidade();
+                unidade.setPorta(contar);
                 unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
                 unidades.add(unidade);
             }
             referencia += CONTADOR;
         }
-        
-        return unidades;
     }
     
     //Retorna unidades de uma remota
-    public List<Unidade> getUnidades(int remota){
-        List<Unidade> unidades = new ArrayList<>();
+    public void getUnidadesLeituras(int remota, List<Unidade> unidades){
         int[] leituras = new int[CONTADOR];
         int referencia;
+        int contar = 0;
         
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIA + CONTADOR * remota;
@@ -75,12 +77,13 @@ public class ControleUnidade {
 
         //Converte o double word
         for(int i = 0; i < CONTADOR; i += 2){
+            contar++;
+            
             Unidade unidade = new Unidade();
+            unidade.setPorta(contar);
             unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
             unidades.add(unidade);
         }
-        
-        return unidades;
     }
     
     public void saveUnidadesXLS(List<Unidade> unidades) throws FileNotFoundException, IOException{

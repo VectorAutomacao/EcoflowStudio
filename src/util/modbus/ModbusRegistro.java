@@ -41,14 +41,12 @@ public class ModbusRegistro {
                 return true;
             }else{
                 System.out.println("Erro ao escrever no unico registro! referencia ou valor não corresponde.");
-                JOptionPane.showMessageDialog(null, "Erro ao escrever no unico registro! referencia ou valor não corresponde.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return false; 
             }
             
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erro ao escrever no unico registro!");
-            JOptionPane.showMessageDialog(null, "Erro ao escrever no unico registro!", "Erro", JOptionPane.ERROR_MESSAGE);
             
             return false;
         }
