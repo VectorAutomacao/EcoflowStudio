@@ -90,12 +90,13 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cbHabilitadoUnidades = new javax.swing.JCheckBox();
-        ccLppUnidades = new javax.swing.JComboBox<>();
-        btAplicarUnidades = new javax.swing.JButton();
-        ccServicoUnidades = new javax.swing.JComboBox<>();
-        tfNomeUnidades = new javax.swing.JFormattedTextField();
-        tfLeituraUnidades = new javax.swing.JFormattedTextField();
+        cbHabilitadoRemota = new javax.swing.JCheckBox();
+        ccLppRemota = new javax.swing.JComboBox<>();
+        btAlterarRemota = new javax.swing.JButton();
+        ccServicoRemota = new javax.swing.JComboBox<>();
+        tfNomeRemota = new javax.swing.JFormattedTextField();
+        tfLeituraRemota = new javax.swing.JFormattedTextField();
+        btAdicionarRemota = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -210,7 +211,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Unidades"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Remota"));
 
         jLabel1.setText("Nome:");
 
@@ -220,29 +221,31 @@ public class TelaRemota extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Leitura:");
 
-        cbHabilitadoUnidades.setText("Habilitado");
+        cbHabilitadoRemota.setText("Habilitado");
 
-        ccLppUnidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "10" }));
-        ccLppUnidades.setPreferredSize(new java.awt.Dimension(50, 20));
+        ccLppRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "10" }));
+        ccLppRemota.setPreferredSize(new java.awt.Dimension(50, 20));
 
-        btAplicarUnidades.setText("Aplicar");
-        btAplicarUnidades.addActionListener(new java.awt.event.ActionListener() {
+        btAlterarRemota.setText("Alterar");
+        btAlterarRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAplicarUnidadesActionPerformed(evt);
+                btAlterarRemotaActionPerformed(evt);
             }
         });
 
-        ccServicoUnidades.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
-        ccServicoUnidades.setPreferredSize(new java.awt.Dimension(37, 20));
+        ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        ccServicoRemota.setPreferredSize(new java.awt.Dimension(37, 20));
 
         try {
-            tfNomeUnidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("UUU")));
+            tfNomeRemota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("UUU")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
 
-        tfLeituraUnidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        tfLeituraUnidades.setEnabled(false);
+        tfLeituraRemota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        tfLeituraRemota.setEnabled(false);
+
+        btAdicionarRemota.setText("Adicionar");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -255,25 +258,27 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addGap(29, 29, 29))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(tfNomeUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfNomeRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ccLppUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccLppRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ccServicoUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccServicoRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(tfLeituraUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfLeituraRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
-                        .addComponent(cbHabilitadoUnidades)
+                        .addComponent(cbHabilitadoRemota)
                         .addGap(18, 18, 18)
-                        .addComponent(btAplicarUnidades)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btAlterarRemota)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btAdicionarRemota)))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,12 +291,13 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ccLppUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ccServicoUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbHabilitadoUnidades)
-                    .addComponent(btAplicarUnidades)
-                    .addComponent(tfNomeUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfLeituraUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ccLppRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ccServicoRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbHabilitadoRemota)
+                    .addComponent(btAlterarRemota)
+                    .addComponent(tfNomeRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfLeituraRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btAdicionarRemota))
                 .addContainerGap())
         );
 
@@ -337,18 +343,19 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tbRemotaMouseClicked
 
-    private void btAplicarUnidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarUnidadesActionPerformed
+    private void btAlterarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarRemotaActionPerformed
         // TODO add your handling code here:
         
         if(tbRemota.getSelectedRow() != -1){
             
-            if(!tfNomeUnidades.getText().isEmpty() ){
-                controleCentral.setUnidades(remota, tfNomeUnidades.getText().trim(), 
-                        Integer.parseInt(ccLppUnidades.getSelectedItem().toString() ),
-                        Integer.parseInt(ccServicoUnidades.getSelectedItem().toString() ),
-                        cbHabilitadoUnidades.isSelected() );
+            if(!tfNomeRemota.getText().isEmpty() ){
+                controleCentral.setUnidades(remota, tfNomeRemota.getText().trim(), 
+                        Integer.parseInt(ccLppRemota.getSelectedItem().toString() ),
+                        Integer.parseInt(ccServicoRemota.getSelectedItem().toString() ),
+                        cbHabilitadoRemota.isSelected() );
                 
                 unidadesTableModel.setUnidades(remota.getUnidades() );
+                controleCentral.saveCentral(central);
             }else{
                 JOptionPane.showMessageDialog(null, "Nome inválido", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
@@ -357,18 +364,19 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Selecione uma remota", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
         
-    }//GEN-LAST:event_btAplicarUnidadesActionPerformed
+    }//GEN-LAST:event_btAlterarRemotaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAdicionarRemota;
+    private javax.swing.JButton btAlterarRemota;
     private javax.swing.JButton btAplicarUnidade;
-    private javax.swing.JButton btAplicarUnidades;
+    private javax.swing.JCheckBox cbHabilitadoRemota;
     private javax.swing.JCheckBox cbHabilitadoUnidade;
-    private javax.swing.JCheckBox cbHabilitadoUnidades;
+    private javax.swing.JComboBox<String> ccLppRemota;
     private javax.swing.JComboBox<String> ccLppUnidade;
-    private javax.swing.JComboBox<String> ccLppUnidades;
+    private javax.swing.JComboBox<String> ccServicoRemota;
     private javax.swing.JComboBox<String> ccServicoUnidade;
-    private javax.swing.JComboBox<String> ccServicoUnidades;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -383,9 +391,9 @@ public class TelaRemota extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tbRemota;
     private javax.swing.JTable tbUnidade;
+    private javax.swing.JFormattedTextField tfLeituraRemota;
     private javax.swing.JFormattedTextField tfLeituraUnidade;
-    private javax.swing.JFormattedTextField tfLeituraUnidades;
+    private javax.swing.JFormattedTextField tfNomeRemota;
     private javax.swing.JFormattedTextField tfNomeUnidade;
-    private javax.swing.JFormattedTextField tfNomeUnidades;
     // End of variables declaration//GEN-END:variables
 }

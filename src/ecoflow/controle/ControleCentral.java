@@ -64,6 +64,23 @@ public class ControleCentral extends ControleRemota{
         }
     }
     
+    //Salva central no xml
+    public void saveCentral(Central central){
+        //Inicia driver do xstream
+        XStream xstream = new XStream( new DomDriver() );
+        // Auto detectar alias das classes
+        xstream.autodetectAnnotations(true);
+        
+        //Cria string xml
+        String xml = xstream.toXML(central);
+        
+        try {
+            Arquivo.salvar(LOCALARQUIVO + central.getId() + ".xml", xml);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     //Cria o arquivo listaCentral.xml senão existir
     public void criarLista(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
