@@ -25,6 +25,7 @@ import util.modbus.ModbusRegistro;
 public class ControleCentral extends ControleRemota{
     
     private final String NOMEARQUIVO = "./arquivos/listaCentral.xml";
+    private final String LOCALARQUIVO = "./arquivos/";
         
     //Busca id na central
     public int getIdCentral(){
@@ -38,6 +39,29 @@ public class ControleCentral extends ControleRemota{
     //Configura id na central
     public Boolean setIdCentral(Central c){
         return ModbusRegistro.escrever(tcpMasterConnection, 0, c.getId() );
+    }
+    
+    //Cria o arquivo central senão existir
+    public void criarCentral(Central central){
+        File file = new File(LOCALARQUIVO + central.getId() + ".xml");
+        
+        //Verifica se arquivo já existe
+        if(!file.exists() ){
+            //Inicia driver do xstream
+            XStream xstream = new XStream( new DomDriver() );
+            // Auto detectar alias das classes
+            xstream.autodetectAnnotations(true);
+
+            //Cria string xml
+            String xml = xstream.toXML(central);
+        
+            try {
+                Arquivo.salvar(LOCALARQUIVO + central.getId() + ".xml", xml);                
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Problema ao criar xml da central", "Erro", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     //Cria o arquivo listaCentral.xml senão existir
@@ -55,8 +79,7 @@ public class ControleCentral extends ControleRemota{
             String xml = xstream.toXML(listaCentral);
         
             try {
-                Arquivo.salvar(NOMEARQUIVO, xml);
-                
+                Arquivo.salvar(NOMEARQUIVO, xml);                
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Problema ao criar listaCentral.xml", "Erro", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,7 +139,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Alterar Central na List
-    public void setListaCentralNome(int index, Central c, List<Central> listaCentral){
+    public void setCentralLista(int index, Central c, List<Central> listaCentral){
         listaCentral.set(index, c);
     }
         

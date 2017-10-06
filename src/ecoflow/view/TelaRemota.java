@@ -43,9 +43,12 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);
         
+        //Cria o arquivo xml senão existir
+        controleCentral.criarCentral(c);
+        
         //Configurar central
         central = c;
-        controleCentral.getRemotasLeituras(c.getRemotas() );
+        controleCentral.getRemotasLeituras(central.getRemotas() );
                
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
@@ -157,6 +160,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        tfNomeUnidade.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -238,6 +242,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         }
 
         tfLeituraUnidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        tfLeituraUnidades.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -336,6 +341,17 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         
         if(tbRemota.getSelectedRow() != -1){
+            
+            if(!tfNomeUnidades.getText().isEmpty() ){
+                controleCentral.setUnidades(remota, tfNomeUnidades.getText().trim(), 
+                        Integer.parseInt(ccLppUnidades.getSelectedItem().toString() ),
+                        Integer.parseInt(ccServicoUnidades.getSelectedItem().toString() ),
+                        cbHabilitadoUnidades.isSelected() );
+                
+                unidadesTableModel.setUnidades(remota.getUnidades() );
+            }else{
+                JOptionPane.showMessageDialog(null, "Nome inválido", "Alerta", JOptionPane.WARNING_MESSAGE);
+            }
             
         }else{
             JOptionPane.showMessageDialog(null, "Selecione uma remota", "Alerta", JOptionPane.WARNING_MESSAGE);

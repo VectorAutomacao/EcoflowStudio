@@ -5,11 +5,11 @@
  */
 package ecoflow.controle;
 
+import ecoflow.modelo.Remota;
 import ecoflow.modelo.Unidade;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -84,6 +84,21 @@ public class ControleUnidade {
             unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
             unidades.add(unidade);
         }
+    }
+    
+    public void setUnidades(Remota r, String nome, int lpp, int servico, Boolean Habilitado){
+        String idRemota, idUnidade;
+
+       for(Unidade un: r.getUnidades() ){
+           idRemota = String.format("%02d", r.getId() );
+           idUnidade = String.format("%02d", un.getPorta() );
+           
+           un.setNome(nome + idRemota + idUnidade );
+           un.setLpp(lpp);
+           un.setServico(servico);
+           un.setHabilitado(Habilitado);
+        }
+       
     }
     
     public void saveUnidadesXLS(List<Unidade> unidades) throws FileNotFoundException, IOException{

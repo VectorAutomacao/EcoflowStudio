@@ -9,11 +9,9 @@ import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.CentraisTableModel;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
@@ -304,7 +302,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 controleCentral.setIdCentral(c);
 
                 //Altera lista de centrais
-                controleCentral.setListaCentralNome( tbCentral.getSelectedRow(), c, listaCentral);
+                controleCentral.setCentralLista( tbCentral.getSelectedRow(), c, listaCentral);
 
                 //Atualiza tabela
                 centralTableModel.setCentrais(listaCentral);
