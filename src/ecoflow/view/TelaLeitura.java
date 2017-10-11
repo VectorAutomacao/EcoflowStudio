@@ -42,11 +42,11 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         //Configurando tbUnidades
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+        /*tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna LPP
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna Serviço
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(2) ); //Remove coluna Habilitado
-        
+        */
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
         controleUnidade.setTcpMasterConnection(tcp);        

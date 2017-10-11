@@ -16,8 +16,9 @@ public class Unidade {
     
     private int porta;
     private String nome;
-    private int lpp;
     private int servico;
+    private int matriculaHidrometro;
+    private String numeroHidrometro;
     private int leitura;
     private Boolean habilitado;
 
@@ -27,14 +28,6 @@ public class Unidade {
 
     public void setPorta(int porta) {
         this.porta = porta;
-    }
-
-    public int getLpp() {
-        return lpp;
-    }
-
-    public void setLpp(int lpp) {
-        this.lpp = lpp;
     }
 
     public Boolean getHabilitado() {
@@ -68,5 +61,23 @@ public class Unidade {
     public void setServico(int servico) {
         this.servico = servico;
     }
+
+    public int getMatriculaHidrometro() {
+        return matriculaHidrometro;
+    }
+
+    public void setMatriculaHidrometro(int matriculaHidrometro) {
+        this.matriculaHidrometro = matriculaHidrometro;
+    }
+
+    public String getNumeroHidrometro() {
+        return numeroHidrometro;
+    }
+
+    public void setNumeroHidrometro(String numeroHidrometro) {
+        this.numeroHidrometro = numeroHidrometro;
+    }
+    
+    
     
 }

@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
 public class UnidadesTableModel extends AbstractTableModel{
     
     private List<Unidade> listaUnidades = new ArrayList<>();
-    private String colunas[] = {"Porta", "Nome", "LPP", "Serviço", "Leitura", "Habilitado"};
+    private String colunas[] = {"Porta", "Nome", "Serviço", "Mat. Hidrometro", "N. Hidrometro", "Leitura", "Habilitado"};
 
     @Override
     public String getColumnName(int column) {
@@ -41,12 +41,14 @@ public class UnidadesTableModel extends AbstractTableModel{
             case 1:
                 return listaUnidades.get(rowIndex).getNome();
             case 2:
-                return listaUnidades.get(rowIndex).getLpp();
-            case 3:
                 return listaUnidades.get(rowIndex).getServico();
+            case 3:
+                return listaUnidades.get(rowIndex).getMatriculaHidrometro();
             case 4:
-                return listaUnidades.get(rowIndex).getLeitura();
+                return listaUnidades.get(rowIndex).getNumeroHidrometro();
             case 5:
+                return listaUnidades.get(rowIndex).getLeitura();
+            case 6:
                 return listaUnidades.get(rowIndex).getHabilitado();
         }
         

@@ -31,14 +31,14 @@ public class ControleCentral extends ControleRemota{
     public int getIdCentral(){
         int[] respostas = new int[1];
         
-        respostas = ModbusRegistro.ler(tcpMasterConnection, 0, 1);
+        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAIDCENTRAL, 1);
         
         return respostas[0];
     }
     
     //Configura id na central
     public Boolean setIdCentral(Central c){
-        return ModbusRegistro.escrever(tcpMasterConnection, 0, c.getId() );
+        return ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAIDCENTRAL, c.getId() );
     }
     
     //Cria o arquivo central senão existir

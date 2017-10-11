@@ -19,8 +19,9 @@ public class ControleRemota extends ControleUnidade{
     public void getRemotasLeituras(List<Remota> remotas){
         int[] qtdRemotas = new int[1];
         int contar;
+        
         //Leitura da quantidade de remotas
-        qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, 1, 1);
+        qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
         
         for(int i = 0; i < qtdRemotas[0]; i++){
             contar = i + 1;
@@ -35,6 +36,25 @@ public class ControleRemota extends ControleUnidade{
             //Adiciona nova remota a lista
             remotas.add(remota);
         }
+    }
+    
+    public void addRemota(List<Remota> remotas, String nome, int servico){
+        Remota r = new Remota();
+        int qtd;
+        
+        //Quantidade de remotas
+        qtd = remotas.size() + 1;
+        
+       //Escrever da quantidade de remotas
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAQTDREMOTA, qtd);
+        
+        //Configura id da nova remota
+        r.setId(qtd);
+        //Adiciona nova remota
+        remotas.add(r);
+                
+        //Configura nomes e configurações da unidades
+        addUnidades(remotas.get(qtd - 1), nome, servico);
     }
         
 }
