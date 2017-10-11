@@ -45,6 +45,7 @@ public class ControleUnidade {
         int[] remotas = new int[1];
         int[] leituras = new int[CONTADOR];
         int referencia = REFERENCIALEITURA;
+        Unidade un = new Unidade();
         
         remotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
         
@@ -57,9 +58,8 @@ public class ControleUnidade {
             //Converte o double word
             for(int i = 0; i < CONTADOR; i += 2){
                 
-                Unidade unidade = new Unidade();
-                unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
-                unidades.add(unidade);
+                un.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
+                unidades.add(un);
             }
             referencia += CONTADOR;
         }
@@ -69,6 +69,7 @@ public class ControleUnidade {
     public void getUnidadesLeituras(int remota, List<Unidade> unidades){
         int[] leituras = new int[CONTADOR];
         int referencia;
+        Unidade un = new Unidade();
         
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIALEITURA + CONTADOR * remota;
@@ -79,14 +80,13 @@ public class ControleUnidade {
         //Converte o double word
         for(int i = 0; i < CONTADOR; i += 2){
             
-            Unidade unidade = new Unidade();
-            unidade.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
-            unidades.add(unidade);
+            un.setLeitura( leituras[i] + leituras[i + 1] * FATORMULTIPLICATIVO );
+            unidades.add(un);
         }
     }
     
     //Le da central os servicos de uma remota
-    public void getUnidadesServico(int remota, List<Unidade> unidades){
+    public void getUnidadesServicos(int remota, List<Unidade> unidades){
         int contador = CONTADOR/2; // 16 por remota
         int[] servico = new int[contador];
         int referencia;
@@ -106,7 +106,7 @@ public class ControleUnidade {
     }
     
     //Escreve na central os servicos de uma remota
-    public void setUnidadesServico(int remota, List<Unidade> unidades){
+    public void setUnidadesServicos(int remota, List<Unidade> unidades){
         int contador = CONTADOR/2; // 16 por remota
         int[] servico = new int[contador];
         int referencia;
@@ -123,6 +123,50 @@ public class ControleUnidade {
 
         //Escrita de uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, servico);
+    }
+    
+    //Le na central matriculas dos hidrometros de uma remota
+    public void getMatriculaHidrometro(int remota, List<Unidade> unidades){
+        int[] matriculas = new int[CONTADOR];
+        int referencia;
+        Unidade un = new Unidade();
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIAMATRICULAHIDROMETRO + CONTADOR * remota;
+
+        //Leitura de uma remota
+        matriculas = ModbusRegistro.ler(tcpMasterConnection, referencia, CONTADOR);
+
+        //Converte o double word
+        for(int i = 0; i < CONTADOR; i += 2){
+            
+            un.setLeitura( matriculas[i] + matriculas[i + 1] * FATORMULTIPLICATIVO );
+            unidades.add(un);
+        }
+    }
+    
+    //Escreve na central matriculas dos hidrometros de uma remota
+    public void setMatriculaHidrometro(int remota, List<Unidade> unidades){
+        int[] matriculas = new int[CONTADOR];
+        int referencia;
+        int contar = 0;
+        int a, b;
+
+        //Converte em double word
+        for(Unidade un: unidades){
+            a = un.getMatriculaHidrometro() / FATORMULTIPLICATIVO;
+            b = un.getMatriculaHidrometro() % FATORMULTIPLICATIVO;
+            matriculas[contar] = a;
+            contar++;
+            matriculas[contar] = b;
+            contar++;
+        }
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIAMATRICULAHIDROMETRO + CONTADOR * remota;
+
+        //Leitura de uma remota
+        ModbusRegistro.escrever(tcpMasterConnection, referencia, matriculas);
     }
     
     public void addUnidades(Remota r, String nome, int servico){
