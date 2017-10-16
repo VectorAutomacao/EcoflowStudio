@@ -99,6 +99,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbUnidadeMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -118,9 +121,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfNomeUnidade" min="-2" pref="85" max="-2" attributes="0"/>
+                      <Component id="tfNomeUnidade" min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <Component id="ccServicoUnidade" min="-2" pref="85" max="-2" attributes="0"/>
@@ -132,8 +135,8 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="tfNumeroUnidade" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
-                      <Component id="jLabel11" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfNumeroUnidade" min="-2" pref="85" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -146,7 +149,7 @@
                           <Component id="btAterarUnidade" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -155,12 +158,16 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="tfNomeUnidade" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
@@ -169,7 +176,6 @@
                               <Component id="cbHabilitadoUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btAterarUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tfLeituraUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tfNomeUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tfMatriculaUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tfNumeroUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -235,13 +241,6 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="tfNomeUnidade">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="UUU" subtype="-1" type="5"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
             <Property name="text" type="java.lang.String" value="N. Hidrometro:"/>
@@ -254,17 +253,14 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="tfNumeroUnidade">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="AAAAAAAAAAAA" subtype="-1" type="5"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
             <Property name="text" type="java.lang.String" value="Mat. Hidrometro:"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfNomeUnidade">
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfNumeroUnidade">
         </Component>
       </SubComponents>
     </Container>
@@ -331,11 +327,11 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="ccServicoRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbHabilitadoRemota" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfNomeRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfLeituraRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btAdicionarRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfMatriculaRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfNumeroRemota" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfNomeRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -382,13 +378,6 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JFormattedTextField" name="tfNomeRemota">
-          <Properties>
-            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-              <Format format="UUUUUU" subtype="-1" type="5"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JFormattedTextField" name="tfLeituraRemota">
           <Properties>
             <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
@@ -429,6 +418,8 @@
             <Property name="text" type="java.lang.String" value="N. Hidrometro:"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="tfNomeRemota">
         </Component>
       </SubComponents>
     </Container>

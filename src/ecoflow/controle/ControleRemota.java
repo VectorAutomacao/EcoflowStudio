@@ -31,7 +31,7 @@ public class ControleRemota extends ControleUnidade{
             
             //Configura remota
             remota.setId(contar);
-            getUnidadesLeituras(i, remota.getUnidades() );
+            criarListaUnidade( remota.getUnidades() );
             
             //Adiciona nova remota a lista
             remotas.add(remota);
@@ -45,16 +45,22 @@ public class ControleRemota extends ControleUnidade{
         //Quantidade de remotas
         qtd = remotas.size() + 1;
         
-       //Escrever da quantidade de remotas
+       //Escrever na central a quantidade de remotas
         ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAQTDREMOTA, qtd);
         
         //Configura id da nova remota
         r.setId(qtd);
+        //Cria uma lista de 16 unidades para remota
+        addUnidades(r, nome, servico);
+        
+        //Escrever na central
+        setUnidadesServicos(remotas.size(), r.getUnidades() );
+        setUnidadesMatriculaHidrometro(remotas.size(), r.getUnidades() );
+        
         //Adiciona nova remota
         remotas.add(r);
-                
-        //Configura nomes e configurações da unidades
-        addUnidades(remotas.get(qtd - 1), nome, servico);
+        
     }
+    
         
 }
