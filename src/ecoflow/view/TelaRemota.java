@@ -49,7 +49,8 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         
         //Configurar central
         central = c;
-        controleCentral.getRemotasLeituras(central.getRemotas() );
+        controleCentral.criarListaRemota(central.getRemotas() );
+        controleCentral.getRemotas(central.getRemotas() );
                
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
@@ -240,7 +241,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jLabel4.setEnabled(false);
 
         cbHabilitadoRemota.setText("Habilitado");
-        cbHabilitadoRemota.setEnabled(false);
 
         ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         ccServicoRemota.setPreferredSize(new java.awt.Dimension(37, 20));
@@ -371,7 +371,8 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             controleCentral.addRemota(
                     central.getRemotas(), 
                     tfNomeRemota.getText().trim().toUpperCase(),
-                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
+                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() ),
+                    cbHabilitadoRemota.isSelected()
             );            
             //Recupera a lista de remota
             remota = central.getRemota(central.getRemotas().size() - 1);

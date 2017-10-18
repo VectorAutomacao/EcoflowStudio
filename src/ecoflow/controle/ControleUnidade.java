@@ -31,7 +31,7 @@ public class ControleUnidade {
     final int REFERENCIASERVICO = 641; //Referencia tipo de leitura 641 a 961 (1-agua fria 2-Agua quente 3-gas)
     final int REFERENCIAMATRICULAHIDROMETRO = 962; //Referencia matricula 962 a 1601 (2 words)
     final int REFERENCIANUMEROHIDROMETRO = 1602; //Referencia Numero de hidrometro 1602 a 3521 (6 words)
-    final int REFERENCIAUNIDADE = 3522; //Referencia nome das unidades 3522 a 5122 (5 words)
+    final int REFERENCIANOME = 3522; //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123; //Referencia para quantidade de remota
     final int FATORMULTIPLICATIVO = 10000; //fator multiplicativo para o segundo registro
     
@@ -44,14 +44,16 @@ public class ControleUnidade {
     public void getUnidades(int remota, List<Unidade> unidades){
         getUnidadesLeituras(remota, unidades);
         getUnidadesServicos(remota, unidades);
-        getUnidadasMatriculaHidrometro(remota, unidades);
+        getUnidadesMatriculaHidrometro(remota, unidades);
         getUnidadesNumeroHidrometro(remota, unidades);
+        getUnidadesNome(remota, unidades);
     }
     
     public void setUnidades(int remota, List<Unidade> unidades){
         setUnidadesServicos(remota, unidades);
         setUnidadesMatriculaHidrometro(remota, unidades);
         setUnidadesNumeroHidrometro(remota, unidades);
+        setUnidadesNome(remota, unidades);
     }
     
     //Le na central todos as leituras de uma central
@@ -107,8 +109,6 @@ public class ControleUnidade {
         
         //Calculo para inicio do registro de servicos
         referencia = REFERENCIASERVICO + contador * remota;
-        
-        System.out.println(referencia);
 
         //Leitura de uma remota
         servico = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
@@ -140,7 +140,7 @@ public class ControleUnidade {
     }
     
     //Le na central matriculas dos hidrometros de uma remota
-    public void getUnidadasMatriculaHidrometro(int remota, List<Unidade> unidades){
+    public void getUnidadesMatriculaHidrometro(int remota, List<Unidade> unidades){
         int contador = CONTADOR * 2;
         int[] matriculas = new int[contador];
         int referencia;
@@ -157,7 +157,7 @@ public class ControleUnidade {
             Unidade un = new Unidade();
             
             un = unidades.get(contar);
-            un.setLeitura( Converte.doubleWordInt(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
+            un.setMatriculaHidrometro(Converte.doubleWordInt(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
             contar++;
         }
     }
@@ -214,7 +214,7 @@ public class ControleUnidade {
             numero[5] = numeros[i + 5];
             
             un = unidades.get(contar);
-            un.setNumeroHidrometro(Converte.intString(numero) );
+            un.setNumeroHidrometro(Converte.wordString(numero) );
             contar++;
         }
     }
@@ -226,16 +226,20 @@ public class ControleUnidade {
         int referencia;
         int contar = 0;
 
-        //Converte em double word
+        //Converte em word
         for(Unidade un: unidades){
-            int[] numero = Converte.stringInt(un.getNumeroHidrometro() );
+            int[] numero = Converte.stringWord(un.getNumeroHidrometro() );
             
-            for(int n: numero){
-                numeros[contar] = n;
-                contar++;
+            for(int i = 0; i < 6; i++){
+                if( i < numero.length){
+                    numeros[contar] = numero[i];
+                }else{
+                    numeros[contar] = 0;
+                }
+                contar++;                    
             }
         }
-        
+                
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIANUMEROHIDROMETRO + contador * remota;
 
@@ -243,7 +247,65 @@ public class ControleUnidade {
         ModbusRegistro.escrever(tcpMasterConnection, referencia, numeros);
     }
     
-    public void addUnidades(Remota r, String nome, int servico){
+    //Le na central nomes
+    public void getUnidadesNome(int remota, List<Unidade> unidades){
+        int contador = CONTADOR * 5;
+        int[] nomes = new int[contador];
+        int referencia;
+        int contar = 0;
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIANOME + contador * remota;
+
+        //Leitura de uma remota
+        nomes = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+
+        //Converte o double word
+        for(int i = 0; i < contador; i += 5){
+            Unidade un = new Unidade();
+            int[] nome = new int[5];
+            
+            nome[0] = nomes[i];
+            nome[1] = nomes[i + 1];
+            nome[2] = nomes[i + 2];
+            nome[3] = nomes[i + 3];
+            nome[4] = nomes[i + 4];
+            
+            un = unidades.get(contar);
+            un.setNome(Converte.wordString(nome) );
+            contar++;
+        }
+    }
+    
+    //Escreve na central nomes
+    public void setUnidadesNome(int remota, List<Unidade> unidades){
+        int contador = CONTADOR * 5;
+        int[] nomes = new int[contador];
+        int referencia;
+        int contar = 0;
+
+        //Converte em word
+        for(Unidade un: unidades){
+            int[] nome = Converte.stringWord(un.getNome() );
+            
+            for(int i = 0; i < 5; i++){
+                if( i < nome.length){
+                    nomes[contar] = nome[i];
+                }else{
+                    nomes[contar] = 0;
+                }
+                contar++;                    
+            }
+        }
+                
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIANOME + contador * remota;
+
+        //Leitura de uma remota
+        ModbusRegistro.escrever(tcpMasterConnection, referencia, nomes);
+    }
+        
+    public void addUnidades(Remota r, String nome, int servico, Boolean habilitado){
         List<Unidade> unidades = r.getUnidades();
 
        for(int i = 0; i < 16; i++ ){           
@@ -261,7 +323,7 @@ public class ControleUnidade {
            un.setMatriculaHidrometro(0);
            un.setNumeroHidrometro("");
            un.setLeitura(0);
-           un.setHabilitado(true);
+           un.setHabilitado(habilitado);
            
            //Adiciona unidade na lista
            unidades.add(un);
@@ -271,8 +333,9 @@ public class ControleUnidade {
     
     //Cria uma lista de 16 unidades nulas
     public void criarListaUnidade(List<Unidade> unidades){
-        Unidade un = new Unidade();
         for(int i = 0; i < 16; i++){
+            Unidade un = new Unidade();
+            un.setPorta(i + 1);
             unidades.add(un);
         }
     }

@@ -11,32 +11,47 @@ package util.outros;
  */
 public class Converte {
     
-    public static int[] stringInt(String palavra){
+    public static int[] stringWord(String palavra){
         byte[]  caracteres = palavra.getBytes();
-        int[]   numeros = new int[ (int) Math.round((double) caracteres.length / 2)];
+        int tamCaracteres = caracteres.length;
+        int[]   numeros = new int[tamCaracteres]; //6 words
         int contar = 0;
         
-        for(int i = 0; i < numeros.length; i++){
-            numeros[i] = (int)caracteres[contar] + (int) caracteres[contar + 1];
-            contar += 2;
+        for(int i = 0; i < tamCaracteres; i+=2){
+            if( i != tamCaracteres - 1){
+                numeros[contar] = (int)caracteres[i] * 256 + (int)caracteres[i + 1] ;
+                contar++;
+            }else{
+                numeros[contar] = (int)caracteres[i];
+                contar++;
+            }
         }
         
         return numeros;
     }
     
-    public static String intString(int[] numeros){
+    public static String wordString(int[] numeros){
         String palavra = "";
         
         for(int n: numeros){
-            char c = (char) n;
-            palavra = palavra + String.valueOf(c);
+            if( n > 256){
+                char a = (char) (n / 256);
+                char b = (char) (n % 256);
+
+                palavra = palavra + String.valueOf(a);
+                palavra = palavra + String.valueOf(b);
+            }else{
+                char a = (char) n;
+
+                palavra = palavra + String.valueOf(a);
+            }
         }
         
         return palavra;
     }
     
     public static int doubleWordInt(int a, int b, int fator){        
-        return a + b * fator;
+        return a * fator + b;
     }
     
     public static int intWordMenos(int a, int fator){

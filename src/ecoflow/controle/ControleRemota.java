@@ -15,30 +15,50 @@ import util.modbus.ModbusRegistro;
  */
 public class ControleRemota extends ControleUnidade{
     
+    public void getRemotas(List<Remota> remotas){
+        getRemotasLeituras(remotas);
+        getRemotasServico(remotas);
+        getRemotasMatriculaHidrometro(remotas);
+        getRemotasNumeroHidrometro(remotas);
+        getRemotasNome(remotas);
+    }
     
     public void getRemotasLeituras(List<Remota> remotas){
-        int[] qtdRemotas = new int[1];
-        int contar;
         
-        //Leitura da quantidade de remotas
-        qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
-        
-        for(int i = 0; i < qtdRemotas[0]; i++){
-            contar = i + 1;
-            
-            //Cria uma nova remota
-            Remota remota = new Remota();
-            
-            //Configura remota
-            remota.setId(contar);
-            criarListaUnidade( remota.getUnidades() );
-            
-            //Adiciona nova remota a lista
-            remotas.add(remota);
+        for(int i = 0; i < remotas.size(); i++){
+            getUnidadesLeituras(i, remotas.get(i).getUnidades() );
         }
     }
     
-    public void addRemota(List<Remota> remotas, String nome, int servico){
+    public void getRemotasServico(List<Remota> remotas){
+        
+        for(int i = 0; i < remotas.size(); i++){
+            getUnidadesServicos(i, remotas.get(i).getUnidades() );
+        }
+    }
+    
+    public void getRemotasMatriculaHidrometro(List<Remota> remotas){
+        
+        for(int i = 0; i < remotas.size(); i++){
+            getUnidadesMatriculaHidrometro(i, remotas.get(i).getUnidades() );
+        }
+    }
+    
+    public void getRemotasNumeroHidrometro(List<Remota> remotas){
+        
+        for(int i = 0; i < remotas.size(); i++){
+            getUnidadesNumeroHidrometro(i, remotas.get(i).getUnidades() );
+        }
+    }
+    
+    public void getRemotasNome(List<Remota> remotas){
+        
+        for(int i = 0; i < remotas.size(); i++){
+            getUnidadesNome(i, remotas.get(i).getUnidades() );
+        }
+    }
+       
+    public void addRemota(List<Remota> remotas, String nome, int servico, Boolean habilitado){
         Remota r = new Remota();
         int qtd;
         
@@ -51,7 +71,7 @@ public class ControleRemota extends ControleUnidade{
         //Configura id da nova remota
         r.setId(qtd);
         //Cria uma lista de 16 unidades para remota
-        addUnidades(r, nome, servico);
+        addUnidades(r, nome, servico, habilitado);
         
         //Escrever na central
         setUnidadesServicos(remotas.size(), r.getUnidades() );
@@ -61,6 +81,20 @@ public class ControleRemota extends ControleUnidade{
         remotas.add(r);
         
     }
-    
+
+    public void criarListaRemota(List<Remota> remotas){
+        int[] qtdRemotas = new int[1];
         
+        //Leitura da quantidade de remotas
+        qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
+        
+        //Cria Lista de remotas com as unidades
+        for(int i = 0; i < qtdRemotas[0]; i++){
+            Remota remota = new Remota();
+            remota.setId(i + 1);
+            criarListaUnidade( remota.getUnidades() );
+            remotas.add(remota);
+        }
+    }
+    
 }

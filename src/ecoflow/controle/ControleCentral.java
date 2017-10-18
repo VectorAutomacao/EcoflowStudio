@@ -82,7 +82,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Cria o arquivo listaCentral.xml senão existir
-    public void criarLista(List<Central> listaCentral){
+    public void criarListaCentral(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
         
         //Verifica se arquivo já existe
