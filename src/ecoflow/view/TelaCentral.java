@@ -15,7 +15,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
-import util.outros.View;
+import util.outros.Tela;
 
 /**
  *
@@ -248,8 +248,6 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 //Verifica se central já esta cadastrado
                 if(!controleCentral.igual(c, listaCentral) ){   
                     //Altera lista de centrais
-                    listaCentral.remove(tbCentral.getSelectedRow() );                
-
                     adicionarNovaCentral(c);                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -273,7 +271,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 //Verifica se central selecionada na tabela é mesma conectada
                 if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
                     TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                    View.chamarInternalFrame(desktopPane,telaRemota, true);
+                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
                 }else{
                     JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }

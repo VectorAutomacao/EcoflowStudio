@@ -34,16 +34,18 @@ public class Converte {
         String palavra = "";
         
         for(int n: numeros){
-            if( n > 256){
-                char a = (char) (n / 256);
-                char b = (char) (n % 256);
+            if(n > 0){
+                if( n > 256){
+                    char a = (char) (n / 256);
+                    char b = (char) (n % 256);
 
-                palavra = palavra + String.valueOf(a);
-                palavra = palavra + String.valueOf(b);
-            }else{
-                char a = (char) n;
+                    palavra = palavra + String.valueOf(a);
+                    palavra = palavra + String.valueOf(b);
+                }else{
+                    char a = (char) n;
 
-                palavra = palavra + String.valueOf(a);
+                    palavra = palavra + String.valueOf(a);
+                }
             }
         }
         

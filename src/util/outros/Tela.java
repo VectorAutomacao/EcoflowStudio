@@ -15,7 +15,7 @@ import javax.swing.JInternalFrame;
  *
  * @author vinicius
  */
-public class View {
+public class Tela {
     
     public static void chamarInternalFrame(JDesktopPane desktopPane, JInternalFrame jiFrame, Boolean maximizado){
         for(JInternalFrame frame: desktopPane.getAllFrames() ){
@@ -39,9 +39,9 @@ public class View {
                 //set o tamanho máximo dela, que depende da janela pai   
                 jiFrame.setMaximum(true); 
             } catch (PropertyVetoException ex) {
-                Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+        
 }

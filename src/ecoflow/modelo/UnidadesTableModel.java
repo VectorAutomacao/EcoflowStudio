@@ -37,11 +37,11 @@ public class UnidadesTableModel extends AbstractTableModel{
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
             case 0:
-                return listaUnidades.get(rowIndex).getPorta();
+                return listaUnidades.get(rowIndex).getPorta() + 1;
             case 1:
                 return listaUnidades.get(rowIndex).getNome();
             case 2:
-                return listaUnidades.get(rowIndex).getServico();
+                return getStringServico(listaUnidades.get(rowIndex).getServico() );
             case 3:
                 return listaUnidades.get(rowIndex).getMatriculaHidrometro();
             case 4:
@@ -56,6 +56,11 @@ public class UnidadesTableModel extends AbstractTableModel{
     public void setUnidades(List<Unidade> uns){
         this.listaUnidades = uns;
         this.fireTableDataChanged();
+    }
+    
+    private String getStringServico(int index){
+        String[] servicos = {"","Água Fria","Água Quente", "Gás"};
+        return servicos[index];
     }
     
 }

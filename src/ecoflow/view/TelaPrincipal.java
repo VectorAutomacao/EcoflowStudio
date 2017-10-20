@@ -6,7 +6,7 @@
 package ecoflow.view;
 
 import java.awt.Toolkit;
-import util.outros.View;
+import util.outros.Tela;
 
 /**
  *
@@ -133,23 +133,23 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void imSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imSobreActionPerformed
         Sobre sobre = new Sobre();
-        View.chamarInternalFrame(dpTelaPrincipal,sobre, false);
+        Tela.chamarInternalFrame(dpTelaPrincipal,sobre, false);
     }//GEN-LAST:event_imSobreActionPerformed
 
     private void imConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imConexaoActionPerformed
         // TODO add your handling code here:
         EditarConexao editarConexao = new EditarConexao();
-        View.chamarInternalFrame(dpTelaPrincipal, editarConexao, false);
+        Tela.chamarInternalFrame(dpTelaPrincipal, editarConexao, false);
     }//GEN-LAST:event_imConexaoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         TelaLeitura telaUnidade = new TelaLeitura();
-        View.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
+        Tela.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
         TelaCentral telaCentral = new TelaCentral(dpTelaPrincipal);
-        View.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
+        Tela.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
 
     /**

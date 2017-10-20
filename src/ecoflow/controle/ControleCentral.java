@@ -29,6 +29,33 @@ public class ControleCentral extends ControleRemota{
     private final String NOMEARQUIVO = "./arquivos/listaCentral.xml";
     private final String LOCALARQUIVO = "./arquivos/";
         
+    
+    public Central getCentral(){
+        Central central = new Central();
+        List<Remota> remotas = central.getRemotas();
+        
+        //Configura o id e quantidade de remotas
+        central.setId(getIdCentral() );
+        central.setQtdRemotas(getQtdRemota() );
+        
+        //Cria a lista de remotas e unidades
+        for(int i = 0; i < central.getQtdRemotas(); i++){
+            Remota r = new Remota();
+            criarListaUnidade(r.getUnidades() );
+            remotas.add(r);
+        }
+        
+        //Leitura na central
+        getRemotasLeituras(remotas);
+        getRemotasServico(remotas);
+        getRemotasMatriculaHidrometro(remotas);
+        getRemotasNumeroHidrometro(remotas);
+        getRemotasNome(remotas);
+        
+        
+        return central;
+    }
+    
     //Busca id na central
     public int getIdCentral(){
         int[] respostas = new int[1];
@@ -83,10 +110,10 @@ public class ControleCentral extends ControleRemota{
         }
     }
     
-    public Boolean getCentral(Central central){
+    public Central getCentral(Central central){
         try {
             //Recupera o arquivo de leitura
-            FileReader file = new FileReader(LOCALARQUIVO + central.getId() + ".xml");
+            FileReader file = new FileReader(LOCALARQUIVO + central.getId() + ".xml" );
             
             //Inicializa driver xstream
             XStream xstream = new XStream( new DomDriver() );
@@ -97,13 +124,21 @@ public class ControleCentral extends ControleRemota{
             xstream.alias("unidade", Unidade.class);
             
             //Le arquivo xml e retornar um objeto
-            central = (Central) xstream.fromXML(file);
+            Central c = (Central) xstream.fromXML(file);
             
-            return true;
+            /*for(Remota r: c.getRemotas() ){
+                System.out.println(r.getId() );
+                for(Unidade un: r.getUnidades() ){
+                    System.out.println("\t" + un.getPorta() );
+                    System.out.println("\t" + un.getNome() );
+                }
+            }*/
+            
+            return c;
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, "Problemas ao ler arquivo xml da Central", "Erro", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "Problemas ao ler arquivo xml da Central", "Erro", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            return null;
         }
     }
     

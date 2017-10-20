@@ -23,40 +23,43 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 public class TelaRemota extends javax.swing.JInternalFrame {
     
     
-    private Central central = new Central();
-    private Remota  remota  = new Remota();
+    private Central             centralSelcionada = new Central();
+    private Remota              remotaSelecionada  = new Remota();
     
     private RemotasTableModel   remotasTableModel   = new RemotasTableModel();
     private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
     
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
+    
+    private TCPMasterConnection tcp;
 
     /**
      * Creates new form TelaRemota
      */
     public TelaRemota(Central c) {
         initComponents();
-        
-        TCPMasterConnection tcp;
-        
+                
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);
-        
-        //Cria o arquivo xml senão existir
+                
+        //Senão existir o arquivo cria um xml
         controleCentral.criarCentral(c);
         
-        //Configurar central
-        central = c;
-        if(!controleCentral.getCentral(central) ){
-            controleCentral.criarListaRemota(central.getRemotas() );
+        //Le o arquivo xml da central
+        centralSelcionada = controleCentral.getCentral(c);
+        
+        //Verifica se quantidade remotas são iguais
+        if(centralSelcionada.getQtdRemotas() != controleCentral.getQtdRemota() ){
+            centralSelcionada = controleCentral.getCentral();
+            controleCentral.saveCentral(centralSelcionada);
         }
-               
+        
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
         tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
-        remotasTableModel.setRemotas(c.getRemotas() );
+        remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
         
         //Configurar tbUnidade
         tbUnidade.setModel(unidadesTableModel);
@@ -118,6 +121,9 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             }
         ));
         tbRemota.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                tbRemotaMouseEntered(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbRemotaMouseClicked(evt);
             }
@@ -145,11 +151,10 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Unidade"));
 
         jLabel7.setText("Leitura:");
-        jLabel7.setEnabled(false);
 
         jLabel5.setText("Serviço:");
 
-        ccServicoUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        ccServicoUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
         ccServicoUnidade.setPreferredSize(new java.awt.Dimension(37, 20));
 
         jLabel8.setText("Nome:");
@@ -162,7 +167,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         });
 
         tfLeituraUnidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        tfLeituraUnidade.setEnabled(false);
 
         jLabel11.setText("N. Hidrometro:");
 
@@ -234,7 +238,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jLabel4.setText("Leitura:");
         jLabel4.setEnabled(false);
 
-        ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
+        ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
         ccServicoRemota.setPreferredSize(new java.awt.Dimension(37, 20));
 
         tfLeituraRemota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
@@ -346,10 +350,13 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         
         //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
-            controleCentral.getUnidades(tbRemota.getSelectedRow(), central.getRemota(tbRemota.getSelectedRow() ).getUnidades() );
+            //Le na central as unidades de uma remota
+            controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
             
-            remota = central.getRemota(tbRemota.getSelectedRow() );
-            unidadesTableModel.setUnidades(remota.getUnidades() );
+            //Seleciona remota atualizada
+            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+            //Atualiza tabela
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
         }
     }//GEN-LAST:event_tbRemotaMouseClicked
 
@@ -360,18 +367,18 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             
             //Adicionar remota nova
             controleCentral.addRemota(
-                    central.getRemotas(), 
+                    centralSelcionada, 
                     tfNomeRemota.getText().trim().toUpperCase(),
                     Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
             );            
-            //Recupera a lista de remota
-            remota = central.getRemota(central.getRemotas().size() - 1);
+            //Recupera a ultima remota da lista
+            remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
             //Atualiza tbRemota
-            remotasTableModel.setRemotas(central.getRemotas() );
+            remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
             //Atualiza tbUnidade
-            unidadesTableModel.setUnidades(remota.getUnidades() );
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
             //Salva xml da Central
-            controleCentral.saveCentral(central);
+            controleCentral.saveCentral(centralSelcionada);
             
         }else{
             JOptionPane.showMessageDialog(null, "Nome inválido!", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -386,24 +393,26 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         if(
             !tfNomeUnidade.getText().trim().isEmpty() &&
             !tfMatriculaUnidade.getText().trim().isEmpty() &&
-            !tfNumeroUnidade.getText().trim().isEmpty()
+            !tfNumeroUnidade.getText().trim().isEmpty() &&
+            !tfLeituraUnidade.getText().trim().isEmpty()
         ){
             if(tbUnidade.getSelectedRow() != -1){
                 //Seleciona unidade
-                un = remota.getUnidade(tbUnidade.getSelectedRow() );
+                un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
                 
                 //Altera unidade
                 un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
                 un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
                 un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
                 un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
+                un.setLeitura( Integer.parseInt(tfLeituraUnidade.getText().trim() ) );
                 
                 //Escreve na central
-                controleCentral.setUnidades(remota.getId() - 1, remota.getUnidades() );
+                controleCentral.setUnidades( remotaSelecionada );
                 //Atualiza tbUnidade
-                unidadesTableModel.setUnidades(remota.getUnidades() );
+                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
                 //Salva xml da Central
-                controleCentral.saveCentral(central);
+                controleCentral.saveCentral(centralSelcionada);
             }else{
                 JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
@@ -414,13 +423,18 @@ public class TelaRemota extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btAterarUnidadeActionPerformed
 
     private void tbUnidadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadeMouseClicked
-        Unidade un = remota.getUnidade(tbUnidade.getSelectedRow() );
+        Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
         
         tfNomeUnidade.setText(un.getNome() );
-        ccServicoUnidade.setSelectedIndex(un.getServico() );
+        ccServicoUnidade.setSelectedIndex(un.getServico() - 1 );
         tfMatriculaUnidade.setText( Integer.toString(un.getMatriculaHidrometro() )  );
         tfNumeroUnidade.setText(un.getNumeroHidrometro() );
+        tfLeituraUnidade.setText(Integer.toString(un.getLeitura() ) );
     }//GEN-LAST:event_tbUnidadeMouseClicked
+
+    private void tbRemotaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbRemotaMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
