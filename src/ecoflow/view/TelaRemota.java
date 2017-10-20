@@ -49,8 +49,9 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         
         //Configurar central
         central = c;
-        controleCentral.criarListaRemota(central.getRemotas() );
-        controleCentral.getRemotas(central.getRemotas() );
+        if(!controleCentral.getCentral(central) ){
+            controleCentral.criarListaRemota(central.getRemotas() );
+        }
                
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
@@ -79,7 +80,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        cbHabilitadoUnidade = new javax.swing.JCheckBox();
         ccServicoUnidade = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         btAterarUnidade = new javax.swing.JButton();
@@ -93,7 +93,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        cbHabilitadoRemota = new javax.swing.JCheckBox();
         ccServicoRemota = new javax.swing.JComboBox<>();
         tfLeituraRemota = new javax.swing.JFormattedTextField();
         btAdicionarRemota = new javax.swing.JButton();
@@ -150,8 +149,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Serviço:");
 
-        cbHabilitadoUnidade.setText("Habilitado");
-
         ccServicoUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         ccServicoUnidade.setPreferredSize(new java.awt.Dimension(37, 20));
 
@@ -199,11 +196,9 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                     .addComponent(jLabel7)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbHabilitadoUnidade)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btAterarUnidade)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,7 +218,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                         .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbHabilitadoUnidade)
                             .addComponent(btAterarUnidade)
                             .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfMatriculaUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -239,8 +233,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Leitura:");
         jLabel4.setEnabled(false);
-
-        cbHabilitadoRemota.setText("Habilitado");
 
         ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2" }));
         ccServicoRemota.setPreferredSize(new java.awt.Dimension(37, 20));
@@ -292,11 +284,9 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(tfLeituraRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbHabilitadoRemota)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btAdicionarRemota)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,7 +301,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ccServicoRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbHabilitadoRemota)
                     .addComponent(tfLeituraRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btAdicionarRemota)
                     .addComponent(tfMatriculaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -357,6 +346,8 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         
         //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
+            controleCentral.getUnidades(tbRemota.getSelectedRow(), central.getRemota(tbRemota.getSelectedRow() ).getUnidades() );
+            
             remota = central.getRemota(tbRemota.getSelectedRow() );
             unidadesTableModel.setUnidades(remota.getUnidades() );
         }
@@ -371,8 +362,7 @@ public class TelaRemota extends javax.swing.JInternalFrame {
             controleCentral.addRemota(
                     central.getRemotas(), 
                     tfNomeRemota.getText().trim().toUpperCase(),
-                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() ),
-                    cbHabilitadoRemota.isSelected()
+                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
             );            
             //Recupera a lista de remota
             remota = central.getRemota(central.getRemotas().size() - 1);
@@ -407,7 +397,6 @@ public class TelaRemota extends javax.swing.JInternalFrame {
                 un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
                 un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
                 un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
-                un.setHabilitado(cbHabilitadoUnidade.isSelected() );
                 
                 //Escreve na central
                 controleCentral.setUnidades(remota.getId() - 1, remota.getUnidades() );
@@ -431,15 +420,12 @@ public class TelaRemota extends javax.swing.JInternalFrame {
         ccServicoUnidade.setSelectedIndex(un.getServico() );
         tfMatriculaUnidade.setText( Integer.toString(un.getMatriculaHidrometro() )  );
         tfNumeroUnidade.setText(un.getNumeroHidrometro() );
-        cbHabilitadoUnidade.setSelected(un.getHabilitado() );
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdicionarRemota;
     private javax.swing.JButton btAterarUnidade;
-    private javax.swing.JCheckBox cbHabilitadoRemota;
-    private javax.swing.JCheckBox cbHabilitadoUnidade;
     private javax.swing.JComboBox<String> ccServicoRemota;
     private javax.swing.JComboBox<String> ccServicoUnidade;
     private javax.swing.JLabel jLabel1;

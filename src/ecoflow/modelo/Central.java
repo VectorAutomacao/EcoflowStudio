@@ -18,7 +18,8 @@ public class Central {
     
     private int id;
     private String nome;
-    List<Remota> remotas = new ArrayList<>();
+    private int qtdRemotas;
+    private List<Remota> remotas = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -36,6 +37,14 @@ public class Central {
         this.nome = nome;
     }
 
+    public int getQtdRemotas() {
+        return qtdRemotas;
+    }
+
+    public void setQtdRemotas(int qtdRemotas) {
+        this.qtdRemotas = qtdRemotas;
+    }
+    
     public List<Remota> getRemotas() {
         return remotas;
     }

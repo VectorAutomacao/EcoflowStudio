@@ -8,6 +8,8 @@ package ecoflow.controle;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import ecoflow.modelo.Central;
+import ecoflow.modelo.Remota;
+import ecoflow.modelo.Unidade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -78,6 +80,30 @@ public class ControleCentral extends ControleRemota{
             Arquivo.salvar(LOCALARQUIVO + central.getId() + ".xml", xml);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Boolean getCentral(Central central){
+        try {
+            //Recupera o arquivo de leitura
+            FileReader file = new FileReader(LOCALARQUIVO + central.getId() + ".xml");
+            
+            //Inicializa driver xstream
+            XStream xstream = new XStream( new DomDriver() );
+            
+            //Cria alias para as classes
+            xstream.alias("central", Central.class);
+            xstream.alias("remota", Remota.class);
+            xstream.alias("unidade", Unidade.class);
+            
+            //Le arquivo xml e retornar um objeto
+            central = (Central) xstream.fromXML(file);
+            
+            return true;
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "Problemas ao ler arquivo xml da Central", "Erro", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
     }
     

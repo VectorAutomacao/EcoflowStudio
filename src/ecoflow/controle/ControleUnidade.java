@@ -101,6 +101,32 @@ public class ControleUnidade {
         }
     }
     
+    //Escreve na central as leituras de uma remota
+    public void setUnidadesLeituras(int remota, List<Unidade> unidades){
+        int contador = CONTADOR * 2;
+        int[] leituras = new int[contador];
+        int referencia;
+        int contar = 0;
+
+        //Converte em double word
+        for(Unidade un: unidades){
+            int a, b;
+            
+            a = Converte.intWordMais(un.getLeitura(), FATORMULTIPLICATIVO);
+            b = Converte.intWordMenos(un.getLeitura(), FATORMULTIPLICATIVO);
+            leituras[contar] = a;
+            contar++;
+            leituras[contar] = b;
+            contar++;
+        }
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIALEITURA + contador * remota;
+
+        //Escreve em uma remota
+        ModbusRegistro.escrever(tcpMasterConnection, referencia, leituras);
+    }
+    
     //Le da central os servicos de uma remota
     public void getUnidadesServicos(int remota, List<Unidade> unidades){
         int contador = CONTADOR; // 16 por remota
@@ -184,7 +210,7 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIAMATRICULAHIDROMETRO + contador * remota;
 
-        //Leitura de uma remota
+        //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, matriculas);
     }
     
@@ -243,7 +269,7 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIANUMEROHIDROMETRO + contador * remota;
 
-        //Leitura de uma remota
+        //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, numeros);
     }
     
@@ -301,14 +327,15 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIANOME + contador * remota;
 
-        //Leitura de uma remota
+        //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, nomes);
     }
         
-    public void addUnidades(Remota r, String nome, int servico, Boolean habilitado){
+    public void addUnidades(Remota r, String nome, int servico){
+        int nRemota = r.getId() - 1;
         List<Unidade> unidades = r.getUnidades();
 
-       for(int i = 0; i < 16; i++ ){           
+       for(int i = 0; i < CONTADOR; i++ ){           
            Unidade un = new Unidade();
            String idRemota, idUnidade;
            
@@ -323,17 +350,21 @@ public class ControleUnidade {
            un.setMatriculaHidrometro(0);
            un.setNumeroHidrometro("");
            un.setLeitura(0);
-           un.setHabilitado(habilitado);
            
            //Adiciona unidade na lista
            unidades.add(un);
         }
        
+        setUnidadesServicos(nRemota, unidades);
+        setUnidadesMatriculaHidrometro(nRemota, unidades);
+        setUnidadesNumeroHidrometro(nRemota, unidades);
+        setUnidadesNome(nRemota, unidades);
+       
     }
     
     //Cria uma lista de 16 unidades nulas
     public void criarListaUnidade(List<Unidade> unidades){
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < CONTADOR; i++){
             Unidade un = new Unidade();
             un.setPorta(i + 1);
             unidades.add(un);

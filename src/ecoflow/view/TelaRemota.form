@@ -143,13 +143,11 @@
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Component id="tfLeituraUnidade" min="-2" pref="85" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="cbHabilitadoUnidade" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btAterarUnidade" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="87" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -173,7 +171,6 @@
                           <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="ccServicoUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbHabilitadoUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btAterarUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tfLeituraUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="tfMatriculaUnidade" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -196,11 +193,6 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="text" type="java.lang.String" value="Servi&#xe7;o:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="cbHabilitadoUnidade">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Habilitado"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="ccServicoUnidade">
@@ -302,13 +294,11 @@
                       <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="tfLeituraRemota" min="-2" pref="85" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="cbHabilitadoRemota" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btAdicionarRemota" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="77" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -326,7 +316,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="ccServicoRemota" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbHabilitadoRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfLeituraRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btAdicionarRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfMatriculaRemota" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -353,11 +342,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Leitura:"/>
             <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="cbHabilitadoRemota">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Habilitado"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="ccServicoRemota">

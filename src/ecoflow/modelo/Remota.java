@@ -17,7 +17,7 @@ import java.util.List;
 public class Remota {
     
     private int id;
-    List<Unidade> unidades = new ArrayList<>();
+    private List<Unidade> unidades = new ArrayList<>();
 
     public int getId() {
         return id;

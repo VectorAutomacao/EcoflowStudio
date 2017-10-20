@@ -20,7 +20,6 @@ public class Unidade {
     private int matriculaHidrometro;
     private String numeroHidrometro;
     private int leitura;
-    private Boolean habilitado;
 
     public int getPorta() {
         return porta;
@@ -28,14 +27,6 @@ public class Unidade {
 
     public void setPorta(int porta) {
         this.porta = porta;
-    }
-
-    public Boolean getHabilitado() {
-        return habilitado;
-    }
-
-    public void setHabilitado(Boolean habilitado) {
-        this.habilitado = habilitado;
     }
 
     public String getNome() {

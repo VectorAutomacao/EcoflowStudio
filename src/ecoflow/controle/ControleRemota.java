@@ -58,7 +58,7 @@ public class ControleRemota extends ControleUnidade{
         }
     }
        
-    public void addRemota(List<Remota> remotas, String nome, int servico, Boolean habilitado){
+    public void addRemota(List<Remota> remotas, String nome, int servico){
         Remota r = new Remota();
         int qtd;
         
@@ -71,7 +71,7 @@ public class ControleRemota extends ControleUnidade{
         //Configura id da nova remota
         r.setId(qtd);
         //Cria uma lista de 16 unidades para remota
-        addUnidades(r, nome, servico, habilitado);
+        addUnidades(r, nome, servico);
         
         //Escrever na central
         setUnidadesServicos(remotas.size(), r.getUnidades() );
