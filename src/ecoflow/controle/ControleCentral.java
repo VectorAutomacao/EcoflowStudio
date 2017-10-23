@@ -42,6 +42,7 @@ public class ControleCentral extends ControleRemota{
         //Cria a lista de remotas e unidades
         for(int i = 0; i < central.getQtdRemotas(); i++){
             Remota r = new Remota();
+            r.setId(i);
             criarListaUnidade(r.getUnidades() );
             remotas.add(r);
         }

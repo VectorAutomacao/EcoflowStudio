@@ -31,6 +31,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
+        
+    private TCPMasterConnection tcp;
     
 
     /**
@@ -40,7 +42,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         initComponents();
                 
         //Configurando a conexao
-        TCPMasterConnection tcp;
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);
                 
@@ -64,10 +65,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         //Configurar tbUnidade
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordena tbUnidade
-        
-        //Fechar conexao
-        tcp.close();
-                
+                        
     }
 
     /**
@@ -348,10 +346,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
         // TODO add your handling code here:
         
-        //Configurando a conexao
-        TCPMasterConnection tcp;
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
         
         //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
@@ -363,18 +357,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             //Atualiza tabela
             unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
         }
-        
-        //Fechar conexao
-        tcp.close();
     }//GEN-LAST:event_tbRemotaMouseClicked
 
     private void btAdicionarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarRemotaActionPerformed
         // TODO add your handling code here:
         
-        //Configurando a conexao
-        TCPMasterConnection tcp;
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
         
         if(!tfNomeRemota.getText().trim().isEmpty() ){
             
@@ -397,19 +384,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Nome inválido!", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
         
-        //Fechar conexao
-        tcp.close();
-        
     }//GEN-LAST:event_btAdicionarRemotaActionPerformed
 
     private void btAterarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAterarUnidadeActionPerformed
         // TODO add your handling code here:
         Unidade un = new Unidade();
-        
-        //Configurando a conexao
-        TCPMasterConnection tcp;
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
         
         if(
             !tfNomeUnidade.getText().trim().isEmpty() &&
@@ -441,16 +420,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
         
-        //Fechar conexao
-        tcp.close();
-        
     }//GEN-LAST:event_btAterarUnidadeActionPerformed
 
     private void tbUnidadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadeMouseClicked
-        //Configurando a conexao
-        TCPMasterConnection tcp;
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
         
         Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
         
@@ -460,8 +432,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfNumeroUnidade.setText(un.getNumeroHidrometro() );
         tfLeituraUnidade.setText(Integer.toString(un.getLeitura() ) );
         
-        //Fechar conexao
-        tcp.close();
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
 

@@ -30,6 +30,8 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
+        
+    private TCPMasterConnection tcp;
     
     /**
      * Creates new form TelaCentral
@@ -38,7 +40,6 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         initComponents();
         
         this.desktopPane = dp;
-        TCPMasterConnection tcp;
         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);

@@ -35,6 +35,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
     
+    private TCPMasterConnection tcp;
     /**
      * Creates new form Unidade
      */
@@ -42,7 +43,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         initComponents();
         
         //Configurando a conexao
-        TCPMasterConnection tcp;
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);        
         
@@ -52,8 +52,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         
-        //Fecha conexão
-        tcp.close();
     }
 
     /**
@@ -154,10 +152,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
-        //Configurando a conexao
-        TCPMasterConnection tcp;
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp); 
         
         //Le na central
         idCentral = controleCentral.getIdCentral();
@@ -187,9 +181,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
         }
         
-        
-        //Fecha conexão
-        tcp.close();
     }//GEN-LAST:event_btLeituraActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
