@@ -13,6 +13,7 @@ import ecoflow.modelo.Unidade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,7 +72,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Cria o arquivo central senão existir
-    public void criarCentral(Central central){
+    public void criarCentralXML(Central central){
         File file = new File(LOCALARQUIVO + central.getId() + ".xml");
         
         //Verifica se arquivo já existe
@@ -94,7 +95,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Salva central no xml
-    public void saveCentral(Central central){
+    public void saveCentralXML(Central central){
         //Inicia driver do xstream
         XStream xstream = new XStream( new DomDriver() );
         // Auto detectar alias das classes
@@ -110,7 +111,7 @@ public class ControleCentral extends ControleRemota{
         }
     }
     
-    public Central getCentral(Central central){
+    public Central getCentralXML(Central central){
         try {
             //Recupera o arquivo de leitura
             FileReader file = new FileReader(LOCALARQUIVO + central.getId() + ".xml" );
@@ -143,7 +144,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Cria o arquivo listaCentral.xml senão existir
-    public void criarListaCentral(List<Central> listaCentral){
+    public void criarListaCentralXML(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
         
         //Verifica se arquivo já existe
@@ -166,7 +167,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Salva a listaCentral.xml
-    public void saveLista(List<Central> listaCentral){        
+    public void saveListaCentralXML(List<Central> listaCentral){        
         //Inicia driver do xstream
         XStream xstream = new XStream( new DomDriver() );
         // Auto detectar alias das classes
@@ -183,7 +184,7 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Leitura do arquvo listaCentral.xml
-    public List getLista(){
+    public List getListaCentralXML(){
         try {
             //Recupera o arquivo de leitura
             FileReader file = new FileReader(NOMEARQUIVO);
@@ -217,8 +218,28 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Alterar Central na List
-    public void setCentralLista(int index, Central c, List<Central> listaCentral){
+    public void setListaCentral(int index, Central c, List<Central> listaCentral){
         listaCentral.set(index, c);
+    }
+    
+    //Retorna uma lista de todas as unidades de uma central
+    public List<Unidade> listaUnidadesCentral(Central central){
+        List<Unidade> unidades = new ArrayList<>();
+        List<Remota> remotas = new ArrayList<>();
+        
+        //Recupera a lista de remotas
+        remotas = central.getRemotas();
+        
+        for(Remota r: remotas){
+            List<Unidade> uns = new ArrayList<>();
+            //Recupera a lista de unidades
+            uns = r.getUnidades();
+            
+            //Adiciona a Lista da remota a lista da central
+            unidades.addAll(uns);
+        }
+               
+        return unidades;
     }
         
 }

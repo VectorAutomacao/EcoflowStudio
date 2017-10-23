@@ -6,7 +6,7 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 
 public class ModbusConexao {
     
-    public static TCPMasterConnection configurar(String ip, int porta){
+    public TCPMasterConnection configurar(String ip, int porta){
                     
         try {    
             /* As instâncias importantes das classes mencionadas anteriormente */

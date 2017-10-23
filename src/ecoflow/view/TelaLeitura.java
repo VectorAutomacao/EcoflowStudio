@@ -5,8 +5,9 @@
  */
 package ecoflow.view;
 
+import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
-import ecoflow.controle.ControleUnidade;
+import ecoflow.modelo.Central;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
 import java.io.IOException;
@@ -24,10 +25,14 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  */
 public class TelaLeitura extends javax.swing.JInternalFrame {
     
+    private int                 idCentral;
+    private int                 qtdRemota;
+    
+    private Central             central             = new Central();
     private List<Unidade>       unidades            = new ArrayList<>();
     
     private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
-    private ControleUnidade     controleUnidade     = new ControleUnidade();
+    private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
     
     /**
@@ -36,20 +41,19 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     public TelaLeitura() {
         initComponents();
         
+        //Configurando a conexao
         TCPMasterConnection tcp;
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp);        
         
         
         //Configurando tbUnidades
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-        /*tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna LPP
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(1) ); //Remove coluna Serviço
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(2) ); //Remove coluna Habilitado
-        */
-        //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleUnidade.setTcpMasterConnection(tcp);        
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+        
+        //Fecha conexão
+        tcp.close();
     }
 
     /**
@@ -150,17 +154,49 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
-        controleUnidade.getUnidadesLeituras(unidades);
-        unidadesTableModel.setUnidades(unidades);
+        //Configurando a conexao
+        TCPMasterConnection tcp;
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp); 
         
-        //Ativa botão salvar
-        btSalvar.setEnabled(true);
+        //Le na central
+        idCentral = controleCentral.getIdCentral();
+        qtdRemota = controleCentral.getQtdRemota();
+        
+        //Configura Central
+        central.setId(idCentral);
+        
+        //Le arquivo xml
+        central = controleCentral.getCentralXML(central);
+        
+        if(central != null){
+            if(central.getQtdRemotas() == qtdRemota){
+                //Recupera lista de unidades
+                controleCentral.getRemotasLeituras(central.getRemotas() );
+                unidades = controleCentral.listaUnidadesCentral(central);
+
+                //Atualizar tabela
+                unidadesTableModel.setUnidades(unidades);
+
+                //Ativa botão salvar
+                btSalvar.setEnabled(true); 
+            }else{
+                JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        
+        //Fecha conexão
+        tcp.close();
     }//GEN-LAST:event_btLeituraActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        
         try {
             // TODO add your handling code here:
-            controleUnidade.saveUnidadesXLS(unidades);
+            controleCentral.saveUnidadesXLS(unidades);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Problema ao salvar o arquivo. Tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);

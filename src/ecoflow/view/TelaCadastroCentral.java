@@ -21,7 +21,7 @@ import util.outros.Tela;
  *
  * @author vinicius
  */
-public class TelaCentral extends javax.swing.JInternalFrame {
+public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     
     private JDesktopPane        desktopPane         = new JDesktopPane();
     private CentraisTableModel  centralTableModel   = new CentraisTableModel();
@@ -34,7 +34,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaCentral
      */
-    public TelaCentral(JDesktopPane dp) {
+    public TelaCadastroCentral(JDesktopPane dp) {
         initComponents();
         
         this.desktopPane = dp;
@@ -45,10 +45,10 @@ public class TelaCentral extends javax.swing.JInternalFrame {
         tbCentral.setRowSorter(new TableRowSorter(centralTableModel) ); // Ordenar tbCentral
         
         //Verifica se arquivo existe senão existir cria um arquivo com ListaCentral
-        controleCentral.criarListaCentral(listaCentral);
+        controleCentral.criarListaCentralXML(listaCentral);
         
         //Mostra lista de centrais já cadastrado
-        listaCentral = controleCentral.getLista();
+        listaCentral = controleCentral.getListaCentralXML();
         centralTableModel.setCentrais(listaCentral);
         
         //Configurando a conexao
@@ -71,7 +71,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             listaCentral.add(c);
 
             //Salvar listaCentral no xml
-            controleCentral.saveLista(listaCentral);
+            controleCentral.saveListaCentralXML(listaCentral);
 
             //Atualizar tbCentral
             centralTableModel.setCentrais(listaCentral);
@@ -270,7 +270,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             }else{
                 //Verifica se central selecionada na tabela é mesma conectada
                 if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-                    TelaRemota telaRemota = new TelaRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
                     Tela.chamarInternalFrame(desktopPane,telaRemota, true);
                 }else{
                     JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -300,13 +300,13 @@ public class TelaCentral extends javax.swing.JInternalFrame {
                 controleCentral.setIdCentral(c);
 
                 //Altera lista de centrais
-                controleCentral.setCentralLista( tbCentral.getSelectedRow(), c, listaCentral);
+                controleCentral.setListaCentral( tbCentral.getSelectedRow(), c, listaCentral);
 
                 //Atualiza tabela
                 centralTableModel.setCentrais(listaCentral);
 
                 //Salva lista
-                controleCentral.saveLista(listaCentral);
+                controleCentral.saveListaCentralXML(listaCentral);
 
                 //limpar textField
                 tfId.setText("");
@@ -331,7 +331,7 @@ public class TelaCentral extends javax.swing.JInternalFrame {
             centralTableModel.setCentrais(listaCentral);
             
             //Salva lista
-            controleCentral.saveLista(listaCentral);
+            controleCentral.saveListaCentralXML(listaCentral);
             
             //limpar textField
             tfId.setText("");

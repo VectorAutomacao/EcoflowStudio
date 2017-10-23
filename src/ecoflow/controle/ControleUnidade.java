@@ -398,14 +398,20 @@ public class ControleUnidade {
             HSSFRow rowTitle = plan.createRow(0);
             // cria a célula com nomes
             rowTitle.createCell((short) 0).setCellValue("Nome");
-            rowTitle.createCell((short) 1).setCellValue("Leitura");
+            rowTitle.createCell((short) 1).setCellValue("Serviço");
+            rowTitle.createCell((short) 2).setCellValue("Matricula Hidrometro");
+            rowTitle.createCell((short) 3).setCellValue("Número Hidrometro");
+            rowTitle.createCell((short) 4).setCellValue("Leitura");
             
             for(Unidade un: unidades){
                 // cria a linha na planilha o parametro da função create row é a linha
                 HSSFRow row = plan.createRow(contador);
                 // cria a célula na planilha
                 row.createCell((short) 0).setCellValue(un.getNome() );
-                row.createCell((short) 1).setCellValue(un.getLeitura() );
+                row.createCell((short) 1).setCellValue(un.getServico() );
+                row.createCell((short) 2).setCellValue(un.getMatriculaHidrometro() );
+                row.createCell((short) 3).setCellValue(un.getNumeroHidrometro() );
+                row.createCell((short) 4).setCellValue(un.getLeitura() );
                 
                 contador++;
             }
@@ -420,5 +426,5 @@ public class ControleUnidade {
             wb.close();
         }        
     }
-    
+        
 }

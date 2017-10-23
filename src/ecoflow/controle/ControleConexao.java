@@ -68,10 +68,11 @@ public class ControleConexao {
     //Retorna conexão TCP master configurada
     public TCPMasterConnection getTcpMasterConnection(){
         TCPMasterConnection tcpMasterConnection;
+        ModbusConexao mc = new ModbusConexao();
         Conexao c = getConexao();
         
         //Configura conexão TCP master
-        tcpMasterConnection = ModbusConexao.configurar(c.getIp(), c.getPorta() );
+        tcpMasterConnection = mc.configurar(c.getIp(), c.getPorta() );
         tcpMasterConnection.setTimeout(c.getTimeOut() );
         
         return tcpMasterConnection;
@@ -84,6 +85,8 @@ public class ControleConexao {
         
         //le um registro da central
         respostas = ModbusRegistro.ler(tcp, REFERENCIA, CONTADOR);
+        
+        tcp.close();
         
         if(respostas != null){
             return true;
