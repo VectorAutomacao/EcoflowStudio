@@ -15,6 +15,9 @@ import ecoflow.modelo.UnidadesTableModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
+import util.outros.CampoInt;
+import util.outros.CampoStringIntUpperCase;
+import util.outros.CampoStringUpperCase;
 
 /**
  *
@@ -87,12 +90,12 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         ccServicoUnidade = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         btAterarUnidade = new javax.swing.JButton();
-        tfLeituraUnidade = new javax.swing.JFormattedTextField();
         jLabel11 = new javax.swing.JLabel();
-        tfMatriculaUnidade = new javax.swing.JFormattedTextField();
         jLabel10 = new javax.swing.JLabel();
         tfNomeUnidade = new javax.swing.JTextField();
         tfNumeroUnidade = new javax.swing.JTextField();
+        tfMatriculaUnidade = new javax.swing.JTextField();
+        tfLeituraUnidade = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -164,13 +167,17 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             }
         });
 
-        tfLeituraUnidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-
         jLabel11.setText("N. Hidrometro:");
 
-        tfMatriculaUnidade.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-
         jLabel10.setText("Mat. Hidrometro:");
+
+        tfNomeUnidade.setDocument(new CampoStringIntUpperCase(10));
+
+        tfNumeroUnidade.setDocument(new CampoStringIntUpperCase(12));
+
+        tfMatriculaUnidade.setDocument(new CampoInt(10));
+
+        tfLeituraUnidade.setDocument(new CampoInt(10));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -186,21 +193,21 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addComponent(jLabel5)
                     .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(tfMatriculaUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfMatriculaUnidade))
+                .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btAterarUnidade)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,9 +228,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btAterarUnidade)
-                            .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tfMatriculaUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tfLeituraUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -260,6 +267,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel9.setText("N. Hidrometro:");
         jLabel9.setEnabled(false);
 
+        tfNomeRemota.setDocument(new CampoStringUpperCase(6));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -279,16 +288,16 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfNumeroRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel9)
+                    .addComponent(tfNumeroRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(tfLeituraRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btAdicionarRemota)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +377,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             //Adicionar remota nova
             controleCentral.addRemota(
                     centralSelcionada, 
-                    tfNomeRemota.getText().trim().toUpperCase(),
+                    tfNomeRemota.getText().trim(),
                     Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
             );            
             //Recupera a ultima remota da lista
@@ -381,7 +390,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             controleCentral.saveCentralXML(centralSelcionada);
             
         }else{
-            JOptionPane.showMessageDialog(null, "Nome inválido!", "Alerta", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Nome inválido! \n Caracteres válidos A-Z, 0-9.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btAdicionarRemotaActionPerformed
@@ -457,9 +466,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private javax.swing.JTable tbRemota;
     private javax.swing.JTable tbUnidade;
     private javax.swing.JFormattedTextField tfLeituraRemota;
-    private javax.swing.JFormattedTextField tfLeituraUnidade;
+    private javax.swing.JTextField tfLeituraUnidade;
     private javax.swing.JFormattedTextField tfMatriculaRemota;
-    private javax.swing.JFormattedTextField tfMatriculaUnidade;
+    private javax.swing.JTextField tfMatriculaUnidade;
     private javax.swing.JTextField tfNomeRemota;
     private javax.swing.JTextField tfNomeUnidade;
     private javax.swing.JFormattedTextField tfNumeroRemota;

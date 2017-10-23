@@ -15,6 +15,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.net.TCPMasterConnection;
+import util.outros.CampoInt;
 import util.outros.Tela;
 
 /**
@@ -99,7 +100,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         btAdicionar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        tfId = new javax.swing.JFormattedTextField();
+        tfId = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCentral = new javax.swing.JTable();
 
@@ -138,7 +139,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
         jLabel3.setText("*Identificador é um valor único e numérico");
 
-        tfId.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        tfId.setDocument(new CampoInt(3));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -151,7 +152,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfId, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,7 +164,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                         .addComponent(btAdicionar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAlterar)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,7 +354,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbCentral;
-    private javax.swing.JFormattedTextField tfId;
+    private javax.swing.JTextField tfId;
     private javax.swing.JTextField tfNome;
     // End of variables declaration//GEN-END:variables
 }

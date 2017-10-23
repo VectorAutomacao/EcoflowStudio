@@ -43,5 +43,13 @@ public class Tela {
             }
         }
     }
+    
+    public static Boolean maximoString(String palavra, int tamanhoMaximo){
+        if(palavra.length() == tamanhoMaximo){
+            return true;
+        }else{
+            return false;
+        }
+    }
         
 }
