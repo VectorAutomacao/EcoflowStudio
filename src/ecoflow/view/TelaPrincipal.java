@@ -46,7 +46,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ecoflow Studio");
         setExtendedState(MAXIMIZED_BOTH);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("./src/ecoflow/imagem/ECOFlow.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./imagem/ECOFlow.png"));
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jScrollPane1.setBorder(null);
