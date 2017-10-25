@@ -436,7 +436,10 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
         
         tfNomeUnidade.setText(un.getNome() );
-        ccServicoUnidade.setSelectedIndex(un.getServico() - 1 );
+        if(un.getServico() > 1 && un.getServico() < 3 )
+            ccServicoUnidade.setSelectedIndex(un.getServico() - 1 );
+        else
+            ccServicoUnidade.setSelectedIndex(0);
         tfMatriculaUnidade.setText( Integer.toString(un.getMatriculaHidrometro() )  );
         tfNumeroUnidade.setText(un.getNumeroHidrometro() );
         tfLeituraUnidade.setText(Integer.toString(un.getLeitura() ) );

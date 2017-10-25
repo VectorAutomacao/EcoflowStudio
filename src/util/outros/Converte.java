@@ -56,12 +56,12 @@ public class Converte {
         return a * fator + b;
     }
     
-    public static int intWordMenos(int a, int fator){
-        return a % fator;
+    public static int intWordMenos(int num, int fator){
+        return num % fator;
     }
     
-    public static int intWordMais(int a, int fator){
-        return a / fator;
+    public static int intWordMais(int num, int fator){
+        return num / fator;
     }
     
 }
