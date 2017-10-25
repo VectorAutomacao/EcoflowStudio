@@ -33,7 +33,7 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602; //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522; //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123; //Referencia para quantidade de remota
-    final int FATORMULTIPLICATIVO = 32768; //fator multiplicativo para o segundo registro
+    final int FATORMULTIPLICATIVO = 65536; //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
    
@@ -50,7 +50,7 @@ public class ControleUnidade {
     }
     
     public void setUnidades(Remota remota){
-        setUnidadesLeituras(remota);
+        //setUnidadesLeituras(remota);
         setUnidadesServicos(remota);
         setUnidadesMatriculaHidrometro(remota);
         setUnidadesNumeroHidrometro(remota);
@@ -104,7 +104,7 @@ public class ControleUnidade {
     }
     
     //Escreve na central as leituras de uma remota
-    public void setUnidadesLeituras(Remota remota){
+    /*public void setUnidadesLeituras(Remota remota){
         int contador = CONTADOR * 2; // 2 words
         int[] leituras = new int[contador];
         int referencia;
@@ -128,7 +128,7 @@ public class ControleUnidade {
 
         //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, leituras);
-    }
+    }*/
     
     //Le da central os servicos de uma remota
     public void getUnidadesServicos(Remota remota){
@@ -196,7 +196,7 @@ public class ControleUnidade {
     
     //Escreve na central matriculas dos hidrometros de uma remota
     public void setUnidadesMatriculaHidrometro(Remota remota){
-        int contador = CONTADOR * 2; // word
+        int contador = CONTADOR * 2; // 2 word
         int[] matriculas = new int[contador];
         int referencia;
         int contar = 0;

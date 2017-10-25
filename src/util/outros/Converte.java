@@ -19,7 +19,7 @@ public class Converte {
         
         for(int i = 0; i < tamCaracteres; i+=2){
             if( i != tamCaracteres - 1){
-                numeros[contar] = (int)caracteres[i] * 256 + (int)caracteres[i + 1] ;
+                numeros[contar] = (int)caracteres[i] + (int)caracteres[i + 1] * 256 ;
                 contar++;
             }else{
                 numeros[contar] = (int)caracteres[i];
@@ -36,8 +36,8 @@ public class Converte {
         for(int n: numeros){
             if(n > 0){
                 if( n > 256){
-                    char a = (char) (n / 256);
-                    char b = (char) (n % 256);
+                    char a = (char) (n % 256);
+                    char b = (char) (n / 256);
 
                     palavra = palavra + String.valueOf(a);
                     palavra = palavra + String.valueOf(b);
@@ -56,12 +56,12 @@ public class Converte {
         return a * fator + b;
     }
     
-    public static int intWordMenos(int num, int fator){
-        return num % fator;
-    }
-    
     public static int intWordMais(int num, int fator){
         return num / fator;
+    }
+    
+    public static int intWordMenos(int num, int fator){
+        return num % fator;
     }
     
 }

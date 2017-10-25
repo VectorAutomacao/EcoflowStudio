@@ -152,6 +152,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Unidade"));
 
         jLabel7.setText("Leitura:");
+        jLabel7.setEnabled(false);
 
         jLabel5.setText("Serviço:");
 
@@ -178,6 +179,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfMatriculaUnidade.setDocument(new CampoInt(10));
 
         tfLeituraUnidade.setDocument(new CampoInt(10));
+        tfLeituraUnidade.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -402,8 +404,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         if(
             !tfNomeUnidade.getText().trim().isEmpty() &&
             !tfMatriculaUnidade.getText().trim().isEmpty() &&
-            !tfNumeroUnidade.getText().trim().isEmpty() &&
-            !tfLeituraUnidade.getText().trim().isEmpty()
+            !tfNumeroUnidade.getText().trim().isEmpty()
         ){
             if(tbUnidade.getSelectedRow() != -1){
                 //Seleciona unidade
@@ -414,7 +415,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
                 un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
                 un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
-                un.setLeitura( Integer.parseInt(tfLeituraUnidade.getText().trim() ) );
                 
                 //Escreve na central
                 controleCentral.setUnidades( remotaSelecionada );
