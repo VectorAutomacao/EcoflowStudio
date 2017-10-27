@@ -52,8 +52,12 @@ public class Converte {
         return palavra;
     }
     
-    public static int doubleWordInt(int a, int b, int fator){        
+    public static int doubleWordIntMais(int a, int b, int fator){        
         return a * fator + b;
+    }
+    
+    public static int doubleWordIntMenos(int a, int b, int fator){        
+        return a + b * fator;
     }
     
     public static int intWordMais(int num, int fator){

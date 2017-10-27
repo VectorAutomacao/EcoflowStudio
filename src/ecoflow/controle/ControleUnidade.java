@@ -42,7 +42,7 @@ public class ControleUnidade {
     }
     
     public void getUnidades(Remota remota){
-        getUnidadesLeituras(remota);
+        //getUnidadesLeituras(remota);
         getUnidadesServicos(remota);
         getUnidadesMatriculaHidrometro(remota);
         getUnidadesNumeroHidrometro(remota);
@@ -74,7 +74,7 @@ public class ControleUnidade {
             //Converte o double word
             for(int i = 0; i < contador; i += 2){
                 Unidade un = unidades.get(contar);
-                un.setLeitura( Converte.doubleWordInt(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
+                un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
                 contar++;
             }
             referencia += contador;
@@ -98,7 +98,7 @@ public class ControleUnidade {
         //Converte o double word
         for(int i = 0; i < contador; i += 2){
             Unidade un = unidades.get(contar);
-            un.setLeitura( Converte.doubleWordInt(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
+            un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
             contar++;
         }
     }
@@ -189,7 +189,7 @@ public class ControleUnidade {
             Unidade un = new Unidade();
             
             un = unidades.get(contar);
-            un.setMatriculaHidrometro(Converte.doubleWordInt(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
+            un.setMatriculaHidrometro(Converte.doubleWordIntMenos(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
             contar++;
         }
     }
@@ -206,8 +206,8 @@ public class ControleUnidade {
         for(Unidade un: unidades){
             int a, b;
             
-            a = Converte.intWordMais(un.getMatriculaHidrometro(), FATORMULTIPLICATIVO);
-            b = Converte.intWordMenos(un.getMatriculaHidrometro(), FATORMULTIPLICATIVO);
+            a = Converte.intWordMenos(un.getMatriculaHidrometro(), FATORMULTIPLICATIVO);
+            b = Converte.intWordMais(un.getMatriculaHidrometro(), FATORMULTIPLICATIVO);
             matriculas[contar] = a;
             contar++;
             matriculas[contar] = b;
