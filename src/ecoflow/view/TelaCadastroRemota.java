@@ -170,7 +170,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
         tfNumeroUnidade.setDocument(new CampoStringIntUpperCase(12));
 
-        tfMatriculaUnidade.setDocument(new CampoInt(10));
+        tfMatriculaUnidade.setDocument(new CampoInt(8));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

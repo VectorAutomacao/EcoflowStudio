@@ -17,4 +17,10 @@
     <qtdRemotas>0</qtdRemotas>
     <remotas/>
   </central>
+  <central>
+    <id>5</id>
+    <nome>Central</nome>
+    <qtdRemotas>0</qtdRemotas>
+    <remotas/>
+  </central>
 </list>
