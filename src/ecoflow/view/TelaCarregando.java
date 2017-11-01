@@ -5,6 +5,8 @@
  */
 package ecoflow.view;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author v1n1c
@@ -31,6 +33,8 @@ public class TelaCarregando extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage("./imagem/ECOFlow.png"));
+        setResizable(false);
 
         jLabel1.setText("Carregando...");
 
