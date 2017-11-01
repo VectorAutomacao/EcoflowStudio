@@ -34,6 +34,8 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         
     private TCPMasterConnection tcp;
     
+    private Boolean flag = true;
+    
     /**
      * Creates new form TelaCentral
      */
@@ -263,6 +265,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
     private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCentralMouseClicked
         // TODO add your handling code here:
+        
         //Verifica se uma linha foi selecionada
         if(tbCentral.getSelectedRow() != -1 ){
             //Verifica o duplo click do mouse
@@ -271,30 +274,37 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );                    
             }else{
                 
-                //Verifica se central selecionada na tabela é mesma conectada
-                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                if(flag){
+                    flag = false;
+                    //Verifica se central selecionada na tabela é mesma conectada
+                    if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+
+                        //Inicia tela carregando
+                        final TelaCarregando telaCarregando = new TelaCarregando();
+                        telaCarregando.setVisible(true);
+
+
+                        //Thread para processamento
+                        Thread t = new Thread(){
+                            public void run(){
+
+                                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+
+                                //Fechar tela carregando
+                                telaCarregando.dispose();
                                 
-                    //Inicia tela carregando
-                    final TelaCarregando telaCarregando = new TelaCarregando();
-                    telaCarregando.setVisible(true);
+                                flag = true;
+                            }
+                        };
 
-
-                    //Thread para processamento
-                    Thread t = new Thread(){
-                        public void run(){
-
-                                TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                                Tela.chamarInternalFrame(desktopPane,telaRemota, true);
-
-                            //Fechar tela carregando
-                            telaCarregando.dispose();
-                        }
-                    };
-
-                    t.start();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                }                                
+                        t.start();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                        flag = true;
+                    }                                
+                }
+                
             }
         }
     }//GEN-LAST:event_tbCentralMouseClicked

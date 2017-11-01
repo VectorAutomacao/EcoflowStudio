@@ -37,6 +37,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         
     private TCPMasterConnection tcp;
     
+    private Boolean flag = true;
+    
 
     /**
      * Creates new form TelaRemota
@@ -330,33 +332,41 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
         // TODO add your handling code here:
         
-        //Verifica se uma linha foi selecionada
-        if(tbRemota.getSelectedRow() != -1){
-        
-            //Iniciar tela carregando
-            final TelaCarregando telaCarregando = new TelaCarregando();
-            telaCarregando.setVisible(true);
+        if(flag){
             
-            //Thread para processamento
-            Thread t = new Thread(){
-                public void run(){
-                    //Le na central as unidades de uma remota
-                    controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
+            flag = false;
+            
+            //Verifica se uma linha foi selecionada
+            if(tbRemota.getSelectedRow() != -1){
 
-                    //Seleciona remota atualizada
-                    remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-                    //Atualiza tabela
-                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                    
-                    //Fecha tela carregando
-                    telaCarregando.dispose();
-                }
-                
-            };        
-            
-            t.start();
-        
+                //Iniciar tela carregando
+                final TelaCarregando telaCarregando = new TelaCarregando();
+                telaCarregando.setVisible(true);
+
+                //Thread para processamento
+                Thread t = new Thread(){
+                    public void run(){
+                        //Le na central as unidades de uma remota
+                        controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
+
+                        //Seleciona remota atualizada
+                        remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+                        //Atualiza tabela
+                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+
+                        //Fecha tela carregando
+                        telaCarregando.dispose();
+                        
+                        flag = true;
+                    }
+
+                };        
+
+                t.start();
+
+            }
         }
+        
     }//GEN-LAST:event_tbRemotaMouseClicked
 
     private void btAdicionarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarRemotaActionPerformed
