@@ -330,16 +330,32 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
         // TODO add your handling code here:
         
+        //Iniciar tela carregando
+        final TelaCarregando telaCarregando = new TelaCarregando();
+        telaCarregando.setVisible(true);
         
         //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
-            //Le na central as unidades de uma remota
-            controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
             
-            //Seleciona remota atualizada
-            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-            //Atualiza tabela
-            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+            //Thread para processamento
+            Thread t = new Thread(){
+                public void run(){
+                    //Le na central as unidades de uma remota
+                    controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
+
+                    //Seleciona remota atualizada
+                    remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+                    //Atualiza tabela
+                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                    
+                    //Fecha tela carregando
+                    telaCarregando.dispose();
+                }
+                
+            };        
+            
+            t.start();
+        
         }
     }//GEN-LAST:event_tbRemotaMouseClicked
 

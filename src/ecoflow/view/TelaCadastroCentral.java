@@ -270,13 +270,31 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
                 tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );                    
             }else{
-                //Verifica se central selecionada na tabela é mesma conectada
-                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
-                }else{
-                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                }
+                                
+                //Inicia tela carregando
+                final TelaCarregando telaCarregando = new TelaCarregando();
+                telaCarregando.setVisible(true);
+                
+                
+                //Thread para processamento
+                Thread t = new Thread(){
+                    public void run(){
+                        
+                        //Verifica se central selecionada na tabela é mesma conectada
+                        if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                            TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                            Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                        }
+                        
+                        //Fechar tela carregando
+                        telaCarregando.dispose();
+                    }
+                };
+                
+                t.start();
+                                
             }
         }
     }//GEN-LAST:event_tbCentralMouseClicked
