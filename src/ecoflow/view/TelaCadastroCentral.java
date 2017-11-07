@@ -276,6 +276,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 
                 if(flag){
                     flag = false;
+                    
                     //Verifica se central selecionada na tabela é mesma conectada
                     if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
 

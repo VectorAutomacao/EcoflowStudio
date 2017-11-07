@@ -331,103 +331,89 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
     private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
         // TODO add your handling code here:
-        
-        if(flag){
-            
-            flag = false;
-            
-            //Verifica se uma linha foi selecionada
-            if(tbRemota.getSelectedRow() != -1){
+                    
+        //Verifica se uma linha foi selecionada
+        if(tbRemota.getSelectedRow() != -1){
 
-                //Iniciar tela carregando
-                final TelaCarregando telaCarregando = new TelaCarregando();
-                telaCarregando.setVisible(true);
+            //Seleciona remota
+            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+            //Atualiza tabela
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
 
-                //Thread para processamento
-                Thread t = new Thread(){
-                    public void run(){
-                        //Le na central as unidades de uma remota
-                        controleCentral.getUnidades(centralSelcionada.getRemota(tbRemota.getSelectedRow() ) );
-
-                        //Seleciona remota atualizada
-                        remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-                        //Atualiza tabela
-                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-
-                        //Fecha tela carregando
-                        telaCarregando.dispose();
-                        
-                        flag = true;
-                    }
-
-                };        
-
-                t.start();
-
-            }
-        }
+        }        
         
     }//GEN-LAST:event_tbRemotaMouseClicked
 
     private void btAdicionarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarRemotaActionPerformed
         // TODO add your handling code here:
         
-        
-        if(!tfNomeRemota.getText().trim().isEmpty() ){
+        if(flag){
+            flag = false;
             
-            //Adicionar remota nova
-            controleCentral.addRemota(
-                    centralSelcionada, 
-                    tfNomeRemota.getText().trim(),
-                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
-            );            
-            //Recupera a ultima remota da lista
-            remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
-            //Atualiza tbRemota
-            remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-            //Atualiza tbUnidade
-            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-            //Salva xml da Central
-            controleCentral.saveCentralXML(centralSelcionada);
+            if(!tfNomeRemota.getText().trim().isEmpty() ){
+                        
+                //Adicionar remota nova
+                controleCentral.addRemota(
+                        centralSelcionada, 
+                        tfNomeRemota.getText().trim(),
+                        Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
+                );            
+                //Recupera a ultima remota da lista
+                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+                //Atualiza tbRemota
+                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                //Atualiza tbUnidade
+                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                //Salva xml da Central
+                controleCentral.saveCentralXML(centralSelcionada);
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Nome inválido! \n Caracteres válidos A-Z, 0-9.", "Alerta", JOptionPane.WARNING_MESSAGE);
+            }
             
-        }else{
-            JOptionPane.showMessageDialog(null, "Nome inválido! \n Caracteres válidos A-Z, 0-9.", "Alerta", JOptionPane.WARNING_MESSAGE);
+            flag = true;
         }
-        
+                
     }//GEN-LAST:event_btAdicionarRemotaActionPerformed
 
     private void btAterarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAterarUnidadeActionPerformed
         // TODO add your handling code here:
         Unidade un = new Unidade();
         
-        if(
-            !tfNomeUnidade.getText().trim().isEmpty() &&
-            !tfMatriculaUnidade.getText().trim().isEmpty() &&
-            !tfNumeroUnidade.getText().trim().isEmpty()
-        ){
-            if(tbUnidade.getSelectedRow() != -1){
-                //Seleciona unidade
-                un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
-                
-                //Altera unidade
-                un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
-                un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
-                un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
-                un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
-                
-                //Escreve na central
-                controleCentral.setUnidades( remotaSelecionada );
-                //Atualiza tbUnidade
-                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                //Salva xml da Central
-                controleCentral.saveCentralXML(centralSelcionada);
+        if(flag){
+            flag = false;
+            
+            if(
+                !tfNomeUnidade.getText().trim().isEmpty() &&
+                !tfMatriculaUnidade.getText().trim().isEmpty() &&
+                !tfNumeroUnidade.getText().trim().isEmpty()
+            ){
+                if(tbUnidade.getSelectedRow() != -1){
+                    //Seleciona unidade
+                    un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+
+                    //Altera unidade
+                    un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
+                    un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
+                    un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
+                    un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
+
+                    //Escreve na central
+                    controleCentral.setUnidades( remotaSelecionada );
+                    //Atualiza tbUnidade
+                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                    //Salva xml da Central
+                    controleCentral.saveCentralXML(centralSelcionada);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                }
             }else{
-                JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
+            
+            flag = true;
         }
-        
+                
     }//GEN-LAST:event_btAterarUnidadeActionPerformed
 
     private void tbUnidadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadeMouseClicked

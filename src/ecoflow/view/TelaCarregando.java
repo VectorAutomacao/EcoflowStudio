@@ -33,6 +33,7 @@ public class TelaCarregando extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setAlwaysOnTop(true);
         setIconImage(Toolkit.getDefaultToolkit().getImage("./imagem/ECOFlow.png"));
         setResizable(false);
 
