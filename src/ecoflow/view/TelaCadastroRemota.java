@@ -53,14 +53,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         //Senão existir o arquivo cria um xml
         controleCentral.criarCentralXML(c);
         
-        //Le o arquivo xml da central
-        centralSelcionada = controleCentral.getCentralXML(c);
-        
-        //Verifica se quantidade remotas são iguais
-        if(centralSelcionada.getQtdRemotas() != controleCentral.getQtdRemota() ){
-            centralSelcionada = controleCentral.getCentral();
-            controleCentral.saveCentralXML(centralSelcionada);
-        }
+        //Le a central toda
+        centralSelcionada = controleCentral.getCentral();
+        //Salva o xml da central
+        controleCentral.saveCentralXML(centralSelcionada);
+    
         
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);

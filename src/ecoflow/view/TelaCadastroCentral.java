@@ -232,35 +232,42 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Central c = new Central();
         
-        //Verifica se campos textFiel não estão em branco
-        if(
-            !tfId.getText().isEmpty() &&
-            !tfNome.getText().isEmpty()
-        ){  
-             //Verifica se central possui id
-            if(controleCentral.getIdCentral() == 0){   
-                //Configura objeto central
-                c.setId( Integer.parseInt(tfId.getText().trim() ) );
-                c.setNome(tfNome.getText().trim() );
-
-                adicionarNovaCentral(c);
-            }else{
-                //Configura objeto central
-                c.setId(controleCentral.getIdCentral() );
-                c.setNome(tfNome.getText().trim() );
-                
-                //Verifica se central já esta cadastrado
-                if(!controleCentral.igual(c, listaCentral) ){   
-                    //Altera lista de centrais
-                    adicionarNovaCentral(c);                    
-                }else{
-                    JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                }
-            }            
+        if(flag){
+            flag = false;
             
-        }else{
-            JOptionPane.showMessageDialog(null, "Identificador ou Nome em branco", "Inválido", JOptionPane.ERROR_MESSAGE);
+            //Verifica se campos textFiel não estão em branco
+            if(
+                !tfId.getText().isEmpty() &&
+                !tfNome.getText().isEmpty()
+            ){  
+                 //Verifica se central possui id
+                if(controleCentral.getIdCentral() == 0){   
+                    //Configura objeto central
+                    c.setId( Integer.parseInt(tfId.getText().trim() ) );
+                    c.setNome(tfNome.getText().trim() );
+
+                    adicionarNovaCentral(c);
+                }else{
+                    //Configura objeto central
+                    c.setId(controleCentral.getIdCentral() );
+                    c.setNome(tfNome.getText().trim() );
+
+                    //Verifica se central já esta cadastrado
+                    if(!controleCentral.igual(c, listaCentral) ){   
+                        //Altera lista de centrais
+                        adicionarNovaCentral(c);                    
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                    }
+                }            
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Identificador ou Nome em branco", "Inválido", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            flag = true;
         }
+        
     }//GEN-LAST:event_btAdicionarActionPerformed
 
     private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCentralMouseClicked
@@ -314,41 +321,48 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Central c = new Central();
         
-        //Verifica se campos são não nulos e se uma linha na tabela central foi selecionado
-        if(
-            tbCentral.getSelectedRow() != -1 &&
-            !tfId.getText().isEmpty() &&
-            !tfNome.getText().isEmpty() &&
-            !controleCentral.igual(c, listaCentral)
-        ){
-            //Verifica se central selecionada na tabela e a mesma central conectada
-            if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-                //configurar objeto central
-                c.setId( Integer.parseInt(tfId.getText().trim()) );
-                c.setNome(tfNome.getText().trim() );
+        if(flag){
+            flag = false;
+            
+            //Verifica se campos são não nulos e se uma linha na tabela central foi selecionado
+            if(
+                tbCentral.getSelectedRow() != -1 &&
+                !tfId.getText().isEmpty() &&
+                !tfNome.getText().isEmpty() &&
+                !controleCentral.igual(c, listaCentral)
+            ){
+                //Verifica se central selecionada na tabela e a mesma central conectada
+                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                    //configurar objeto central
+                    c.setId( Integer.parseInt(tfId.getText().trim()) );
+                    c.setNome(tfNome.getText().trim() );
 
-                //Escrever na central
-                controleCentral.setIdCentral(c);
+                    //Escrever na central
+                    controleCentral.setIdCentral(c);
 
-                //Altera lista de centrais
-                controleCentral.setListaCentral( tbCentral.getSelectedRow(), c, listaCentral);
+                    //Altera lista de centrais
+                    controleCentral.setListaCentral( tbCentral.getSelectedRow(), c, listaCentral);
 
-                //Atualiza tabela
-                centralTableModel.setCentrais(listaCentral);
+                    //Atualiza tabela
+                    centralTableModel.setCentrais(listaCentral);
 
-                //Salva lista
-                controleCentral.saveListaCentralXML(listaCentral);
+                    //Salva lista
+                    controleCentral.saveListaCentralXML(listaCentral);
 
-                //limpar textField
-                tfId.setText("");
-                tfNome.setText("");
-                
+                    //limpar textField
+                    tfId.setText("");
+                    tfNome.setText("");
+
+                }else{
+                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                }
             }else{
-                JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Identicador ou nome invalido ou linha na tabela não selecionada.", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Identicador ou nome invalido ou linha na tabela não selecionada.", "Alerta", JOptionPane.WARNING_MESSAGE);
+            
+            flag = true;
         }
+        
     }//GEN-LAST:event_btAlterarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
