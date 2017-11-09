@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.modbus.ModbusConexao;
-import util.modbus.ModbusRegistro;
 
 /**
  *
@@ -27,12 +26,16 @@ public class ControleConexao {
     private final String NOMEPORTA = "prop.porta";
     private final String NOMETIMEOUT = "prop.timeout";
     
+    private static Conexao conexao = new Conexao();
+    private static TCPMasterConnection con = null;
+    
     private final int CONTADOR = 1;
     private final int REFERENCIA = 0;
     
+    ModbusConexao mc = new ModbusConexao();
+    
     //Leitura do arquivo properties de conexão
-    public Conexao getConexao(){
-        Conexao conexao = new Conexao();
+    public void readConexao(){
         Properties props = new Properties();
         
         //Le arquivo properties
@@ -49,6 +52,10 @@ public class ControleConexao {
         conexao.setPorta(Integer.parseInt(props.getProperty(NOMEPORTA) ) );
         conexao.setTimeOut( Integer.parseInt(props.getProperty(NOMETIMEOUT) ) );
         
+    }
+    
+    public Conexao getConexao(){
+        readConexao();
         return conexao;
     }
     
@@ -67,32 +74,19 @@ public class ControleConexao {
     
     //Retorna conexão TCP master configurada
     public TCPMasterConnection getTcpMasterConnection(){
-        TCPMasterConnection tcpMasterConnection;
-        ModbusConexao mc = new ModbusConexao();
-        Conexao c = getConexao();
+        readConexao();
         
         //Configura conexão TCP master
-        tcpMasterConnection = mc.configurar(c.getIp(), c.getPorta() );
-        tcpMasterConnection.setTimeout(c.getTimeOut() );
-        
-        return tcpMasterConnection;
+        return con = mc.configurar(conexao.getIp(), conexao.getPorta(), conexao.getTimeOut() );
+    }
+    
+    public void setTcpMasterConnection(TCPMasterConnection conTcp){
+        mc.setTCPMasterConnection(conTcp);
     }
     
     //Testa conexão TCP
-    public Boolean testarConexao(){
-        int[] respostas = new int[CONTADOR];
-        TCPMasterConnection tcp = getTcpMasterConnection();
-        
-        //le um registro da central
-        respostas = ModbusRegistro.ler(tcp, REFERENCIA, CONTADOR);
-        
-        tcp.close();
-        
-        if(respostas != null){
-            return true;
-        }else{
-            return false;
-        }        
+    public Boolean testarConexao(){        
+       return con.isConnected();
     }
        
 }

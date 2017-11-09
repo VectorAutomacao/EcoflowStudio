@@ -1,6 +1,8 @@
 package util.modbus;
 
 import javax.swing.JOptionPane;
+import net.wimpi.modbus.ModbusException;
+import net.wimpi.modbus.ModbusSlaveException;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ReadMultipleRegistersRequest;
 import net.wimpi.modbus.msg.ReadMultipleRegistersResponse;
@@ -14,133 +16,87 @@ import net.wimpi.modbus.procimg.SimpleRegister;
 
 public class ModbusRegistro {
     
-    public static boolean escrever(TCPMasterConnection con, int ref, int valor){
+    public static void escrever(TCPMasterConnection con, int ref, int valor) throws ModbusSlaveException, ModbusException{
         /* Variáveis ​​para armazenar os parâmetros 
         ref = A referência; Desloca onde começar a ler
         valor = dados a ser escrito no registro*/
         
-        try {
-            /* As instâncias importantes das classes mencionadas anteriormente */
-            ModbusTCPTransaction        trans = null; //A transação
-            WriteSingleRegisterRequest  req = null; //o pedido
-            WriteSingleRegisterResponse res = null; //a resposta
-            
-            //Prepare o pedido
-            req = new WriteSingleRegisterRequest(ref, new SimpleRegister(valor) );
+        /* As instâncias importantes das classes mencionadas anteriormente */
+        ModbusTCPTransaction        trans = null; //A transação
+        WriteSingleRegisterRequest  req = null; //o pedido
+        WriteSingleRegisterResponse res = null; //a resposta
 
-            //Prepare a transação
-            trans = new ModbusTCPTransaction(con);
-            trans.setRequest(req);
-            
-            //Execute os tempos de repetição da transação
-            trans.execute();
-            
-            //Verifica se escreveu com sucesso
-            res = (WriteSingleRegisterResponse) trans.getResponse();
-            if( res.getReference() == ref && res.getRegisterValue() == valor ){
-                return true;
-            }else{
-                System.out.println("Erro ao escrever no unico registro! referencia ou valor não corresponde.");
-                return false; 
-            }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erro ao escrever no unico registro!");
-            
-            return false;
-        }
+        //Prepare o pedido
+        req = new WriteSingleRegisterRequest(ref, new SimpleRegister(valor) );
+
+        //Prepare a transação
+        trans = new ModbusTCPTransaction(con);
+        trans.setRequest(req);
+
+        //Execute os tempos de repetição da transação
+        trans.execute();
         
     }
     
-    public static boolean escrever(TCPMasterConnection con, int ref, int[] valores){
-            /* Variáveis ​​para armazenar os parâmetros 
-            ref = A referência; Desloca onde começar a ler*/
-        
-        try {
-            /* As instâncias importantes das classes mencionadas anteriormente */
-            ModbusTCPTransaction            trans = null; //A transação
-            WriteMultipleRegistersRequest   req = null; //o pedido
-            WriteMultipleRegistersResponse  res = null; //a resposta
-            
-            //Prepare o pedido
-            int sizeValores = valores.length;            
-            Register [] reg = new Register[sizeValores];
-            for(int i = 0; i < sizeValores; i++){
-                reg[i] = new SimpleRegister( valores[i] );
-            }
-            req = new WriteMultipleRegistersRequest(ref, reg);
-            
-            //Prepare a transação
-            trans = new ModbusTCPTransaction(con);
-            trans.setRequest(req);
-            
-            //Execute os tempos de repetição da transação
-            trans.execute();
-            
-            //Verifica se escreveu com sucesso
-            res = (WriteMultipleRegistersResponse) trans.getResponse();
-            if( res.getReference() == ref && res.getWordCount() == sizeValores ){
-                return true;
-            }else{
-                System.out.println("Erro ao escrever nos multiplos registro! referencia ou quantidade valores não corresponde.");
-                JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro! referencia ou quantidade valores não corresponde.", "Erro", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao escrever nos multiplos registro!");
-            JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            
-            return false;
+    public static void escrever(TCPMasterConnection con, int ref, int[] valores) throws ModbusSlaveException, ModbusException{
+        /* Variáveis ​​para armazenar os parâmetros 
+        ref = A referência; Desloca onde começar a ler*/
+
+        /* As instâncias importantes das classes mencionadas anteriormente */
+        ModbusTCPTransaction            trans = null; //A transação
+        WriteMultipleRegistersRequest   req = null; //o pedido
+        WriteMultipleRegistersResponse  res = null; //a resposta
+
+        //Prepare o pedido
+        int sizeValores = valores.length;            
+        Register [] reg = new Register[sizeValores];
+        for(int i = 0; i < sizeValores; i++){
+            reg[i] = new SimpleRegister( valores[i] );
         }
-        
+        req = new WriteMultipleRegistersRequest(ref, reg);
+
+        //Prepare a transação
+        trans = new ModbusTCPTransaction(con);
+        trans.setRequest(req);
+
+        //Execute os tempos de repetição da transação
+        trans.execute();
+                
     }
     
-    public static int[] ler(TCPMasterConnection con, int ref, int count){
-            /* Variáveis ​​para armazenar os parâmetros 
-            ref = A referência; Desloca onde começar a ler
-            count = O número de DI's para ler
-            e numero de loop para repetir a transação*/
-            
-            //Vetor de resposta
-            int[] valores = new int[count];
-        
-        try {            
-            /* As instâncias importantes das classes mencionadas anteriormente */
-            ModbusTCPTransaction            trans = null; //A transação
-            ReadMultipleRegistersRequest    req = null; //o pedido
-            ReadMultipleRegistersResponse   res = null; //a resposta
-            
-            //Prepare o pedido
-            req = new ReadMultipleRegistersRequest(ref, count);
-            
-            //Prepare a transação
-            trans = new ModbusTCPTransaction(con);
-            trans.setRequest(req);
-            
-            //Execute os tempos de repetição da transação
-            trans.execute();
-            
-            //Retorno dos valores solicitados
-            int k = 0;
-            res = (ReadMultipleRegistersResponse) trans.getResponse();
-            do {
-                valores[k] = res.getRegisterValue(k);
-                k++;
-            } while (k < count);
-            
-            return valores;
-            
-        } catch (Exception e) {
-            System.out.println("Erro ao ler multiplos registro!");
-            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-            
-            return null;
-        }
-        
+    public static int[] ler(TCPMasterConnection con, int ref, int count) throws ModbusSlaveException, ModbusException{
+        /* Variáveis ​​para armazenar os parâmetros 
+        ref = A referência; Desloca onde começar a ler
+        count = O número de DI's para ler
+        e numero de loop para repetir a transação*/
+
+        //Vetor de resposta
+        int[] valores = new int[count];
+
+        /* As instâncias importantes das classes mencionadas anteriormente */
+        ModbusTCPTransaction            trans = null; //A transação
+        ReadMultipleRegistersRequest    req = null; //o pedido
+        ReadMultipleRegistersResponse   res = null; //a resposta
+
+        //Prepare o pedido
+        req = new ReadMultipleRegistersRequest(ref, count);
+
+        //Prepare a transação
+        trans = new ModbusTCPTransaction(con);
+        trans.setRequest(req);
+
+        //Execute os tempos de repetição da transação
+        trans.execute();
+
+        //Retorno dos valores solicitados
+        int k = 0;
+        res = (ReadMultipleRegistersResponse) trans.getResponse();
+        do {
+            valores[k] = res.getRegisterValue(k);
+            k++;
+        } while (k < count);
+
+        return valores;        
     }
     
 }

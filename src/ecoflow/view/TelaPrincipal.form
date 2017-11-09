@@ -24,12 +24,20 @@
             <Property name="text" type="java.lang.String" value="Em Campo"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="miBuscarLeitura">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Buscar Leituras da Central"/>
+                <Property name="text" type="java.lang.String" value="Buscar Leituras"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miBuscarLeituraActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="miEditarLeitura">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Editar Leituras"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miEditarLeituraActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

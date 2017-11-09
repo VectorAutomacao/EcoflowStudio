@@ -44,6 +44,13 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         
         this.desktopPane = dp;
         
+        //Reseta conexao
+        controleConexao.setTcpMasterConnection(null);
+        
+        //Configurando a conexao
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp);
+                
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
         tbCentral.setRowSorter(new TableRowSorter(centralTableModel) ); // Ordenar tbCentral
@@ -54,12 +61,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         //Mostra lista de centrais já cadastrado
         listaCentral = controleCentral.getListaCentralXML();
         centralTableModel.setCentrais(listaCentral);
-        
-        //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
-        
-        
+               
     }
     
     public Central getCentral(){
@@ -68,6 +70,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     
     private void adicionarNovaCentral(Central c){
         if( !controleCentral.igual(c, listaCentral) ){
+                        
             //Escrever na central
             controleCentral.setIdCentral(c);
             
@@ -78,7 +81,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
             controleCentral.saveListaCentralXML(listaCentral);
 
             //Atualizar tbCentral
-            centralTableModel.setCentrais(listaCentral);
+            centralTableModel.setCentrais(listaCentral);            
 
         }else{
             JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -232,9 +235,10 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         Central c = new Central();
         
+        
         if(flag){
             flag = false;
-            
+                        
             //Verifica se campos textFiel não estão em branco
             if(
                 !tfId.getText().isEmpty() &&
@@ -264,7 +268,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Identificador ou Nome em branco", "Inválido", JOptionPane.ERROR_MESSAGE);
             }
-            
+                        
             flag = true;
         }
         
@@ -272,7 +276,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
     private void tbCentralMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCentralMouseClicked
         // TODO add your handling code here:
-        
+                
         //Verifica se uma linha foi selecionada
         if(tbCentral.getSelectedRow() != -1 ){
             //Verifica o duplo click do mouse
@@ -295,9 +299,10 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                         //Thread para processamento
                         Thread t = new Thread(){
                             public void run(){
-
-                                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                                
+                                //Inicia tela cadastro de remotas
+                                TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                                Tela.chamarInternalFrame(desktopPane,telaRemota, true);
 
                                 //Fechar tela carregando
                                 telaCarregando.dispose();
@@ -315,15 +320,17 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 
             }
         }
+        
     }//GEN-LAST:event_tbCentralMouseClicked
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
         // TODO add your handling code here:
         Central c = new Central();
         
+        
         if(flag){
             flag = false;
-            
+                        
             //Verifica se campos são não nulos e se uma linha na tabela central foi selecionado
             if(
                 tbCentral.getSelectedRow() != -1 &&

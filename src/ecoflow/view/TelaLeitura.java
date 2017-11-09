@@ -24,29 +24,32 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  * @author vinicius
  */
 public class TelaLeitura extends javax.swing.JInternalFrame {
-    
-    private int                 idCentral;
-    private int                 qtdRemota;
-    
+        
     private Central             central             = new Central();
     private List<Unidade>       unidades            = new ArrayList<>();
     
     private UnidadesTableModel  unidadesTableModel  = new UnidadesTableModel();
+    
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
     
-    private TCPMasterConnection tcp;
+    static TCPMasterConnection tcp;
+    
+    private Boolean flag = true;
+    
     /**
      * Creates new form Unidade
      */
     public TelaLeitura() {
         initComponents();
         
+        //Reseta conexao
+        controleConexao.setTcpMasterConnection(null);
+        
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);        
-        
-        
+        controleCentral.setTcpMasterConnection(tcp);
+               
         //Configurando tbUnidades
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
@@ -152,35 +155,40 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
+        int idCentral;
+        int qtdRemota;
         
-        //Le na central
-        idCentral = controleCentral.getIdCentral();
-        qtdRemota = controleCentral.getQtdRemota();
-        
-        //Configura Central
-        central.setId(idCentral);
-        
-        //Le arquivo xml
-        central = controleCentral.getCentralXML(central);
-        
-        if(central != null){
-            if(central.getQtdRemotas() == qtdRemota){
-                //Recupera lista de unidades
-                controleCentral.getRemotasLeituras(central.getRemotas() );
-                unidades = controleCentral.listaUnidadesCentral(central);
+        if(flag){
+            flag = false;
+            
+            //Le na central
+            idCentral = controleCentral.getIdCentral();
+            qtdRemota = controleCentral.getQtdRemota();
 
-                //Atualizar tabela
-                unidadesTableModel.setUnidades(unidades);
+            //Le arquivo xml
+            central = controleCentral.getCentralXML(idCentral);
 
-                //Ativa botão salvar
-                btSalvar.setEnabled(true); 
+            if(central != null){
+                if(central.getQtdRemotas() == qtdRemota){
+                    //Recupera lista de unidades
+                    controleCentral.getRemotasLeituras(central.getRemotas() );
+                    unidades = controleCentral.listaUnidadesCentral(central);
+
+                    //Atualizar tabela
+                    unidadesTableModel.setUnidades(unidades);
+
+                    //Ativa botão salvar
+                    btSalvar.setEnabled(true); 
+                }else{
+                    JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
             }else{
-                JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            
+            flag = true;
         }
-        
+               
     }//GEN-LAST:event_btLeituraActionPerformed
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed

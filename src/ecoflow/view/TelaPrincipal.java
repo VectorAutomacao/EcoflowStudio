@@ -37,7 +37,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         imCadastrarCentral = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        miBuscarLeitura = new javax.swing.JMenuItem();
+        miEditarLeitura = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         imConexao = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -80,13 +81,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenu4.setText("Em Campo");
 
-        jMenuItem1.setText("Buscar Leituras da Central");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        miBuscarLeitura.setText("Buscar Leituras");
+        miBuscarLeitura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                miBuscarLeituraActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem1);
+        jMenu4.add(miBuscarLeitura);
+
+        miEditarLeitura.setText("Editar Leituras");
+        miEditarLeitura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEditarLeituraActionPerformed(evt);
+            }
+        });
+        jMenu4.add(miEditarLeitura);
 
         jMenuBar1.add(jMenu4);
 
@@ -142,15 +151,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
         Tela.chamarInternalFrame(dpTelaPrincipal, editarConexao, false);
     }//GEN-LAST:event_imConexaoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void miBuscarLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarLeituraActionPerformed
         TelaLeitura telaUnidade = new TelaLeitura();
         Tela.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_miBuscarLeituraActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
         TelaCadastroCentral telaCentral = new TelaCadastroCentral(dpTelaPrincipal);
         Tela.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
+
+    private void miEditarLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarLeituraActionPerformed
+        // TODO add your handling code here:
+        TelaEditarLeitura telaEditarLeitura = new TelaEditarLeitura();
+        Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
+    }//GEN-LAST:event_miEditarLeituraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,7 +212,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem miBuscarLeitura;
+    private javax.swing.JMenuItem miEditarLeitura;
     // End of variables declaration//GEN-END:variables
 }

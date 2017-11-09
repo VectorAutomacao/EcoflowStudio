@@ -35,7 +35,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
         
-    private TCPMasterConnection tcp;
+    private static TCPMasterConnection tcp;
     
     private Boolean flag = true;
     
@@ -45,6 +45,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
      */
     public TelaCadastroRemota(Central c) {
         initComponents();
+        
+        //Reseta conexao
+        controleConexao.setTcpMasterConnection(null);
                 
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
@@ -68,7 +71,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordena tbUnidade
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(5) ); //Remove coluna leitura
-                        
+         
     }
 
     /**
@@ -108,6 +111,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
+        setPreferredSize(new java.awt.Dimension(700, 450));
 
         tbRemota.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -195,7 +199,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                         .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAterarUnidade)))
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +277,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                         .addComponent(tfNumeroRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAdicionarRemota)))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +308,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -318,7 +322,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -344,6 +348,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private void btAdicionarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarRemotaActionPerformed
         // TODO add your handling code here:
         
+        
         if(flag){
             flag = false;
             
@@ -367,15 +372,17 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Nome inválido! \n Caracteres válidos A-Z, 0-9.", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
-            
+                        
             flag = true;
         }
+        
                 
     }//GEN-LAST:event_btAdicionarRemotaActionPerformed
 
     private void btAterarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAterarUnidadeActionPerformed
         // TODO add your handling code here:
         Unidade un = new Unidade();
+        
         
         if(flag){
             flag = false;
@@ -386,21 +393,25 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 !tfNumeroUnidade.getText().trim().isEmpty()
             ){
                 if(tbUnidade.getSelectedRow() != -1){
-                    //Seleciona unidade
-                    un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+                    try {
+                        //Seleciona unidade
+                        un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
 
-                    //Altera unidade
-                    un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
-                    un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
-                    un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
-                    un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
+                        //Altera unidade
+                        un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
+                        un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
+                        un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
+                        un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
 
-                    //Escreve na central
-                    controleCentral.setUnidades( remotaSelecionada );
-                    //Atualiza tbUnidade
-                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                    //Salva xml da Central
-                    controleCentral.saveCentralXML(centralSelcionada);
+                        //Escreve na central
+                        controleCentral.setUnidades( remotaSelecionada );
+                        //Atualiza tbUnidade
+                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                        //Salva xml da Central
+                        controleCentral.saveCentralXML(centralSelcionada);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }
@@ -409,7 +420,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             }
             
             flag = true;
-        }
+        }      
                 
     }//GEN-LAST:event_btAterarUnidadeActionPerformed
 

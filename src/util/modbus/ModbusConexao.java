@@ -6,30 +6,34 @@ import net.wimpi.modbus.net.TCPMasterConnection;
 
 public class ModbusConexao {
     
-    public TCPMasterConnection configurar(String ip, int porta){
+    private static TCPMasterConnection con = null;
+        
+    public TCPMasterConnection configurar(String ip, int porta, int timeOut){
                     
-        try {    
-            /* As instâncias importantes das classes mencionadas anteriormente */
-            TCPMasterConnection con = null; //a conexão
-
+        try {
             /* Variáveis ​​para armazenar os parâmetros */
             InetAddress addr = InetAddress.getByName(ip); //O endereço do escravo
             
             //2. Abra a conexão
-            con = new TCPMasterConnection(addr);
-            con.setPort(porta);
-            con.connect();
-            
-            return con;
+            if(con == null || !con.isConnected() ){
+                con = new TCPMasterConnection(addr);
+                con.setPort(porta);
+                con.setTimeout(timeOut);
+                con.connect();
+            }
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro ao criar a conexão!", "Alerta", JOptionPane.ERROR_MESSAGE);
             System.out.println("Erro ao criar a conexão!");
             ex.printStackTrace();
-            
-            return null;
         }
         
+        return con;
+        
+    }
+    
+    public void setTCPMasterConnection(TCPMasterConnection conexao){
+        this.con = conexao;    
     }
     
 }

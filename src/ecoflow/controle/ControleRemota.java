@@ -8,6 +8,10 @@ package ecoflow.controle;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.Remota;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.wimpi.modbus.ModbusException;
 import util.modbus.ModbusRegistro;
 
 /**
@@ -56,23 +60,31 @@ public class ControleRemota extends ControleUnidade{
         int qtd;
         List<Remota> remotas = central.getRemotas();
         
-        //Quantidade de remotas
-        qtd = remotas.size() + 1;
-        central.setQtdRemotas(qtd);
-        
-       //Escrever na central a quantidade de remotas
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAQTDREMOTA, qtd);
-        
-        //Configura id da nova remota
-        r.setId(remotas.size() );
-        //Cria uma lista de 16 unidades para remota
-        addUnidades(r, nome, servico);
-        
-        //Escrever na central
-        setUnidades(r);
-        
-        //Adiciona nova remota
-        remotas.add(r);
+        try {
+
+            //Quantidade de remotas
+            qtd = remotas.size() + 1;
+            central.setQtdRemotas(qtd);
+
+            //Escrever na central a quantidade de remotas
+            ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAQTDREMOTA, qtd);
+
+            //Configura id da nova remota
+            r.setId(remotas.size() );
+            //Cria uma lista de 16 unidades para remota
+            addUnidades(r, nome, servico);
+
+            //Escrever na central
+            setUnidades(r);
+
+            //Adiciona nova remota
+            remotas.add(r);
+            
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleRemota.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler e escrever os multiplos registro! "
+                    , "Erro", JOptionPane.ERROR_MESSAGE);                
+        }
         
     }
 
@@ -92,8 +104,16 @@ public class ControleRemota extends ControleUnidade{
     }*/
     
     public int getQtdRemota(){
-        int[] qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
-        return qtdRemotas[0];
+        int[] qtdRemotas;
+        
+        try {
+            qtdRemotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
+            return qtdRemotas[0];
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleRemota.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
     }
     
 }

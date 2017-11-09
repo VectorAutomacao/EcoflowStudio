@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.wimpi.modbus.ModbusException;
 import util.outros.Arquivo;
 import util.modbus.ModbusRegistro;
 
@@ -62,14 +63,28 @@ public class ControleCentral extends ControleRemota{
     public int getIdCentral(){
         int[] respostas = new int[1];
         
-        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAIDCENTRAL, 1);
+        try {
+            respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAIDCENTRAL, 1);
+            return respostas[0];
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
         
-        return respostas[0];
     }
     
     //Configura id na central
     public Boolean setIdCentral(Central c){
-        return ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAIDCENTRAL, c.getId() );
+        try {
+            ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAIDCENTRAL, c.getId() );
+            return true; 
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler os multiplos registro! "
+                    , "Erro", JOptionPane.ERROR_MESSAGE); 
+            return false;
+        }
     }
     
     //Cria o arquivo central senão existir
@@ -112,10 +127,10 @@ public class ControleCentral extends ControleRemota{
         }
     }
     
-    public Central getCentralXML(Central central){
+    public Central getCentralXML(int idCentral){
         try {
             //Recupera o arquivo de leitura
-            FileReader file = new FileReader(LOCALARQUIVO + central.getId() + ".xml" );
+            FileReader file = new FileReader(LOCALARQUIVO + idCentral + ".xml" );
             
             //Inicializa driver xstream
             XStream xstream = new XStream( new DomDriver() );

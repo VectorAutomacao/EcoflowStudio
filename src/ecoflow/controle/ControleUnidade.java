@@ -11,6 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -49,7 +53,7 @@ public class ControleUnidade {
         getUnidadesNome(remota);
     }
     
-    public void setUnidades(Remota remota){
+    public void setUnidades(Remota remota) throws ModbusException{
         //setUnidadesLeituras(remota);
         setUnidadesServicos(remota);
         setUnidadesMatriculaHidrometro(remota);
@@ -63,21 +67,29 @@ public class ControleUnidade {
         int referencia = REFERENCIALEITURA;
         int contar = 0;
         
-        int[] remotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
+        int[] remotas;
         
-        //Leitura por quantidade de remotas
-        for(int j = 0; j < remotas[0]; j++){
-            
-            //Leitura de uma remota
-            int[] leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
-            
-            //Converte o double word
-            for(int i = 0; i < contador; i += 2){
-                Unidade un = unidades.get(contar);
-                un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
-                contar++;
+        try {
+            remotas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAQTDREMOTA, 1);
+        
+            //Leitura por quantidade de remotas
+            for(int j = 0; j < remotas[0]; j++){
+
+                //Leitura de uma remota
+                int[] leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+
+                //Converte o double word
+                for(int i = 0; i < contador; i += 2){
+                    Unidade un = unidades.get(contar);
+                    un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
+                    contar++;
+                }
+                referencia += contador;
             }
-            referencia += contador;
+            
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -92,44 +104,22 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIALEITURA + contador * remota.getId();
 
-        //Leitura de uma remota
-        leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+        try {
+            //Leitura de uma remota
+            leituras = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
 
-        //Converte o double word
-        for(int i = 0; i < contador; i += 2){
-            Unidade un = unidades.get(contar);
-            un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
-            contar++;
+            //Converte o double word
+            for(int i = 0; i < contador; i += 2){
+                Unidade un = unidades.get(contar);
+                un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
+                contar++;
+            }
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    //Escreve na central as leituras de uma remota
-    /*public void setUnidadesLeituras(Remota remota){
-        int contador = CONTADOR * 2; // 2 words
-        int[] leituras = new int[contador];
-        int referencia;
-        int contar = 0;
-        List<Unidade> unidades = remota.getUnidades();
-
-        //Converte em double word
-        for(Unidade un: unidades){
-            int a, b;
-            
-            a = Converte.intWordMais(un.getLeitura(), FATORMULTIPLICATIVO);
-            b = Converte.intWordMenos(un.getLeitura(), FATORMULTIPLICATIVO);
-            leituras[contar] = a;
-            contar++;
-            leituras[contar] = b;
-            contar++;
-        }
         
-        //Calculo para inicio da leitura do registro
-        referencia = REFERENCIALEITURA + contador * remota.getId();
-
-        //Escreve em uma remota
-        ModbusRegistro.escrever(tcpMasterConnection, referencia, leituras);
-    }*/
-    
     //Le da central os servicos de uma remota
     public void getUnidadesServicos(Remota remota){
         int contador = CONTADOR; // 16 por remota 1 word
@@ -140,18 +130,24 @@ public class ControleUnidade {
         //Calculo para inicio do registro de servicos
         referencia = REFERENCIASERVICO + contador * remota.getId();
 
-        //Leitura de uma remota
-        servico = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+        try {
+            //Leitura de uma remota
+            servico = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
 
-        //Altera lista unidades
-        for(int i = 0; i < contador; i++){
-            Unidade un = unidades.get(i);
-            un.setServico( servico[i] );
+            //Altera lista unidades
+            for(int i = 0; i < contador; i++){
+                Unidade un = unidades.get(i);
+                un.setServico( servico[i] );
+            }
+            
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     //Escreve na central os servicos de uma remota
-    public void setUnidadesServicos(Remota remota){
+    public void setUnidadesServicos(Remota remota) throws ModbusException{
         int contador = CONTADOR; // 16 por remota 1 word
         int[] servico = new int[contador];
         int referencia;
@@ -181,21 +177,27 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIAMATRICULAHIDROMETRO + contador * remota.getId();
 
-        //Leitura de uma remota
-        matriculas = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+        try {
+            //Leitura de uma remota
+            matriculas = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
 
-        //Converte o double word
-        for(int i = 0; i < contador; i += 2){
-            Unidade un = new Unidade();
+            //Converte o double word
+            for(int i = 0; i < contador; i += 2){
+                Unidade un = new Unidade();
+
+                un = unidades.get(contar);
+                un.setMatriculaHidrometro(Converte.doubleWordIntMenos(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
+                contar++;
+            }
             
-            un = unidades.get(contar);
-            un.setMatriculaHidrometro(Converte.doubleWordIntMenos(matriculas[i], matriculas[i + 1], FATORMULTIPLICATIVO) );
-            contar++;
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     //Escreve na central matriculas dos hidrometros de uma remota
-    public void setUnidadesMatriculaHidrometro(Remota remota){
+    public void setUnidadesMatriculaHidrometro(Remota remota) throws ModbusException{
         int contador = CONTADOR * 2; // 2 word
         int[] matriculas = new int[contador];
         int referencia;
@@ -231,30 +233,35 @@ public class ControleUnidade {
         
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIANUMEROHIDROMETRO + contador * remota.getId();
+        
+        try {
+            //Leitura de uma remota
+            numeros = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
 
-        //Leitura de uma remota
-        numeros = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+            //Converte o double word
+            for(int i = 0; i < contador; i += 6){
+                Unidade un = new Unidade();
+                int[] numero = new int[6];
 
-        //Converte o double word
-        for(int i = 0; i < contador; i += 6){
-            Unidade un = new Unidade();
-            int[] numero = new int[6];
-            
-            numero[0] = numeros[i];
-            numero[1] = numeros[i + 1];
-            numero[2] = numeros[i + 2];
-            numero[3] = numeros[i + 3];
-            numero[4] = numeros[i + 4];
-            numero[5] = numeros[i + 5];
-            
-            un = unidades.get(contar);
-            un.setNumeroHidrometro(Converte.wordString(numero) );
-            contar++;
+                numero[0] = numeros[i];
+                numero[1] = numeros[i + 1];
+                numero[2] = numeros[i + 2];
+                numero[3] = numeros[i + 3];
+                numero[4] = numeros[i + 4];
+                numero[5] = numeros[i + 5];
+
+                un = unidades.get(contar);
+                un.setNumeroHidrometro(Converte.wordString(numero) );
+                contar++;
+            }
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     //Escreve na central numero de hidrometro
-    public void setUnidadesNumeroHidrometro(Remota remota){
+    public void setUnidadesNumeroHidrometro(Remota remota) throws ModbusException{
         int contador = CONTADOR * 6; // 6 word
         int[] numeros = new int[contador];
         int referencia;
@@ -293,28 +300,33 @@ public class ControleUnidade {
         //Calculo para inicio da leitura do registro
         referencia = REFERENCIANOME + contador * remota.getId();
 
-        //Leitura de uma remota
-        nomes = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
+        try {
+            //Leitura de uma remota
+            nomes = ModbusRegistro.ler(tcpMasterConnection, referencia, contador);
 
-        //Converte o double word
-        for(int i = 0; i < contador; i += 5){
-            Unidade un = new Unidade();
-            int[] nome = new int[5];
-            
-            nome[0] = nomes[i];
-            nome[1] = nomes[i + 1];
-            nome[2] = nomes[i + 2];
-            nome[3] = nomes[i + 3];
-            nome[4] = nomes[i + 4];
-            
-            un = unidades.get(contar);
-            un.setNome(Converte.wordString(nome) );
-            contar++;
+            //Converte o double word
+            for(int i = 0; i < contador; i += 5){
+                Unidade un = new Unidade();
+                int[] nome = new int[5];
+
+                nome[0] = nomes[i];
+                nome[1] = nomes[i + 1];
+                nome[2] = nomes[i + 2];
+                nome[3] = nomes[i + 3];
+                nome[4] = nomes[i + 4];
+
+                un = unidades.get(contar);
+                un.setNome(Converte.wordString(nome) );
+                contar++;
+            }
+        } catch (ModbusException ex) {
+            Logger.getLogger(ControleUnidade.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
     
     //Escreve na central nomes
-    public void setUnidadesNome(Remota remota){
+    public void setUnidadesNome(Remota remota) throws ModbusException{
         int contador = CONTADOR * 5; // 5 word
         int[] nomes = new int[contador];
         int referencia;
@@ -342,7 +354,7 @@ public class ControleUnidade {
         ModbusRegistro.escrever(tcpMasterConnection, referencia, nomes);
     }
         
-    public void addUnidades(Remota remota, String nome, int servico){
+    public void addUnidades(Remota remota, String nome, int servico) throws ModbusException{
         int nRemota = remota.getId();
         List<Unidade> unidades = remota.getUnidades();
 

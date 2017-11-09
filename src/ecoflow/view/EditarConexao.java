@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
  *
@@ -21,11 +22,16 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     private ControleConexao controleConexao = new ControleConexao();
     private Conexao         conexao         = new Conexao();
     
+    private static TCPMasterConnection tcp;
+    
     /**
      * Creates new form EditarConexao
      */
     public EditarConexao() {
         initComponents();
+        
+        //Reseta conexao
+        controleConexao.setTcpMasterConnection(null);
         
         //Busca parametros no arquivo properties
         conexao = controleConexao.getConexao();
@@ -174,6 +180,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     private void btTestarConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTestarConexaoActionPerformed
         // TODO add your handling code here:
         setConexao();
+        tcp = controleConexao.getTcpMasterConnection();
         if(controleConexao.testarConexao() ){
             JOptionPane.showMessageDialog(null, "Conexão com sucesso.", "Informativo", JOptionPane.INFORMATION_MESSAGE);
         }
