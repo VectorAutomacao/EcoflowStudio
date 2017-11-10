@@ -354,7 +354,7 @@ public class ControleUnidade {
         ModbusRegistro.escrever(tcpMasterConnection, referencia, nomes);
     }
         
-    public void addUnidades(Remota remota, String nome, int servico) throws ModbusException{
+    public void addUnidades(Remota remota, int servico) throws ModbusException{
         int nRemota = remota.getId();
         List<Unidade> unidades = remota.getUnidades();
 
@@ -368,7 +368,7 @@ public class ControleUnidade {
            
            //Altera nome e as configurações da unidade
            un.setPorta(i);
-           un.setNome(nome + idRemota + idUnidade );
+           un.setNome(idRemota + idUnidade );
            un.setServico(servico);
            un.setMatriculaHidrometro(0);
            un.setNumeroHidrometro("0");

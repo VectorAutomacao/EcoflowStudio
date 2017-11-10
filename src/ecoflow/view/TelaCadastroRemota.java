@@ -227,6 +227,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Remota"));
 
         jLabel1.setText("Nome:");
+        jLabel1.setEnabled(false);
 
         jLabel3.setText("Serviço:");
 
@@ -252,6 +253,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel9.setEnabled(false);
 
         tfNomeRemota.setDocument(new CampoStringUpperCase(6));
+        tfNomeRemota.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -351,27 +353,21 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         
         if(flag){
             flag = false;
-            
-            if(!tfNomeRemota.getText().trim().isEmpty() ){
-                        
-                //Adicionar remota nova
-                controleCentral.addRemota(
-                        centralSelcionada, 
-                        tfNomeRemota.getText().trim(),
-                        Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
-                );            
-                //Recupera a ultima remota da lista
-                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
-                //Atualiza tbRemota
-                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-                //Atualiza tbUnidade
-                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                //Salva xml da Central
-                controleCentral.saveCentralXML(centralSelcionada);
+                                    
+            //Adicionar remota nova
+            controleCentral.addRemota(
+                    centralSelcionada,
+                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
+            );            
+            //Recupera a ultima remota da lista
+            remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+            //Atualiza tbRemota
+            remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+            //Atualiza tbUnidade
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+            //Salva xml da Central
+            controleCentral.saveCentralXML(centralSelcionada);
 
-            }else{
-                JOptionPane.showMessageDialog(null, "Nome inválido! \n Caracteres válidos A-Z, 0-9.", "Alerta", JOptionPane.WARNING_MESSAGE);
-            }
                         
             flag = true;
         }
