@@ -11,9 +11,12 @@ import ecoflow.modelo.Central;
 import ecoflow.modelo.CentraisTableModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.CampoInt;
 import util.outros.Tela;
@@ -71,17 +74,22 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     private void adicionarNovaCentral(Central c){
         if( !controleCentral.igual(c, listaCentral) ){
                         
-            //Escrever na central
-            controleCentral.setIdCentral(c);
+            try {
+                //Escrever na central
+                controleCentral.setIdCentral(c);
             
-            //Adiciona listaCentral
-            listaCentral.add(c);
+                //Adiciona listaCentral
+                listaCentral.add(c);
 
-            //Salvar listaCentral no xml
-            controleCentral.saveListaCentralXML(listaCentral);
+                //Salvar listaCentral no xml
+                controleCentral.saveListaCentralXML(listaCentral);
 
-            //Atualizar tbCentral
-            centralTableModel.setCentrais(listaCentral);            
+                //Atualizar tbCentral
+                centralTableModel.setCentrais(listaCentral);            
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao escrever na central.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
 
         }else{
             JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -244,26 +252,31 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 !tfId.getText().isEmpty() &&
                 !tfNome.getText().isEmpty()
             ){  
-                 //Verifica se central possui id
-                if(controleCentral.getIdCentral() == 0){   
-                    //Configura objeto central
-                    c.setId( Integer.parseInt(tfId.getText().trim() ) );
-                    c.setNome(tfNome.getText().trim() );
-
-                    adicionarNovaCentral(c);
-                }else{
-                    //Configura objeto central
-                    c.setId(controleCentral.getIdCentral() );
-                    c.setNome(tfNome.getText().trim() );
-
-                    //Verifica se central já esta cadastrado
-                    if(!controleCentral.igual(c, listaCentral) ){   
-                        //Altera lista de centrais
+                try {
+                    //Verifica se central possui id
+                    if(controleCentral.getIdCentral() == 0){
+                        //Configura objeto central
+                        c.setId( Integer.parseInt(tfId.getText().trim() ) );
+                        c.setNome(tfNome.getText().trim() );
+                        
                         adicionarNovaCentral(c);                    
                     }else{
-                        JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                        //Configura objeto central
+                        c.setId(controleCentral.getIdCentral() );
+                        c.setNome(tfNome.getText().trim() );
+                        
+                        //Verifica se central já esta cadastrado
+                        if(!controleCentral.igual(c, listaCentral) ){
+                            //Altera lista de centrais
+                            adicionarNovaCentral(c);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Central já cadastrado.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                        }
                     }
-                }            
+                } catch (ModbusException ex) {            
+                    Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema para identificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
 
             }else{
                 JOptionPane.showMessageDialog(null, "Identificador ou Nome em branco", "Inválido", JOptionPane.ERROR_MESSAGE);
@@ -288,34 +301,39 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 if(flag){
                     flag = false;
                     
-                    //Verifica se central selecionada na tabela é mesma conectada
-                    if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-
-                        //Inicia tela carregando
-                        final TelaCarregando telaCarregando = new TelaCarregando();
-                        telaCarregando.setVisible(true);
-
-
-                        //Thread para processamento
-                        Thread t = new Thread(){
-                            public void run(){
-                                
-                                //Inicia tela cadastro de remotas
-                                TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                                Tela.chamarInternalFrame(desktopPane,telaRemota, true);
-
-                                //Fechar tela carregando
-                                telaCarregando.dispose();
-                                
-                                flag = true;
-                            }
-                        };
-
-                        t.start();
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                        flag = true;
-                    }                                
+                    try {
+                        //Verifica se central selecionada na tabela é mesma conectada
+                        if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                            
+                            //Inicia tela carregando
+                            final TelaCarregando telaCarregando = new TelaCarregando();
+                            telaCarregando.setVisible(true);
+                            
+                            
+                            //Thread para processamento
+                            Thread t = new Thread(){
+                                public void run(){
+                                    
+                                    //Inicia tela cadastro de remotas
+                                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                                    
+                                    //Fechar tela carregando
+                                    telaCarregando.dispose();
+                                    
+                                    flag = true;
+                                }
+                            };
+                            
+                            t.start();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                            flag = true;                                
+                        }
+                    } catch (ModbusException ex) {
+                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 
             }
@@ -338,30 +356,35 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 !tfNome.getText().isEmpty() &&
                 !controleCentral.igual(c, listaCentral)
             ){
-                //Verifica se central selecionada na tabela e a mesma central conectada
-                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-                    //configurar objeto central
-                    c.setId( Integer.parseInt(tfId.getText().trim()) );
-                    c.setNome(tfNome.getText().trim() );
-
-                    //Escrever na central
-                    controleCentral.setIdCentral(c);
-
-                    //Altera lista de centrais
-                    controleCentral.setListaCentral( tbCentral.getSelectedRow(), c, listaCentral);
-
-                    //Atualiza tabela
-                    centralTableModel.setCentrais(listaCentral);
-
-                    //Salva lista
-                    controleCentral.saveListaCentralXML(listaCentral);
-
-                    //limpar textField
-                    tfId.setText("");
-                    tfNome.setText("");
-
-                }else{
-                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                try {
+                    //Verifica se central selecionada na tabela e a mesma central conectada
+                    if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+                        //configurar objeto central
+                        c.setId( Integer.parseInt(tfId.getText().trim()) );
+                        c.setNome(tfNome.getText().trim() );
+                        
+                        //Escrever na central
+                        controleCentral.setIdCentral(c);
+                        
+                        //Altera lista de centrais
+                        controleCentral.setListaCentral( tbCentral.getSelectedRow(), c, listaCentral);
+                        
+                        //Atualiza tabela
+                        centralTableModel.setCentrais(listaCentral);
+                        
+                        //Salva lista
+                        controleCentral.saveListaCentralXML(listaCentral);
+                        
+                        //limpar textField
+                        tfId.setText("");
+                        tfNome.setText("");
+                        
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                    }
+                } catch (ModbusException ex) {
+                    Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Identicador ou nome invalido ou linha na tabela não selecionada.", "Alerta", JOptionPane.WARNING_MESSAGE);

@@ -12,8 +12,11 @@ import ecoflow.modelo.Remota;
 import ecoflow.modelo.RemotasTableModel;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.CampoInt;
 
@@ -43,8 +46,8 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         
         initComponents();
         
-        int idCentral;
-        int qtdRemota;
+        int idCentral = 0;
+        int qtdRemota = 0;
         
         //Reseta conexao
         controleConexao.setTcpMasterConnection(null);
@@ -54,8 +57,13 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         controleCentral.setTcpMasterConnection(tcp);  
                 
         //Le na central
-        idCentral = controleCentral.getIdCentral();
-        qtdRemota = controleCentral.getQtdRemota();
+        try {
+            idCentral = controleCentral.getIdCentral();
+            qtdRemota = controleCentral.getQtdRemota();
+        } catch (ModbusException ex) {
+            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
+             JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
         
         //Configura Central
         centralSelcionada.setId(idCentral);
@@ -76,12 +84,17 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
                 
-                //Le a central toda
-                controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
-                //Salva o xml da central
-                controleCentral.saveCentralXML(centralSelcionada);
-                //Atualiza tabela remota
-                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                try {
+                    //Le a central toda
+                    controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
+                    //Salva o xml da central
+                    controleCentral.saveCentralXML(centralSelcionada);
+                    //Atualiza tabela remota
+                    remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                } catch (ModbusException ex) {
+                    Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema ao ler os registros da central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
                                 
             }else{
                 JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -236,12 +249,17 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         tcp = controleConexao.getTcpMasterConnection();
                         controleCentral.setTcpMasterConnection(tcp); 
 
-                        //Leitura da central
-                        controleCentral.getUnidadesLeituras(remotaSelecionada);
+                        try {
+                            //Leitura da central
+                            controleCentral.getUnidadesLeituras(remotaSelecionada);
 
-                        //Atualiza tabela
-                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                            //Atualiza tabela
+                            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
                         
+                        } catch (ModbusException ex) {
+                            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(null, "Problema ao ler as unidades da remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
                         //fecha tela de carregando
                         telaCarregando.dispose();
                         

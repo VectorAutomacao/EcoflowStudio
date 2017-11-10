@@ -12,8 +12,11 @@ import ecoflow.modelo.Remota;
 import ecoflow.modelo.RemotasTableModel;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.CampoInt;
 import util.outros.CampoStringIntUpperCase;
@@ -56,10 +59,15 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         //Senão existir o arquivo cria um xml
         controleCentral.criarCentralXML(c);
         
-        //Le a central toda
-        centralSelcionada = controleCentral.getCentral();
-        //Salva o xml da central
-        controleCentral.saveCentralXML(centralSelcionada);
+        try {
+            //Le a central toda
+            centralSelcionada = controleCentral.getCentral();
+            //Salva o xml da central
+            controleCentral.saveCentralXML(centralSelcionada);
+        } catch (ModbusException ex) {
+            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+             JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     
         
         //Configurar tbRemota
@@ -354,20 +362,26 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         if(flag){
             flag = false;
                                     
-            //Adicionar remota nova
-            controleCentral.addRemota(
-                    centralSelcionada,
-                    Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )
-            );            
-            //Recupera a ultima remota da lista
-            remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
-            //Atualiza tbRemota
-            remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-            //Atualiza tbUnidade
-            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-            //Salva xml da Central
-            controleCentral.saveCentralXML(centralSelcionada);
+            try {
+                //Adicionar remota nova
+                controleCentral.addRemota(
+                        centralSelcionada,
+                        Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )            
+                );
+                
+                //Recupera a ultima remota da lista
+                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+                //Atualiza tbRemota
+                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                //Atualiza tbUnidade
+                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                //Salva xml da Central
+                controleCentral.saveCentralXML(centralSelcionada);
 
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao adicionar nova remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
                         
             flag = true;
         }

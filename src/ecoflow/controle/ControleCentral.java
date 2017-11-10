@@ -32,7 +32,7 @@ public class ControleCentral extends ControleRemota{
     private final String LOCALARQUIVO = "./arquivos/";
         
     
-    public Central getCentral(){
+    public Central getCentral() throws ModbusException{
         Central central = new Central();
         List<Remota> remotas = central.getRemotas();
         
@@ -60,31 +60,18 @@ public class ControleCentral extends ControleRemota{
     }
     
     //Busca id na central
-    public int getIdCentral(){
+    public int getIdCentral() throws ModbusException{
         int[] respostas = new int[1];
         
-        try {
-            respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAIDCENTRAL, 1);
-            return respostas[0];
-        } catch (ModbusException ex) {
-            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao ler multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
-            return 0;
-        }
+        respostas = ModbusRegistro.ler(tcpMasterConnection, REFERENCIAIDCENTRAL, 1);
+        return respostas[0];
+        
         
     }
     
     //Configura id na central
-    public Boolean setIdCentral(Central c){
-        try {
-            ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAIDCENTRAL, c.getId() );
-            return true; 
-        } catch (ModbusException ex) {
-            Logger.getLogger(ControleCentral.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao ler os multiplos registro! "
-                    , "Erro", JOptionPane.ERROR_MESSAGE); 
-            return false;
-        }
+    public void setIdCentral(Central c) throws ModbusException{
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAIDCENTRAL, c.getId() );        
     }
     
     //Cria o arquivo central senão existir

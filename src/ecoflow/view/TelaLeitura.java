@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
@@ -155,30 +156,40 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
-        int idCentral;
-        int qtdRemota;
+        int idCentral = 0;
+        int qtdRemota = 0;
         
         if(flag){
             flag = false;
             
-            //Le na central
-            idCentral = controleCentral.getIdCentral();
-            qtdRemota = controleCentral.getQtdRemota();
+            try {
+                //Le na central
+                idCentral = controleCentral.getIdCentral();
+                qtdRemota = controleCentral.getQtdRemota();
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                 JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
 
             //Le arquivo xml
             central = controleCentral.getCentralXML(idCentral);
 
             if(central != null){
                 if(central.getQtdRemotas() == qtdRemota){
-                    //Recupera lista de unidades
-                    controleCentral.getRemotasLeituras(central.getRemotas() );
-                    unidades = controleCentral.listaUnidadesCentral(central);
+                    try {
+                        //Recupera lista de unidades
+                        controleCentral.getRemotasLeituras(central.getRemotas() );
+                        unidades = controleCentral.listaUnidadesCentral(central);
 
-                    //Atualizar tabela
-                    unidadesTableModel.setUnidades(unidades);
+                        //Atualizar tabela
+                        unidadesTableModel.setUnidades(unidades);
 
-                    //Ativa botão salvar
-                    btSalvar.setEnabled(true); 
+                        //Ativa botão salvar
+                        btSalvar.setEnabled(true); 
+                    } catch (ModbusException ex) {
+                        Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                         JOptionPane.showMessageDialog(null, "Problema ao ler as unidades da central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
                 }
