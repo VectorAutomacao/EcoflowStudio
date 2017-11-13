@@ -1,31 +1,13 @@
 <list>
   <central>
-    <id>1</id>
-    <nome>Central 01</nome>
-    <qtdRemotas>0</qtdRemotas>
-    <remotas/>
-  </central>
-  <central>
     <id>3</id>
     <nome>Central 03</nome>
     <qtdRemotas>0</qtdRemotas>
     <remotas/>
   </central>
   <central>
-    <id>4</id>
-    <nome>Central 04</nome>
-    <qtdRemotas>0</qtdRemotas>
-    <remotas/>
-  </central>
-  <central>
-    <id>5</id>
-    <nome>Central</nome>
-    <qtdRemotas>0</qtdRemotas>
-    <remotas/>
-  </central>
-  <central>
-    <id>6</id>
-    <nome>Central 06</nome>
+    <id>1</id>
+    <nome>Central 01</nome>
     <qtdRemotas>0</qtdRemotas>
     <remotas/>
   </central>

@@ -6,6 +6,9 @@
 package ecoflow.view;
 
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import util.outros.Tela;
 
 /**
@@ -152,19 +155,37 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_imConexaoActionPerformed
 
     private void miBuscarLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBuscarLeituraActionPerformed
-        TelaLeitura telaUnidade = new TelaLeitura();
-        Tela.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
+        TelaLeitura telaUnidade;
+        try {
+            telaUnidade = new TelaLeitura();
+            Tela.chamarInternalFrame(dpTelaPrincipal, telaUnidade, true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_miBuscarLeituraActionPerformed
 
     private void imCadastrarCentralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imCadastrarCentralActionPerformed
-        TelaCadastroCentral telaCentral = new TelaCadastroCentral(dpTelaPrincipal);
-        Tela.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
+        TelaCadastroCentral telaCentral;
+        try {
+            telaCentral = new TelaCadastroCentral(dpTelaPrincipal);
+            Tela.chamarInternalFrame(dpTelaPrincipal,telaCentral, true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_imCadastrarCentralActionPerformed
 
     private void miEditarLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarLeituraActionPerformed
         // TODO add your handling code here:
-        TelaEditarLeitura telaEditarLeitura = new TelaEditarLeitura();
-        Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
+        TelaEditarLeitura telaEditarLeitura;
+        try {
+            telaEditarLeitura = new TelaEditarLeitura();
+            Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_miEditarLeituraActionPerformed
 
     /**

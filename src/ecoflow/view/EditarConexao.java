@@ -7,10 +7,14 @@ package ecoflow.view;
 
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Conexao;
+import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
@@ -29,10 +33,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
      */
     public EditarConexao() {
         initComponents();
-        
-        //Reseta conexao
-        controleConexao.setTcpMasterConnection(null);
-        
+                
         //Busca parametros no arquivo properties
         conexao = controleConexao.getConexao();
         
@@ -40,8 +41,22 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         tfIp.setText(conexao.getIp() );
         tfPorta.setText(Integer.toString(conexao.getPorta() ) );
         tfTimeOut.setText(Integer.toString(conexao.getTimeOut() ) );
+        
+        //Fechar Janela
+        this.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if(tcp != null){
+                    System.out.println("Passou");
+                    tcp.close();
+                }
+                super.internalFrameClosed(e); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        });
+        
     }
-    
+     
     private Boolean setConexao(){
         //Verifica se campos não estão nulos
         if(
@@ -180,9 +195,14 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     private void btTestarConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btTestarConexaoActionPerformed
         // TODO add your handling code here:
         setConexao();
-        tcp = controleConexao.getTcpMasterConnection();
-        if(controleConexao.testarConexao() ){
-            JOptionPane.showMessageDialog(null, "Conexão com sucesso.", "Informativo", JOptionPane.INFORMATION_MESSAGE);
+        try {
+            tcp = controleConexao.getTcpMasterConnection();
+            if(controleConexao.testarConexao() ){
+                JOptionPane.showMessageDialog(null, "Conexão com sucesso.", "Informativo", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(EditarConexao.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btTestarConexaoActionPerformed
 

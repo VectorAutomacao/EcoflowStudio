@@ -42,28 +42,21 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaEditarLeitura
      */
-    public TelaEditarLeitura() {
+    public TelaEditarLeitura() throws Exception {
         
         initComponents();
         
         int idCentral = 0;
         int qtdRemota = 0;
-        
-        //Reseta conexao
-        controleConexao.setTcpMasterConnection(null);
-                
+                        
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);  
                 
         //Le na central
-        try {
-            idCentral = controleCentral.getIdCentral();
-            qtdRemota = controleCentral.getQtdRemota();
-        } catch (ModbusException ex) {
-            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
-             JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        idCentral = controleCentral.getIdCentral();
+        qtdRemota = controleCentral.getQtdRemota();
+        
         
         //Configura Central
         centralSelcionada.setId(idCentral);
@@ -245,10 +238,6 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         //Seleciona remota
                         remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
                         
-                        //Configurando a conexao
-                        tcp = controleConexao.getTcpMasterConnection();
-                        controleCentral.setTcpMasterConnection(tcp); 
-
                         try {
                             //Leitura da central
                             controleCentral.getUnidadesLeituras(remotaSelecionada);

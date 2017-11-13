@@ -46,28 +46,21 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaRemota
      */
-    public TelaCadastroRemota(Central c) {
+    public TelaCadastroRemota(Central c) throws Exception {
         initComponents();
-        
-        //Reseta conexao
-        controleConexao.setTcpMasterConnection(null);
-                
+                        
         //Configurando a conexao
         tcp = controleConexao.getTcpMasterConnection();
         controleCentral.setTcpMasterConnection(tcp);
-                
+        
         //Senão existir o arquivo cria um xml
         controleCentral.criarCentralXML(c);
         
-        try {
-            //Le a central toda
-            centralSelcionada = controleCentral.getCentral();
-            //Salva o xml da central
-            controleCentral.saveCentralXML(centralSelcionada);
-        } catch (ModbusException ex) {
-            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-             JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
-        }
+        //Le a central toda
+        centralSelcionada = controleCentral.getCentral();
+        //Salva o xml da central
+        controleCentral.saveCentralXML(centralSelcionada);
+        
     
         
         //Configurar tbRemota
@@ -363,6 +356,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             flag = false;
                                     
             try {
+                
+                //Configurando a conexao
+                tcp = controleConexao.getTcpMasterConnection();
+                controleCentral.setTcpMasterConnection(tcp);
+                
                 //Adicionar remota nova
                 controleCentral.addRemota(
                         centralSelcionada,
@@ -381,6 +379,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             } catch (ModbusException ex) {
                 Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Problema ao adicionar nova remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
                         
             flag = true;
@@ -403,7 +404,13 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 !tfNumeroUnidade.getText().trim().isEmpty()
             ){
                 if(tbUnidade.getSelectedRow() != -1){
+                    
                     try {
+                        
+                        //Configurando a conexao
+                        tcp = controleConexao.getTcpMasterConnection();
+                        controleCentral.setTcpMasterConnection(tcp);
+                        
                         //Seleciona unidade
                         un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
 
@@ -419,9 +426,15 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                         unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
                         //Salva xml da Central
                         controleCentral.saveCentralXML(centralSelcionada);
-                    } catch (Exception e) {
+                    } catch (ModbusException ex) {
+                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
+                    
+                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }

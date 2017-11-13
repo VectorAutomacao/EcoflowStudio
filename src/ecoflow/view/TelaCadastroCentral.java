@@ -42,18 +42,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     /**
      * Creates new form TelaCentral
      */
-    public TelaCadastroCentral(JDesktopPane dp) {
+    public TelaCadastroCentral(JDesktopPane dp){
         initComponents();
         
         this.desktopPane = dp;
-        
-        //Reseta conexao
-        controleConexao.setTcpMasterConnection(null);
-        
-        //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
-                
+                        
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
         tbCentral.setRowSorter(new TableRowSorter(centralTableModel) ); // Ordenar tbCentral
@@ -72,6 +65,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     }
     
     private void adicionarNovaCentral(Central c){
+                
         if( !controleCentral.igual(c, listaCentral) ){
                         
             try {
@@ -143,7 +137,6 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         });
 
         btExcluir.setText("Excluir");
-        btExcluir.setEnabled(false);
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirActionPerformed(evt);
@@ -253,6 +246,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 !tfNome.getText().isEmpty()
             ){  
                 try {
+                                        
+                    //Configurando a conexao
+                    tcp = controleConexao.getTcpMasterConnection();
+                    controleCentral.setTcpMasterConnection(tcp);
+                    
                     //Verifica se central possui id
                     if(controleCentral.getIdCentral() == 0){
                         //Configura objeto central
@@ -276,6 +274,9 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 } catch (ModbusException ex) {            
                     Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Problema para identificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
 
             }else{
@@ -302,6 +303,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                     flag = false;
                     
                     try {
+                        
+                        //Configurando a conexao
+                        tcp = controleConexao.getTcpMasterConnection();
+                        controleCentral.setTcpMasterConnection(tcp);
+                        
                         //Verifica se central selecionada na tabela é mesma conectada
                         if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
                             
@@ -315,25 +321,37 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                                 public void run(){
                                     
                                     //Inicia tela cadastro de remotas
-                                    TelaCadastroRemota telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                                    Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                                    TelaCadastroRemota telaRemota;
+                                    try {
+                                        telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                                        Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                                        JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+                                    }
                                     
                                     //Fechar tela carregando
                                     telaCarregando.dispose();
                                     
-                                    flag = true;
+                                    flag = true; 
                                 }
                             };
                             
                             t.start();
                         }else{
                             JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                            flag = true;                                
+                            flag = true; 
                         }
                     } catch (ModbusException ex) {
                         Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        flag = true; 
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        flag = true; 
                     }
+                    
                 }
                 
             }
@@ -357,6 +375,12 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 !controleCentral.igual(c, listaCentral)
             ){
                 try {
+                    
+                    
+                    //Configurando a conexao
+                    tcp = controleConexao.getTcpMasterConnection();
+                    controleCentral.setTcpMasterConnection(tcp);
+                    
                     //Verifica se central selecionada na tabela e a mesma central conectada
                     if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
                         //configurar objeto central
@@ -385,6 +409,9 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 } catch (ModbusException ex) {
                     Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }else{
                 JOptionPane.showMessageDialog(null, "Identicador ou nome invalido ou linha na tabela não selecionada.", "Alerta", JOptionPane.WARNING_MESSAGE);

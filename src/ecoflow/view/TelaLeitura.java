@@ -34,23 +34,16 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private ControleCentral     controleCentral     = new ControleCentral();
     private ControleConexao     controleConexao     = new ControleConexao();
     
-    static TCPMasterConnection tcp;
+    private static TCPMasterConnection tcp;
     
     private Boolean flag = true;
     
     /**
      * Creates new form Unidade
      */
-    public TelaLeitura() {
+    public TelaLeitura() throws Exception {
         initComponents();
-        
-        //Reseta conexao
-        controleConexao.setTcpMasterConnection(null);
-        
-        //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);
-               
+                       
         //Configurando tbUnidades
         tbUnidade.setModel(unidadesTableModel);
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
@@ -163,20 +156,21 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
             flag = false;
             
             try {
+                
+                //Configurando a conexao
+                tcp = controleConexao.getTcpMasterConnection();
+                controleCentral.setTcpMasterConnection(tcp);
+                
                 //Le na central
                 idCentral = controleCentral.getIdCentral();
                 qtdRemota = controleCentral.getQtdRemota();
-            } catch (ModbusException ex) {
-                Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                 JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
 
-            //Le arquivo xml
-            central = controleCentral.getCentralXML(idCentral);
+                //Le arquivo xml
+                central = controleCentral.getCentralXML(idCentral);
 
-            if(central != null){
-                if(central.getQtdRemotas() == qtdRemota){
-                    try {
+                if(central != null){
+                    if(central.getQtdRemotas() == qtdRemota){
+                        
                         //Recupera lista de unidades
                         controleCentral.getRemotasLeituras(central.getRemotas() );
                         unidades = controleCentral.listaUnidadesCentral(central);
@@ -186,15 +180,19 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
 
                         //Ativa botão salvar
                         btSalvar.setEnabled(true); 
-                    } catch (ModbusException ex) {
-                        Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                         JOptionPane.showMessageDialog(null, "Problema ao ler as unidades da central.", "Erro", JOptionPane.ERROR_MESSAGE);
+
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
                     }
                 }else{
-                    JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
                 }
-            }else{
-                JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao ler a central.", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
             
             flag = true;

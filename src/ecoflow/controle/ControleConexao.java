@@ -73,7 +73,8 @@ public class ControleConexao {
     }
     
     //Retorna conexão TCP master configurada
-    public TCPMasterConnection getTcpMasterConnection(){
+    public TCPMasterConnection getTcpMasterConnection() throws Exception{
+        //Le arquivos properties
         readConexao();
         
         //Configura conexão TCP master
@@ -86,7 +87,7 @@ public class ControleConexao {
     
     //Testa conexão TCP
     public Boolean testarConexao(){        
-       return con.isConnected();
+       return mc.testeConexaoRegistro();
     }
        
 }
