@@ -361,20 +361,27 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 tcp = controleConexao.getTcpMasterConnection();
                 controleCentral.setTcpMasterConnection(tcp);
                 
-                //Adicionar remota nova
-                controleCentral.addRemota(
-                        centralSelcionada,
-                        Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )            
-                );
+                if(centralSelcionada.getRemotas().size() < 20){
+                    
+                    //Adicionar remota nova
+                    controleCentral.addRemota(
+                            centralSelcionada,
+                            Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )            
+                    );
+
+                    //Recupera a ultima remota da lista
+                    remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+                    //Atualiza tbRemota
+                    remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                    //Atualiza tbUnidade
+                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                    //Salva xml da Central
+                    controleCentral.saveCentralXML(centralSelcionada);
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Limite de remotas!", "Alerta!", JOptionPane.WARNING_MESSAGE);
+                }
                 
-                //Recupera a ultima remota da lista
-                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
-                //Atualiza tbRemota
-                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-                //Atualiza tbUnidade
-                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                //Salva xml da Central
-                controleCentral.saveCentralXML(centralSelcionada);
 
             } catch (ModbusException ex) {
                 Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
