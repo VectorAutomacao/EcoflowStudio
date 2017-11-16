@@ -64,13 +64,16 @@ public class ControleRemota extends ControleUnidade{
         limparRegistros(re, 4); //numero
         limparRegistros(re, 5); //nome   
         
-        //Quantidade de remotas
-        qtd = remotas.size() - 1;
-        central.setQtdRemotas(qtd);
-        
         //Excluir da central
         remotas.remove(re);
         
+        //Quantidade de remotas
+        qtd = remotas.size();
+        central.setQtdRemotas(qtd);
+        
+        //Escrever na central a quantidade de remotas
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAQTDREMOTA, qtd);
+                
     }
     
     public void addRemota(Central central, String nome, int servico) throws ModbusException{
