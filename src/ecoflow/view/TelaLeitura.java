@@ -74,6 +74,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         btLeitura.setText("Leitura");
+        btLeitura.setNextFocusableComponent(btSalvar);
         btLeitura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btLeituraActionPerformed(evt);
@@ -82,6 +83,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
 
         btSalvar.setText("Salvar");
         btSalvar.setEnabled(false);
+        btSalvar.setNextFocusableComponent(btLeitura);
         btSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSalvarActionPerformed(evt);

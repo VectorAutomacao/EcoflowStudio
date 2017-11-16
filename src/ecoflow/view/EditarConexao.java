@@ -109,7 +109,12 @@ public class EditarConexao extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Porta:");
 
+        tfIp.setNextFocusableComponent(tfPorta);
+
+        tfPorta.setNextFocusableComponent(tfTimeOut);
+
         btAplicar.setText("Aplicar");
+        btAplicar.setNextFocusableComponent(btTestarConexao);
         btAplicar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAplicarActionPerformed(evt);
@@ -118,7 +123,10 @@ public class EditarConexao extends javax.swing.JInternalFrame {
 
         jLabel3.setText("TimeOut:");
 
+        tfTimeOut.setNextFocusableComponent(btAplicar);
+
         btTestarConexao.setText("Testar Conexão");
+        btTestarConexao.setNextFocusableComponent(tfIp);
         btTestarConexao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btTestarConexaoActionPerformed(evt);

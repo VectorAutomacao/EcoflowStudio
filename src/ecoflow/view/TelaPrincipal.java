@@ -70,6 +70,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(dpTelaPrincipal);
 
+        jMenu1.setMnemonic('a');
         jMenu1.setText("Arquivo");
 
         imCadastrarCentral.setText("Cadastrar Central");
@@ -82,6 +83,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu4.setMnemonic('m');
         jMenu4.setText("Em Campo");
 
         miBuscarLeitura.setText("Buscar Leituras");
@@ -102,6 +104,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
+        jMenu2.setMnemonic('d');
         jMenu2.setText("Editar");
 
         imConexao.setText("Conexão");
@@ -114,6 +117,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setMnemonic('j');
         jMenu3.setText("Ajuda");
 
         imSobre.setText("Sobre");

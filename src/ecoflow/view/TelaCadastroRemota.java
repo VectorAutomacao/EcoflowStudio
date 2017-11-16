@@ -156,11 +156,13 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel5.setText("Serviço:");
 
         ccServicoUnidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        ccServicoUnidade.setNextFocusableComponent(tfMatriculaUnidade);
         ccServicoUnidade.setPreferredSize(new java.awt.Dimension(37, 20));
 
         jLabel8.setText("Nome:");
 
         btAterarUnidade.setText("Alterar");
+        btAterarUnidade.setNextFocusableComponent(ccServicoRemota);
         btAterarUnidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAterarUnidadeActionPerformed(evt);
@@ -172,10 +174,13 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel10.setText("Mat. Hidrometro:");
 
         tfNomeUnidade.setDocument(new CampoStringIntUpperCase(10));
+        tfNomeUnidade.setNextFocusableComponent(ccServicoUnidade);
 
         tfNumeroUnidade.setDocument(new CampoStringIntUpperCase(12));
+        tfNumeroUnidade.setNextFocusableComponent(btAterarUnidade);
 
         tfMatriculaUnidade.setDocument(new CampoInt(8));
+        tfMatriculaUnidade.setNextFocusableComponent(tfNumeroUnidade);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -234,9 +239,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel3.setText("Serviço:");
 
         ccServicoRemota.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        ccServicoRemota.setNextFocusableComponent(btAdicionarRemota);
         ccServicoRemota.setPreferredSize(new java.awt.Dimension(37, 20));
 
         btAdicionarRemota.setText("Adicionar");
+        btAdicionarRemota.setNextFocusableComponent(btExcluirRemota);
         btAdicionarRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAdicionarRemotaActionPerformed(evt);
@@ -258,6 +265,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfNomeRemota.setEnabled(false);
 
         btExcluirRemota.setText("Excluir");
+        btExcluirRemota.setNextFocusableComponent(tfNomeUnidade);
         btExcluirRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirRemotaActionPerformed(evt);

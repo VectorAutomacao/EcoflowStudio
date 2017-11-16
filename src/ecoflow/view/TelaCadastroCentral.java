@@ -122,6 +122,8 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nome:");
 
+        tfNome.setNextFocusableComponent(btAdicionar);
+
         btAlterar.setText("Alterar");
         btAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +132,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         });
 
         btAdicionar.setText("Adicionar Nova Central");
+        btAdicionar.setNextFocusableComponent(btAlterar);
         btAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAdicionarActionPerformed(evt);
@@ -137,6 +140,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         });
 
         btExcluir.setText("Excluir");
+        btExcluir.setNextFocusableComponent(tfId);
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirActionPerformed(evt);
@@ -146,6 +150,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         jLabel3.setText("*Identificador é um valor único e numérico");
 
         tfId.setDocument(new CampoInt(3));
+        tfId.setNextFocusableComponent(tfNome);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -165,11 +170,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAdicionar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btAlterar)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btAlterar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btExcluir)))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
