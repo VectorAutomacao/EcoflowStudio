@@ -145,7 +145,7 @@
                           <Component id="btAterarUnidade" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="174" max="32767" attributes="0"/>
+                  <EmptySpace pref="162" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -283,9 +283,11 @@
                           <Component id="tfNumeroRemota" min="-2" pref="108" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btAdicionarRemota" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btExcluirRemota" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="164" max="32767" attributes="0"/>
+                  <EmptySpace pref="91" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -306,6 +308,7 @@
                       <Component id="tfMatriculaRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfNumeroRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tfNomeRemota" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btExcluirRemota" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -381,6 +384,14 @@
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btExcluirRemota">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Excluir"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btExcluirRemotaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

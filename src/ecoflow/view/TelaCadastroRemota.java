@@ -108,6 +108,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfNumeroRemota = new javax.swing.JFormattedTextField();
         jLabel9 = new javax.swing.JLabel();
         tfNomeRemota = new javax.swing.JTextField();
+        btExcluirRemota = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -200,7 +201,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                         .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAterarUnidade)))
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,6 +257,13 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfNomeRemota.setDocument(new CampoStringUpperCase(6));
         tfNomeRemota.setEnabled(false);
 
+        btExcluirRemota.setText("Excluir");
+        btExcluirRemota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirRemotaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -279,8 +287,10 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(tfNumeroRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btAdicionarRemota)))
-                .addContainerGap(164, Short.MAX_VALUE))
+                        .addComponent(btAdicionarRemota)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btExcluirRemota)))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,7 +307,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addComponent(btAdicionarRemota)
                     .addComponent(tfMatriculaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfNumeroRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfNomeRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfNomeRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btExcluirRemota))
                 .addContainerGap())
         );
 
@@ -343,6 +354,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
             //Atualiza tabela
             unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+            
+            //limpar textfield unidade
+            tfNomeUnidade.setText("");
+            tfMatriculaUnidade.setText("");
+            tfNumeroUnidade.setText("");
 
         }        
         
@@ -366,6 +382,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     //Adicionar remota nova
                     controleCentral.addRemota(
                             centralSelcionada,
+                            "UN",
                             Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )            
                     );
 
@@ -468,10 +485,48 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
+    private void btExcluirRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirRemotaActionPerformed
+        // TODO add your handling code here:
+        
+        if(flag){
+            flag = false;
+            
+            try {
+                //Configurando a conexao
+                tcp = controleConexao.getTcpMasterConnection();
+                controleCentral.setTcpMasterConnection(tcp);
+                                
+                //Excluir ultima remota
+                controleCentral.removeRemota(centralSelcionada);
+                                
+                //Recupera a ultima remota da lista
+                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+                //Atualiza tbRemota
+                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                //Atualiza tbUnidade
+                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                //Salva xml da Central
+                controleCentral.saveCentralXML(centralSelcionada);
+                
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao remover uma remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            flag = true;
+        }
+        
+        
+    }//GEN-LAST:event_btExcluirRemotaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdicionarRemota;
     private javax.swing.JButton btAterarUnidade;
+    private javax.swing.JButton btExcluirRemota;
     private javax.swing.JComboBox<String> ccServicoRemota;
     private javax.swing.JComboBox<String> ccServicoUnidade;
     private javax.swing.JLabel jLabel1;

@@ -51,8 +51,29 @@ public class ControleRemota extends ControleUnidade{
             getUnidadesNome(remotas.get(i) );
         }
     }
-       
-    public void addRemota(Central central, int servico) throws ModbusException{
+    
+    
+    public void removeRemota(Central central) throws ModbusException{
+        int qtd;
+        List<Remota> remotas = central.getRemotas();
+        Remota re = remotas.get(remotas.size() - 1);
+        
+        //Limpar ultima remota
+        limparRegistros(re, 2); //serviço
+        limparRegistros(re, 3); //matricula
+        limparRegistros(re, 4); //numero
+        limparRegistros(re, 5); //nome   
+        
+        //Quantidade de remotas
+        qtd = remotas.size() - 1;
+        central.setQtdRemotas(qtd);
+        
+        //Excluir da central
+        remotas.remove(re);
+        
+    }
+    
+    public void addRemota(Central central, String nome, int servico) throws ModbusException{
         Remota r = new Remota();
         int qtd;
         List<Remota> remotas = central.getRemotas();
@@ -68,7 +89,7 @@ public class ControleRemota extends ControleUnidade{
         //Configura id da nova remota
         r.setId(remotas.size() );
         //Cria uma lista de 16 unidades para remota
-        addUnidades(r, servico);
+        addUnidades(r, nome, servico);
 
         //Escrever na central
         setUnidades(r);

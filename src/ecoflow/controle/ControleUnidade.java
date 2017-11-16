@@ -321,8 +321,49 @@ public class ControleUnidade {
         //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, nomes);
     }
+    
+    //Limpa o registros
+    public void limparRegistros(Remota remota, int tipo) throws ModbusException{
+        int contador = CONTADOR;
+        int referencia = REFERENCIALEITURA;
         
-    public void addUnidades(Remota remota, int servico) throws ModbusException{
+        if(tipo == 1){ 
+            contador = CONTADOR * 2;
+            referencia = REFERENCIALEITURA;
+        }
+        if(tipo == 2){ 
+            contador = CONTADOR;
+            referencia = REFERENCIASERVICO;
+        }
+        if(tipo == 3){ 
+            contador = CONTADOR * 2;
+            referencia = REFERENCIAMATRICULAHIDROMETRO;
+        }
+        if(tipo == 4){ 
+            contador = CONTADOR * 6;
+            referencia = REFERENCIANUMEROHIDROMETRO;
+        }
+        if(tipo == 5){ 
+            contador = CONTADOR * 5;
+            referencia = REFERENCIANOME;
+        }
+        
+        
+        int[] valor = new int[contador];
+
+        //Altera vetor
+        for(int i = 0; i < contador; i++){
+            valor[i] = 0;
+        }
+        
+        //Calculo para inicio do registro de servicos
+        referencia = referencia + contador * remota.getId();
+
+        //Escrita de uma remota
+        ModbusRegistro.escrever(tcpMasterConnection, referencia, valor);
+    }
+    
+    public void addUnidades(Remota remota, String nome, int servico) throws ModbusException{
         int nRemota = remota.getId();
         List<Unidade> unidades = remota.getUnidades();
 
@@ -336,7 +377,7 @@ public class ControleUnidade {
            
            //Altera nome e as configurações da unidade
            un.setPorta(i);
-           un.setNome(idRemota + idUnidade );
+           un.setNome(nome + idRemota + idUnidade );
            un.setServico(servico);
            un.setMatriculaHidrometro(0);
            un.setNumeroHidrometro("0");
@@ -406,5 +447,6 @@ public class ControleUnidade {
             wb.close();
         }        
     }
+    
         
 }
