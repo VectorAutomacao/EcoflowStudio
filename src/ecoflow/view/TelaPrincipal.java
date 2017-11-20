@@ -95,6 +95,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenu4.add(miBuscarLeitura);
 
         miEditarLeitura.setText("Editar Leituras");
+        miEditarLeitura.setEnabled(false);
         miEditarLeitura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 miEditarLeituraActionPerformed(evt);
