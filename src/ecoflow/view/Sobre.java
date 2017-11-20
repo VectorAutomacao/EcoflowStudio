@@ -5,8 +5,6 @@
  */
 package ecoflow.view;
 
-import javax.swing.plaf.basic.BasicInternalFrameUI;
-
 /**
  *
  * @author vinicius

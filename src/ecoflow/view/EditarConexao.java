@@ -7,12 +7,10 @@ package ecoflow.view;
 
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Conexao;
-import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import net.wimpi.modbus.net.TCPMasterConnection;
