@@ -91,6 +91,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         }
     }
     
+    public void selecionaTbCentral(){
+        tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
+        tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
+    }
+    
     private void abrirTelaCadastroRemota(){
         if(flag){
             flag = false;
@@ -381,8 +386,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         if(tbCentral.getSelectedRow() != -1 ){
             //Verifica o duplo click do mouse
             if(evt.getClickCount() < 2){
-                tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
-                tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );                    
+                selecionaTbCentral();
             }else{
                 abrirTelaCadastroRemota();
             }
@@ -506,8 +510,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     private void tbCentralKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbCentralKeyReleased
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN){
-            tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
-            tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
+            selecionaTbCentral();
         }
     }//GEN-LAST:event_tbCentralKeyReleased
 

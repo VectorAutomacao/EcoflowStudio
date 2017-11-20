@@ -75,6 +75,30 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(5) ); //Remove coluna leitura
          
     }
+    
+    public void selecionaTbRemota(){
+        //Seleciona remota
+            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+            //Atualiza tabela
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+            
+            //limpar textfield unidade
+            tfNomeUnidade.setText("");
+            tfMatriculaUnidade.setText("");
+            tfNumeroUnidade.setText("");
+    }
+    
+    public void selecionaTbUnidade(){
+        Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+        
+        tfNomeUnidade.setText(un.getNome() );
+        if(un.getServico() > 1 && un.getServico() < 3 )
+            ccServicoUnidade.setSelectedIndex(un.getServico() - 1 );
+        else
+            ccServicoUnidade.setSelectedIndex(0);
+        tfMatriculaUnidade.setText( Integer.toString(un.getMatriculaHidrometro() )  );
+        tfNumeroUnidade.setText(un.getNumeroHidrometro() );
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,9 +151,15 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbRemota.setNextFocusableComponent(tbUnidade);
         tbRemota.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbRemotaMouseClicked(evt);
+            }
+        });
+        tbRemota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbRemotaKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tbRemota);
@@ -145,9 +175,15 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbUnidade.setNextFocusableComponent(ccServicoRemota);
         tbUnidade.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbUnidadeMouseClicked(evt);
+            }
+        });
+        tbUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbUnidadeKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tbUnidade);
@@ -163,7 +199,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel8.setText("Nome:");
 
         btAterarUnidade.setText("Alterar");
-        btAterarUnidade.setNextFocusableComponent(ccServicoRemota);
+        btAterarUnidade.setNextFocusableComponent(tbRemota);
         btAterarUnidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAterarUnidadeActionPerformed(evt);
@@ -373,16 +409,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     
         //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
-
-            //Seleciona remota
-            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-            //Atualiza tabela
-            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-            
-            //limpar textfield unidade
-            tfNomeUnidade.setText("");
-            tfMatriculaUnidade.setText("");
-            tfNumeroUnidade.setText("");
+            selecionaTbRemota();
 
         }        
         
@@ -496,17 +523,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btAterarUnidadeActionPerformed
 
     private void tbUnidadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadeMouseClicked
-        
-        Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
-        
-        tfNomeUnidade.setText(un.getNome() );
-        if(un.getServico() > 1 && un.getServico() < 3 )
-            ccServicoUnidade.setSelectedIndex(un.getServico() - 1 );
-        else
-            ccServicoUnidade.setSelectedIndex(0);
-        tfMatriculaUnidade.setText( Integer.toString(un.getMatriculaHidrometro() )  );
-        tfNumeroUnidade.setText(un.getNumeroHidrometro() );
-        
+        selecionaTbUnidade();        
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
     private void btExcluirRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirRemotaActionPerformed
@@ -566,6 +583,20 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
            btAterarUnidade.doClick();
        }
     }//GEN-LAST:event_btAterarUnidadeKeyPressed
+
+    private void tbRemotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbRemotaKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN){
+            selecionaTbRemota();
+        }        
+    }//GEN-LAST:event_tbRemotaKeyReleased
+
+    private void tbUnidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbUnidadeKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN){
+            selecionaTbUnidade();
+        } 
+    }//GEN-LAST:event_tbUnidadeKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
