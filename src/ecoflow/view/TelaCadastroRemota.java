@@ -12,6 +12,7 @@ import ecoflow.modelo.Remota;
 import ecoflow.modelo.RemotasTableModel;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -168,6 +169,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 btAterarUnidadeActionPerformed(evt);
             }
         });
+        btAterarUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAterarUnidadeKeyPressed(evt);
+            }
+        });
 
         jLabel11.setText("N. Hidrometro:");
 
@@ -249,6 +255,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 btAdicionarRemotaActionPerformed(evt);
             }
         });
+        btAdicionarRemota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAdicionarRemotaKeyPressed(evt);
+            }
+        });
 
         tfMatriculaRemota.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         tfMatriculaRemota.setEnabled(false);
@@ -269,6 +280,11 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         btExcluirRemota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirRemotaActionPerformed(evt);
+            }
+        });
+        btExcluirRemota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btExcluirRemotaKeyPressed(evt);
             }
         });
 
@@ -529,6 +545,27 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         
         
     }//GEN-LAST:event_btExcluirRemotaActionPerformed
+
+    private void btAdicionarRemotaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAdicionarRemotaKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAdicionarRemota.doClick();
+       }
+    }//GEN-LAST:event_btAdicionarRemotaKeyPressed
+
+    private void btExcluirRemotaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btExcluirRemotaKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btExcluirRemota.doClick();
+       }
+    }//GEN-LAST:event_btExcluirRemotaKeyPressed
+
+    private void btAterarUnidadeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAterarUnidadeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAterarUnidade.doClick();
+       }
+    }//GEN-LAST:event_btAterarUnidadeKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

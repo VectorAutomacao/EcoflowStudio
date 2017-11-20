@@ -12,6 +12,7 @@ import ecoflow.modelo.Remota;
 import ecoflow.modelo.RemotasTableModel;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -128,6 +129,16 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         tfLeitura.setDocument(new CampoInt(10));
 
         btAlterar.setText("Alterar");
+        btAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAlterarActionPerformed(evt);
+            }
+        });
+        btAlterar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAlterarKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -269,6 +280,19 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         
         tfLeitura.setText( Integer.toString(un.getLeitura() ) );
     }//GEN-LAST:event_tbUnidadeMouseClicked
+
+    private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_btAlterarActionPerformed
+
+    private void btAlterarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAlterarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAlterar.doClick();
+       }
+    }//GEN-LAST:event_btAlterarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,6 +9,7 @@ import ecoflow.controle.ControleCentral;
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.CentraisTableModel;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -89,6 +90,63 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Identificador já existe. Tente outro número.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }
+    
+    private void abrirTelaCadastroRemota(){
+        if(flag){
+            flag = false;
+
+            try {
+
+                //Configurando a conexao
+                tcp = controleConexao.getTcpMasterConnection();
+                controleCentral.setTcpMasterConnection(tcp);
+
+                //Verifica se central selecionada na tabela é mesma conectada
+                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
+
+                    //Inicia tela carregando
+                    final TelaCarregando telaCarregando = new TelaCarregando();
+                    telaCarregando.setVisible(true);
+
+
+                    //Thread para processamento
+                    Thread t = new Thread(){
+                        public void run(){
+
+                            //Inicia tela cadastro de remotas
+                            TelaCadastroRemota telaRemota;
+                            try {
+                                telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
+                                Tela.chamarInternalFrame(desktopPane,telaRemota, true);
+                            } catch (Exception ex) {
+                                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                                JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+                            }
+
+                            //Fechar tela carregando
+                            telaCarregando.dispose();
+
+                            flag = true; 
+                        }
+                    };
+
+                    t.start();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                    flag = true; 
+                }
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                flag = true; 
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                flag = true; 
+            }
+
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -130,6 +188,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 btAlterarActionPerformed(evt);
             }
         });
+        btAlterar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAlterarKeyPressed(evt);
+            }
+        });
 
         btAdicionar.setText("Adicionar Nova Central");
         btAdicionar.setNextFocusableComponent(btAlterar);
@@ -138,12 +201,22 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 btAdicionarActionPerformed(evt);
             }
         });
+        btAdicionar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAdicionarKeyPressed(evt);
+            }
+        });
 
         btExcluir.setText("Excluir");
-        btExcluir.setNextFocusableComponent(tfId);
+        btExcluir.setNextFocusableComponent(tbCentral);
         btExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btExcluirActionPerformed(evt);
+            }
+        });
+        btExcluir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btExcluirKeyPressed(evt);
             }
         });
 
@@ -209,6 +282,14 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         tbCentral.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbCentralMouseClicked(evt);
+            }
+        });
+        tbCentral.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbCentralKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbCentralKeyReleased(evt);
             }
         });
         jScrollPane1.setViewportView(tbCentral);
@@ -303,62 +384,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                 tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
                 tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );                    
             }else{
-                
-                if(flag){
-                    flag = false;
-                    
-                    try {
-                        
-                        //Configurando a conexao
-                        tcp = controleConexao.getTcpMasterConnection();
-                        controleCentral.setTcpMasterConnection(tcp);
-                        
-                        //Verifica se central selecionada na tabela é mesma conectada
-                        if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-                            
-                            //Inicia tela carregando
-                            final TelaCarregando telaCarregando = new TelaCarregando();
-                            telaCarregando.setVisible(true);
-                            
-                            
-                            //Thread para processamento
-                            Thread t = new Thread(){
-                                public void run(){
-                                    
-                                    //Inicia tela cadastro de remotas
-                                    TelaCadastroRemota telaRemota;
-                                    try {
-                                        telaRemota = new TelaCadastroRemota(listaCentral.get( tbCentral.getSelectedRow() ) );
-                                        Tela.chamarInternalFrame(desktopPane,telaRemota, true);
-                                    } catch (Exception ex) {
-                                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                                        JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
-                                    }
-                                    
-                                    //Fechar tela carregando
-                                    telaCarregando.dispose();
-                                    
-                                    flag = true; 
-                                }
-                            };
-                            
-                            t.start();
-                        }else{
-                            JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                            flag = true; 
-                        }
-                    } catch (ModbusException ex) {
-                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
-                        flag = true; 
-                    } catch (Exception ex) {
-                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
-                        flag = true; 
-                    }
-                    
-                }
-                
+                abrirTelaCadastroRemota();
             }
         }
         
@@ -447,6 +473,43 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Selecione uma linha na tabela.", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btAdicionarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAdicionarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAdicionar.doClick();
+       }
+    }//GEN-LAST:event_btAdicionarKeyPressed
+
+    private void btAlterarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAlterarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAlterar.doClick();
+       }
+    }//GEN-LAST:event_btAlterarKeyPressed
+
+    private void btExcluirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btExcluirKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btExcluir.doClick();
+       }
+    }//GEN-LAST:event_btExcluirKeyPressed
+
+    private void tbCentralKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbCentralKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            abrirTelaCadastroRemota();
+        }
+        
+    }//GEN-LAST:event_tbCentralKeyPressed
+
+    private void tbCentralKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbCentralKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_UP || evt.getKeyCode() == KeyEvent.VK_DOWN){
+            tfId.setText( tbCentral.getValueAt(tbCentral.getSelectedRow(), 0).toString() );
+            tfNome.setText(tbCentral.getValueAt(tbCentral.getSelectedRow(), 1).toString() );
+        }
+    }//GEN-LAST:event_tbCentralKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

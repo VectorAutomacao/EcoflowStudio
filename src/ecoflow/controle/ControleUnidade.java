@@ -26,15 +26,15 @@ import util.outros.Converte;
  */
 public class ControleUnidade {
     
-    final int CONTADOR = 16; //Quantidade de unidades por remota
-    final int REFERENCIAQTDREMOTA = 0; //Referencia para quantidade de remota
-    final int REFERENCIALEITURA = 1; //Inicio da leitura 1 a 640 (2 words)
-    final int REFERENCIASERVICO = 641; //Referencia tipo de leitura 641 a 961 (1-agua fria 2-Agua quente 3-gas)
-    final int REFERENCIAMATRICULAHIDROMETRO = 962; //Referencia matricula 962 a 1601 (2 words)
-    final int REFERENCIANUMEROHIDROMETRO = 1602; //Referencia Numero de hidrometro 1602 a 3521 (6 words)
-    final int REFERENCIANOME = 3522; //Referencia nome das unidades 3522 a 5122 (5 words)
-    final int REFERENCIAIDCENTRAL = 5123; //Referencia para quantidade de remota
-    final int FATORMULTIPLICATIVO = 65536; //fator multiplicativo para o segundo registro
+    final int CONTADOR = 16;                        //Quantidade de unidades por remota
+    final int REFERENCIAQTDREMOTA = 0;              //Referencia para quantidade de remota
+    final int REFERENCIALEITURA = 1;                //Inicio da leitura 1 a 640 (2 words)
+    final int REFERENCIASERVICO = 641;              //Referencia tipo de leitura 641 a 961 (1-agua fria 2-Agua quente 3-gas)
+    final int REFERENCIAMATRICULAHIDROMETRO = 962;  //Referencia matricula 962 a 1601 (2 words)
+    final int REFERENCIANUMEROHIDROMETRO = 1602;    //Referencia Numero de hidrometro 1602 a 3521 (6 words)
+    final int REFERENCIANOME = 3522;                //Referencia nome das unidades 3522 a 5122 (5 words)
+    final int REFERENCIAIDCENTRAL = 5123;           //Referencia para quantidade de remota
+    final int FATORMULTIPLICATIVO = 65536;          //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
    
@@ -363,6 +363,7 @@ public class ControleUnidade {
         ModbusRegistro.escrever(tcpMasterConnection, referencia, valor);
     }
     
+    //Cria uma lista de unidades para uma remota
     public void addUnidades(Remota remota, String nome, int servico) throws ModbusException{
         int nRemota = remota.getId();
         List<Unidade> unidades = remota.getUnidades();
@@ -403,6 +404,7 @@ public class ControleUnidade {
         }
     }
     
+    //Salva as unidades em um arquivo xls(Excel)
     public void saveUnidadesXLS(List<Unidade> unidades) throws FileNotFoundException, IOException{
         int contador = 1;
         
@@ -447,6 +449,5 @@ public class ControleUnidade {
             wb.close();
         }        
     }
-    
-        
+       
 }

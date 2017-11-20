@@ -10,12 +10,16 @@ import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Central;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.InputMap;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
@@ -41,7 +45,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     /**
      * Creates new form Unidade
      */
-    public TelaLeitura() throws Exception {
+    public TelaLeitura() throws Exception  {
         initComponents();
                        
         //Configurando tbUnidades
@@ -49,6 +53,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         
+        //UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
     }
 
     /**
@@ -80,6 +85,11 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
                 btLeituraActionPerformed(evt);
             }
         });
+        btLeitura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btLeituraKeyPressed(evt);
+            }
+        });
 
         btSalvar.setText("Salvar");
         btSalvar.setEnabled(false);
@@ -87,6 +97,11 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
         btSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSalvarActionPerformed(evt);
+            }
+        });
+        btSalvar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btSalvarKeyPressed(evt);
             }
         });
 
@@ -212,6 +227,20 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
             Logger.getLogger(TelaLeitura.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btSalvarActionPerformed
+
+    private void btLeituraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btLeituraKeyPressed
+        // TODO add your handling code here:
+       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btLeitura.doClick();
+       }
+    }//GEN-LAST:event_btLeituraKeyPressed
+
+    private void btSalvarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btSalvarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btSalvar.doClick();
+       }
+    }//GEN-LAST:event_btSalvarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,6 +7,7 @@ package ecoflow.view;
 
 import ecoflow.controle.ControleConexao;
 import ecoflow.modelo.Conexao;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -118,6 +119,11 @@ public class EditarConexao extends javax.swing.JInternalFrame {
                 btAplicarActionPerformed(evt);
             }
         });
+        btAplicar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btAplicarKeyPressed(evt);
+            }
+        });
 
         jLabel3.setText("TimeOut:");
 
@@ -128,6 +134,11 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         btTestarConexao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btTestarConexaoActionPerformed(evt);
+            }
+        });
+        btTestarConexao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btTestarConexaoKeyPressed(evt);
             }
         });
 
@@ -211,6 +222,20 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btTestarConexaoActionPerformed
+
+    private void btTestarConexaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btTestarConexaoKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btTestarConexao.doClick();
+       }
+    }//GEN-LAST:event_btTestarConexaoKeyPressed
+
+    private void btAplicarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAplicarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAplicar.doClick();
+       }
+    }//GEN-LAST:event_btAplicarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
