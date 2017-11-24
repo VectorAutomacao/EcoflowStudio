@@ -48,8 +48,14 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         int idCentral, qtdRemota;
         
         //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp); 
+        try{
+            tcp = controleConexao.getTcpMasterConnection();
+            controleCentral.setTcpMasterConnection(tcp); 
+        }catch(Exception e){
+            e.printStackTrace();
+            Exception exception = new Exception("Problema na conexão!");
+            throw exception;
+        }
                 
         //Le a central toda
         controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
@@ -74,25 +80,28 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         //Le arquivo xml
         centralSelcionada = controleCentral.getCentralXML(idCentral);
 
+        //Configurar tbRemota
+        tbRemota.setModel(remotasTableModel);
+        tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
+
+        //Configurando tbUnidades
+        tbUnidade.setModel(unidadesTableModel);
+        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+        
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
-
-                //Configurar tbRemota
-                tbRemota.setModel(remotasTableModel);
-                tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
                 //Atualiza tabela remota
                 remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
 
-                //Configurando tbUnidades
-                tbUnidade.setModel(unidadesTableModel);
-                tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-                tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
                                                  
             }else{
-                JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                Exception e = new Exception("Central desatualizada no sistema.");
+                throw e;
             }
         }else{
-            JOptionPane.showMessageDialog(null, "Central não Cadastrado no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            Exception e = new Exception("Central não Cadastrado no sistema");
+            throw e;
         }
         
     }

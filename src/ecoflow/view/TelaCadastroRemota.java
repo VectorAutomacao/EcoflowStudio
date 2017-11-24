@@ -63,9 +63,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         centralSelcionada = controleCentral.getCentral();
         //Salva o xml da central
         controleCentral.saveCentralXML(centralSelcionada);
-        
-    
-        
+                
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
         tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
