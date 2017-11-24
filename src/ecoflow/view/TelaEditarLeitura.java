@@ -44,36 +44,9 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
      * Creates new form TelaEditarLeitura
      */
     public TelaEditarLeitura() throws Exception {
-        
-        initComponents();
-        
+                
         int idCentral = 0;
         int qtdRemota = 0;
-                        
-        //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);  
-                
-        //Le na central
-        idCentral = controleCentral.getIdCentral();
-        qtdRemota = controleCentral.getQtdRemota();
-        
-        
-        //Configura Central
-        centralSelcionada.setId(idCentral);
-        
-        //Le arquivo xml
-        centralSelcionada = controleCentral.getCentralXML(idCentral);
-        
-                        
-        //Configurar tbRemota
-        tbRemota.setModel(remotasTableModel);
-        tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
-        
-        //Configurando tbUnidades
-        tbUnidade.setModel(unidadesTableModel);
-        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
@@ -83,8 +56,37 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                     controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
                     //Salva o xml da central
                     controleCentral.saveCentralXML(centralSelcionada);
+                                        
+                    //Montar a janela
+                    initComponents();
+                    
+                     //Configurando a conexao
+                    tcp = controleConexao.getTcpMasterConnection();
+                    controleCentral.setTcpMasterConnection(tcp);  
+
+                    //Le na central
+                    idCentral = controleCentral.getIdCentral();
+                    qtdRemota = controleCentral.getQtdRemota();
+
+
+                    //Configura Central
+                    centralSelcionada.setId(idCentral);
+
+                    //Le arquivo xml
+                    centralSelcionada = controleCentral.getCentralXML(idCentral);
+
+
+                    //Configurar tbRemota
+                    tbRemota.setModel(remotasTableModel);
+                    tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
                     //Atualiza tabela remota
                     remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+
+                    //Configurando tbUnidades
+                    tbUnidade.setModel(unidadesTableModel);
+                    tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+                    tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+                    
                 } catch (ModbusException ex) {
                     Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Problema ao ler os registros da central.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -98,7 +100,59 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         }
         
     }
+    
+    public void selecionaTbRemota(){
+         //Verifica se uma linha foi selecionada
+        if(tbRemota.getSelectedRow() != -1){
+            
+            if(flag){
+                flag = false;
+                
+                //Inicia tela carregando
+                final TelaCarregando telaCarregando = new TelaCarregando();
+                telaCarregando.setVisible(true);
+                
+                Thread t = new Thread(){
+                    public void run(){
+                        
+                        try {
+                            //Configurando a conexao
+                            tcp = controleConexao.getTcpMasterConnection();
+                            controleCentral.setTcpMasterConnection(tcp);  
+                    
+                            //Seleciona remota
+                            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
+                        
+                            //Leitura da central
+                            controleCentral.getUnidadesLeituras(remotaSelecionada);
 
+                            //Atualiza tabela
+                            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                            
+                        } catch (Exception ex) {
+                            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(null, "Problema ao criar conexão com remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
+                        
+                        //fecha tela de carregando
+                        telaCarregando.dispose();
+                        
+                    }
+                };
+                
+                t.start();
+                                
+                flag = true;
+            }
+        }
+    }
+    
+    public void selecionatbUnidade(){
+        Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+        
+        tfLeitura.setText( Integer.toString(un.getLeitura() ) );
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,6 +236,11 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                 tbUnidadeMouseClicked(evt);
             }
         });
+        tbUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbUnidadeKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUnidade);
 
         tbRemota.setModel(new javax.swing.table.DefaultTableModel(
@@ -198,6 +257,11 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         tbRemota.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbRemotaMouseClicked(evt);
+            }
+        });
+        tbRemota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tbRemotaKeyReleased(evt);
             }
         });
         jScrollPane2.setViewportView(tbRemota);
@@ -233,56 +297,52 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
 
     private void tbRemotaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRemotaMouseClicked
         // TODO add your handling code here:
-        
-        //Verifica se uma linha foi selecionada
-        if(tbRemota.getSelectedRow() != -1){
-            
-            if(flag){
-                flag = false;
-                
-                //Inicia tela carregando
-                final TelaCarregando telaCarregando = new TelaCarregando();
-                telaCarregando.setVisible(true);
-                
-                Thread t = new Thread(){
-                    public void run(){
-                        //Seleciona remota
-                        remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-                        
-                        try {
-                            //Leitura da central
-                            controleCentral.getUnidadesLeituras(remotaSelecionada);
-
-                            //Atualiza tabela
-                            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                        
-                        } catch (ModbusException ex) {
-                            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                            JOptionPane.showMessageDialog(null, "Problema ao ler as unidades da remota.", "Erro", JOptionPane.ERROR_MESSAGE);
-                        }
-                        //fecha tela de carregando
-                        telaCarregando.dispose();
-                        
-                    }
-                };
-                
-                t.start();
-                                
-                flag = true;
-            }
-        }
+        selecionaTbRemota();       
     }//GEN-LAST:event_tbRemotaMouseClicked
 
     private void tbUnidadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUnidadeMouseClicked
         // TODO add your handling code here:
-        
-        Unidade un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
-        
-        tfLeitura.setText( Integer.toString(un.getLeitura() ) );
+        selecionatbUnidade();        
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
         // TODO add your handling code here:
+        Unidade un = new Unidade();
+        
+        if(flag){
+            flag = false;
+            
+            if(!tfLeitura.getText().trim().isEmpty() ){
+                if(tbUnidade.getSelectedRow() != -1 ){
+                    try {
+                        
+                        //Configurando a conexao
+                        tcp = controleConexao.getTcpMasterConnection();
+                        controleCentral.setTcpMasterConnection(tcp);
+                        
+                        //Seleciona unidade
+                        un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+                        
+                        //Alterar unidade
+                        un.setLeitura( Integer.parseInt(tfLeitura.getText().trim() ) );
+                        
+                        //Escreve na central
+                        controleCentral.setUnidadesLeituras(remotaSelecionada );
+                        //Atualiza tbUnidade
+                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                        //Salva xml da Central
+                        controleCentral.saveCentralXML(centralSelcionada);
+                        
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+                }                
+            }
+            
+            
+            flag = true;
+        }
         
         
     }//GEN-LAST:event_btAlterarActionPerformed
@@ -293,6 +353,16 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
            btAlterar.doClick();
        }
     }//GEN-LAST:event_btAlterarKeyPressed
+
+    private void tbRemotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbRemotaKeyReleased
+        // TODO add your handling code here:
+        selecionaTbRemota();
+    }//GEN-LAST:event_tbRemotaKeyReleased
+
+    private void tbUnidadeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbUnidadeKeyReleased
+        // TODO add your handling code here:
+        selecionatbUnidade();
+    }//GEN-LAST:event_tbUnidadeKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -17,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import util.modbus.ModbusRegistro;
+import util.modbus.ModbusSolenoide;
 import util.outros.Arquivo;
 import util.outros.Converte;
 
@@ -26,15 +27,18 @@ import util.outros.Converte;
  */
 public class ControleUnidade {
     
-    final int CONTADOR = 16;                        //Quantidade de unidades por remota
-    final int REFERENCIAQTDREMOTA = 0;              //Referencia para quantidade de remota
-    final int REFERENCIALEITURA = 1;                //Inicio da leitura 1 a 640 (2 words)
-    final int REFERENCIASERVICO = 641;              //Referencia tipo de leitura 641 a 961 (1-agua fria 2-Agua quente 3-gas)
-    final int REFERENCIAMATRICULAHIDROMETRO = 962;  //Referencia matricula 962 a 1601 (2 words)
-    final int REFERENCIANUMEROHIDROMETRO = 1602;    //Referencia Numero de hidrometro 1602 a 3521 (6 words)
-    final int REFERENCIANOME = 3522;                //Referencia nome das unidades 3522 a 5122 (5 words)
-    final int REFERENCIAIDCENTRAL = 5123;           //Referencia para quantidade de remota
-    final int FATORMULTIPLICATIVO = 65536;          //fator multiplicativo para o segundo registro
+    final int CONTADOR = 16;                            //Quantidade de unidades por remota
+    final int REFERENCIAQTDREMOTA = 0;                  //Referencia para quantidade de remota
+    final int REFERENCIALEITURA = 1;                    //Inicio da leitura 1 a 640 (2 words)
+    final int REFERENCIASERVICO = 641;                  //Referencia tipo de leitura 641 a 961 (1-agua fria 2-Agua quente 3-gas)
+    final int REFERENCIAMATRICULAHIDROMETRO = 962;      //Referencia matricula 962 a 1601 (2 words)
+    final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
+    final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
+    final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
+    final int REFERENCIAEDITARLEITURA = 7501;           //Referencia para editar leitura
+    final int REFERENCIABOOLEANLEITURA = 30000;         //Referencia para boleano para editar leitura
+    final int REFERENCIAEDITARBOOLEANLEITURA = 30036;   //Referencia para boleano para efetivar editção da leitura
+    final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
    
@@ -105,6 +109,47 @@ public class ControleUnidade {
             un.setLeitura( Converte.doubleWordIntMais(leituras[i], leituras[i + 1], FATORMULTIPLICATIVO) );
             contar++;
         }
+        
+    }
+    
+    //Escreve na central leitura de uma remota
+    public void setUnidadesLeituras(Remota remota) throws ModbusException{
+        int contador = CONTADOR * 2; // 2 word
+        int[] matriculas = new int[contador];
+        int referencia;
+        int referenciaBoleano;
+        int contar = 0;
+        List<Unidade> unidades = remota.getUnidades();
+
+        //Converte em double word
+        for(Unidade un: unidades){
+            int a, b;
+            
+            a = Converte.intWordMais(un.getLeitura(), FATORMULTIPLICATIVO);
+            b = Converte.intWordMenos(un.getLeitura(), FATORMULTIPLICATIVO);
+            matriculas[contar] = a;
+            contar++;
+            matriculas[contar] = b;
+            contar++;
+        }
+        
+        //Calculo para inicio da leitura do registro
+        referencia = REFERENCIAEDITARLEITURA + contador * remota.getId();
+
+        //Escreve em uma remota
+        ModbusRegistro.escrever(tcpMasterConnection, referencia, matriculas);
+        
+        //Referencia para boleano
+        referenciaBoleano = REFERENCIABOOLEANLEITURA + (remota.getId() / 8 + remota.getId() % 8);
+        
+        //Escrever boleano de qual remota editar
+        ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, true);
+        
+        //Efetivar edição da leitura
+        ModbusSolenoide.escrever(tcpMasterConnection, REFERENCIAEDITARBOOLEANLEITURA, true);
+        
+        //Escrever boleano de qual remota editar
+        ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, false);
         
     }
         
