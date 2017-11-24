@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
-import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.CampoInt;
 
@@ -42,56 +41,53 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form TelaEditarLeitura
+     * @throws java.lang.Exception
      */
     public TelaEditarLeitura() throws Exception {
                 
-        int idCentral = 0;
-        int qtdRemota = 0;
+        int idCentral, qtdRemota;
         
+        //Configurando a conexao
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp); 
+                
+        //Le a central toda
+        controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
+        //Salva o xml da central
+        controleCentral.saveCentralXML(centralSelcionada);
+
+        //Montar a janela
+        initComponents();
+
+         //Configurando a conexao
+        tcp = controleConexao.getTcpMasterConnection();
+        controleCentral.setTcpMasterConnection(tcp);  
+
+        //Le na central
+        idCentral = controleCentral.getIdCentral();
+        qtdRemota = controleCentral.getQtdRemota();
+
+
+        //Configura Central
+        centralSelcionada.setId(idCentral);
+
+        //Le arquivo xml
+        centralSelcionada = controleCentral.getCentralXML(idCentral);
+
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
-                
-                try {
-                    //Le a central toda
-                    controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
-                    //Salva o xml da central
-                    controleCentral.saveCentralXML(centralSelcionada);
-                                        
-                    //Montar a janela
-                    initComponents();
-                    
-                     //Configurando a conexao
-                    tcp = controleConexao.getTcpMasterConnection();
-                    controleCentral.setTcpMasterConnection(tcp);  
 
-                    //Le na central
-                    idCentral = controleCentral.getIdCentral();
-                    qtdRemota = controleCentral.getQtdRemota();
+                //Configurar tbRemota
+                tbRemota.setModel(remotasTableModel);
+                tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
+                //Atualiza tabela remota
+                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
 
-
-                    //Configura Central
-                    centralSelcionada.setId(idCentral);
-
-                    //Le arquivo xml
-                    centralSelcionada = controleCentral.getCentralXML(idCentral);
-
-
-                    //Configurar tbRemota
-                    tbRemota.setModel(remotasTableModel);
-                    tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
-                    //Atualiza tabela remota
-                    remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-
-                    //Configurando tbUnidades
-                    tbUnidade.setModel(unidadesTableModel);
-                    tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-                    tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
-                    
-                } catch (ModbusException ex) {
-                    Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Problema ao ler os registros da central.", "Erro", JOptionPane.ERROR_MESSAGE);
-                }
-                                
+                //Configurando tbUnidades
+                tbUnidade.setModel(unidadesTableModel);
+                tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+                tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
+                                                 
             }else{
                 JOptionPane.showMessageDialog(null, "Central desatualizada no sistema.", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
@@ -113,6 +109,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                 telaCarregando.setVisible(true);
                 
                 Thread t = new Thread(){
+                    @Override
                     public void run(){
                         
                         try {
@@ -307,7 +304,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
 
     private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
         // TODO add your handling code here:
-        Unidade un = new Unidade();
+        Unidade un;
         
         if(flag){
             flag = false;

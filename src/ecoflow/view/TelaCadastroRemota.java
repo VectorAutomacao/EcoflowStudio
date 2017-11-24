@@ -46,6 +46,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form TelaRemota
+     * @param c
+     * @throws java.lang.Exception
      */
     public TelaCadastroRemota(Central c) throws Exception {
         initComponents();
@@ -467,7 +469,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
     private void btAterarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAterarUnidadeActionPerformed
         // TODO add your handling code here:
-        Unidade un = new Unidade();
+        Unidade un;
         
         
         if(flag){

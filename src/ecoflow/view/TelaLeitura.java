@@ -16,10 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
 import javax.swing.table.TableRowSorter;
 import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
@@ -44,6 +41,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form Unidade
+     * @throws java.lang.Exception
      */
     public TelaLeitura() throws Exception  {
         initComponents();
@@ -166,8 +164,7 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
     private void btLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLeituraActionPerformed
         // TODO add your handling code here:
         
-        int idCentral = 0;
-        int qtdRemota = 0;
+        int idCentral, qtdRemota;
         
         if(flag){
             flag = false;

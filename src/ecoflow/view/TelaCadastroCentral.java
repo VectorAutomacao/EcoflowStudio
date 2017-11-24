@@ -42,6 +42,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
     
     /**
      * Creates new form TelaCentral
+     * @param dp
      */
     public TelaCadastroCentral(JDesktopPane dp){
         initComponents();
@@ -116,6 +117,7 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
                     //Thread para processamento
                     Thread t = new Thread(){
+                        @Override
                         public void run(){
 
                             //Inicia tela cadastro de remotas
