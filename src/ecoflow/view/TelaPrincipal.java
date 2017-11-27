@@ -182,10 +182,33 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void miEditarLeituraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarLeituraActionPerformed
         // TODO add your handling code here:
-        TelaEditarLeitura telaEditarLeitura;
+        
         try {
-            telaEditarLeitura = new TelaEditarLeitura();
-            Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
+            //Inicia tela carregando
+            final TelaCarregando telaCarregando = new TelaCarregando();
+            telaCarregando.setVisible(true);
+
+            //Thread para processamento
+            Thread t = new Thread(){
+                @Override
+                public void run(){
+
+                    //Inicia tela editar leitura
+                    TelaEditarLeitura telaEditarLeitura;
+                    try {
+                        telaEditarLeitura = new TelaEditarLeitura();
+                        Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    //Fechar tela carregando
+                    telaCarregando.dispose();
+                }
+            };
+
+            t.start();
         } catch (Exception ex) {
             Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);

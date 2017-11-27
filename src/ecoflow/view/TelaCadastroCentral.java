@@ -114,7 +114,6 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                     final TelaCarregando telaCarregando = new TelaCarregando();
                     telaCarregando.setVisible(true);
 
-
                     //Thread para processamento
                     Thread t = new Thread(){
                         @Override

@@ -44,6 +44,9 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
      * @throws java.lang.Exception
      */
     public TelaEditarLeitura() throws Exception {
+        
+        //Montar a janela
+        initComponents();
                 
         int idCentral, qtdRemota;
         
@@ -56,23 +59,10 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
             Exception exception = new Exception("Problema na conexão!");
             throw exception;
         }
-                
-        //Le a central toda
-        controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
-        //Salva o xml da central
-        controleCentral.saveCentralXML(centralSelcionada);
-
-        //Montar a janela
-        initComponents();
-
-         //Configurando a conexao
-        tcp = controleConexao.getTcpMasterConnection();
-        controleCentral.setTcpMasterConnection(tcp);  
 
         //Le na central
         idCentral = controleCentral.getIdCentral();
         qtdRemota = controleCentral.getQtdRemota();
-
 
         //Configura Central
         centralSelcionada.setId(idCentral);
@@ -80,21 +70,18 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         //Le arquivo xml
         centralSelcionada = controleCentral.getCentralXML(idCentral);
 
-        //Configurar tbRemota
-        tbRemota.setModel(remotasTableModel);
-        tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
-
-        //Configurando tbUnidades
-        tbUnidade.setModel(unidadesTableModel);
-        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
-        tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
-                //Atualiza tabela remota
-                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                //Configurar tbRemota
+                tbRemota.setModel(remotasTableModel);
+                tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
+                remotasTableModel.setRemotas(centralSelcionada.getRemotas() ); //Atualiza tabela remota
 
-                                                 
+                //Configurando tbUnidades
+                tbUnidade.setModel(unidadesTableModel);
+                tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
+                tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta     
             }else{
                 Exception e = new Exception("Central desatualizada no sistema.");
                 throw e;
@@ -345,7 +332,6 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                     }
                 }                
             }
-            
             
             flag = true;
         }

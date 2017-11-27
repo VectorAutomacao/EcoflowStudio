@@ -133,22 +133,22 @@ public class ControleUnidade {
             contar++;
         }
         
-        //Calculo para inicio da leitura do registro
+        //Calculo referencia para inicio dos registro editar leitura
         referencia = REFERENCIAEDITARLEITURA + contador * remota.getId();
 
         //Escreve em uma remota
         ModbusRegistro.escrever(tcpMasterConnection, referencia, matriculas);
         
-        //Referencia para boleano
+        //Referencia para boleano de editar remota selecionada
         referenciaBoleano = REFERENCIABOOLEANLEITURA + (remota.getId() / 8 + remota.getId() % 8);
         
         //Escrever boleano de qual remota editar
         ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, true);
         
-        //Efetivar edição da leitura
+        //Escrever boleano para efetivar edição da leitura no mestre
         ModbusSolenoide.escrever(tcpMasterConnection, REFERENCIAEDITARBOOLEANLEITURA, true);
         
-        //Escrever boleano de qual remota editar
+        //Reescrever boleano de qual remota editar
         ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, false);
         
     }
