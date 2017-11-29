@@ -187,6 +187,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         jLabel2.setText("Nome:");
 
         tfNome.setNextFocusableComponent(btAdicionar);
+        tfNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfNomeKeyPressed(evt);
+            }
+        });
 
         btAlterar.setText("Alterar");
         btAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -230,6 +235,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
         tfId.setDocument(new CampoInt(3));
         tfId.setNextFocusableComponent(tfNome);
+        tfId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfIdKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -483,14 +493,14 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
            btAdicionar.doClick();
-       }
+        }
     }//GEN-LAST:event_btAdicionarKeyPressed
 
     private void btAlterarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAlterarKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
            btAlterar.doClick();
-       }
+        }
     }//GEN-LAST:event_btAlterarKeyPressed
 
     private void btExcluirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btExcluirKeyPressed
@@ -514,6 +524,20 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
             selecionaTbCentral();
         }
     }//GEN-LAST:event_tbCentralKeyReleased
+
+    private void tfIdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfIdKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAdicionar.doClick();
+        }
+    }//GEN-LAST:event_tfIdKeyPressed
+
+    private void tfNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNomeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAdicionar.doClick();
+        }
+    }//GEN-LAST:event_tfNomeKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

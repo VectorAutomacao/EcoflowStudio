@@ -127,7 +127,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         tfLeitura = new javax.swing.JTextField();
-        btAlterar = new javax.swing.JButton();
+        btAplicar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUnidade = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -143,16 +143,21 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         jLabel1.setText("Leitura");
 
         tfLeitura.setDocument(new CampoInt(10));
-
-        btAlterar.setText("Alterar");
-        btAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAlterarActionPerformed(evt);
+        tfLeitura.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfLeituraKeyPressed(evt);
             }
         });
-        btAlterar.addKeyListener(new java.awt.event.KeyAdapter() {
+
+        btAplicar.setText("Aplicar");
+        btAplicar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAplicarActionPerformed(evt);
+            }
+        });
+        btAplicar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                btAlterarKeyPressed(evt);
+                btAplicarKeyPressed(evt);
             }
         });
 
@@ -167,7 +172,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tfLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btAlterar)))
+                        .addComponent(btAplicar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -178,7 +183,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfLeitura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btAlterar))
+                    .addComponent(btAplicar))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -267,7 +272,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         selecionatbUnidade();        
     }//GEN-LAST:event_tbUnidadeMouseClicked
 
-    private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
+    private void btAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarActionPerformed
         // TODO add your handling code here:
         Unidade un;
         
@@ -309,14 +314,14 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         }
         
         
-    }//GEN-LAST:event_btAlterarActionPerformed
+    }//GEN-LAST:event_btAplicarActionPerformed
 
-    private void btAlterarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAlterarKeyPressed
+    private void btAplicarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btAplicarKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-           btAlterar.doClick();
+           btAplicar.doClick();
        }
-    }//GEN-LAST:event_btAlterarKeyPressed
+    }//GEN-LAST:event_btAplicarKeyPressed
 
     private void tbRemotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbRemotaKeyReleased
         // TODO add your handling code here:
@@ -328,9 +333,16 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         selecionatbUnidade();
     }//GEN-LAST:event_tbUnidadeKeyReleased
 
+    private void tfLeituraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfLeituraKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAplicar.doClick();
+       }
+    }//GEN-LAST:event_tfLeituraKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btAlterar;
+    private javax.swing.JButton btAplicar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

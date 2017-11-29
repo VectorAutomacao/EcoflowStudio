@@ -252,6 +252,9 @@
               <ComponentRef name="ccServicoUnidade"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfNomeUnidadeKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tfNumeroUnidade">
           <Properties>
@@ -262,6 +265,9 @@
               <ComponentRef name="btAterarUnidade"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfNumeroUnidadeKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="tfMatriculaUnidade">
           <Properties>
@@ -272,6 +278,9 @@
               <ComponentRef name="tfNumeroUnidade"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tfMatriculaUnidadeKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btAplicarUnidade">
           <Properties>

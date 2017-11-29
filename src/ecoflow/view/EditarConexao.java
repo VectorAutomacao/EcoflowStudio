@@ -109,8 +109,18 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         jLabel2.setText("Porta:");
 
         tfIp.setNextFocusableComponent(tfPorta);
+        tfIp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfIpKeyPressed(evt);
+            }
+        });
 
         tfPorta.setNextFocusableComponent(tfTimeOut);
+        tfPorta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfPortaKeyPressed(evt);
+            }
+        });
 
         btAplicar.setText("Aplicar");
         btAplicar.setNextFocusableComponent(btTestarConexao);
@@ -128,6 +138,11 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         jLabel3.setText("TimeOut:");
 
         tfTimeOut.setNextFocusableComponent(btAplicar);
+        tfTimeOut.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfTimeOutKeyPressed(evt);
+            }
+        });
 
         btTestarConexao.setText("Testar Conexão");
         btTestarConexao.setNextFocusableComponent(tfIp);
@@ -238,6 +253,27 @@ public class EditarConexao extends javax.swing.JInternalFrame {
            btAplicar.doClick();
        }
     }//GEN-LAST:event_btAplicarKeyPressed
+
+    private void tfIpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfIpKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAplicar.doClick();
+       }
+    }//GEN-LAST:event_tfIpKeyPressed
+
+    private void tfPortaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfPortaKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAplicar.doClick();
+       }
+    }//GEN-LAST:event_tfPortaKeyPressed
+
+    private void tfTimeOutKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfTimeOutKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAplicar.doClick();
+       }
+    }//GEN-LAST:event_tfTimeOutKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

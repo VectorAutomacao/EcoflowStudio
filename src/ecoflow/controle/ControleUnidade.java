@@ -34,10 +34,10 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
-    final int REFERENCIAEDITARLEITURA = 5130;          //Referencia das leituras a serem editadas
+    final int REFERENCIAEDITARLEITURA = 5130;           //Referencia das leituras a serem editadas
     final int REFERENCIANUMEROUNIDADELEITURA = 5132;    //Referencia unidade que tera sua leitura editada
-    final int REFERENCIANUMEROREMOTA = 5133;           //Referencia remota que tera sua leitura editada
-    final int REFERENCIABOLEANONLEITURA = 5134;        //Referencia para 1-escrita/ 0-leitura
+    final int REFERENCIANUMEROREMOTA = 5133;            //Referencia remota que tera sua leitura editada
+    final int REFERENCIABOLEANONLEITURA = 5134;         //Referencia para 1-escrita/ 0-leitura
     final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;

@@ -218,12 +218,27 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
         tfNomeUnidade.setDocument(new CampoStringIntUpperCase(10));
         tfNomeUnidade.setNextFocusableComponent(ccServicoUnidade);
+        tfNomeUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfNomeUnidadeKeyPressed(evt);
+            }
+        });
 
         tfNumeroUnidade.setDocument(new CampoStringIntUpperCase(12));
         tfNumeroUnidade.setNextFocusableComponent(btAterarUnidade);
+        tfNumeroUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfNumeroUnidadeKeyPressed(evt);
+            }
+        });
 
         tfMatriculaUnidade.setDocument(new CampoInt(8));
         tfMatriculaUnidade.setNextFocusableComponent(tfNumeroUnidade);
+        tfMatriculaUnidade.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tfMatriculaUnidadeKeyPressed(evt);
+            }
+        });
 
         btAplicarUnidade.setText("Aplicar");
         btAplicarUnidade.setNextFocusableComponent(tbRemota);
@@ -577,7 +592,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
            btAterarUnidade.doClick();
-       }
+        }
     }//GEN-LAST:event_btAterarUnidadeKeyPressed
 
     private void tbRemotaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbRemotaKeyReleased
@@ -613,6 +628,27 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btAplicarUnidadeActionPerformed
+
+    private void tfNomeUnidadeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNomeUnidadeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAterarUnidade.doClick();
+        }
+    }//GEN-LAST:event_tfNomeUnidadeKeyPressed
+
+    private void tfMatriculaUnidadeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfMatriculaUnidadeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAterarUnidade.doClick();
+        }
+    }//GEN-LAST:event_tfMatriculaUnidadeKeyPressed
+
+    private void tfNumeroUnidadeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tfNumeroUnidadeKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btAterarUnidade.doClick();
+        }
+    }//GEN-LAST:event_tfNumeroUnidadeKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
