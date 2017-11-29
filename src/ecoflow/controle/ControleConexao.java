@@ -27,7 +27,6 @@ public class ControleConexao {
     private final String NOMETIMEOUT = "prop.timeout";
     
     private static Conexao conexao = new Conexao();
-    private static TCPMasterConnection con = null;
     
     private final int CONTADOR = 1;
     private final int REFERENCIA = 0;
@@ -78,7 +77,7 @@ public class ControleConexao {
         readConexao();
         
         //Configura conexão TCP master
-        return con = mc.configurar(conexao.getIp(), conexao.getPorta(), conexao.getTimeOut() );
+        return mc.configurar(conexao.getIp(), conexao.getPorta(), conexao.getTimeOut() );
     }
     
     public void setTcpMasterConnection(TCPMasterConnection conTcp){

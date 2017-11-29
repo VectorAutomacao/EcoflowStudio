@@ -1,6 +1,5 @@
 package util.modbus;
 
-import javax.swing.JOptionPane;
 import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.ModbusSlaveException;
 import net.wimpi.modbus.io.ModbusTCPTransaction;

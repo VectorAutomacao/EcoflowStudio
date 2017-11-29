@@ -1,13 +1,7 @@
 <list>
   <central>
-    <id>2</id>
-    <nome>Central 02</nome>
-    <qtdRemotas>0</qtdRemotas>
-    <remotas/>
-  </central>
-  <central>
     <id>1</id>
-    <nome>Central 01</nome>
+    <nome>Central01</nome>
     <qtdRemotas>0</qtdRemotas>
     <remotas/>
   </central>

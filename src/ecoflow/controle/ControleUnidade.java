@@ -35,7 +35,7 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
-    final int REFERENCIAEDITARLEITURA = 7501;           //Referencia para editar leitura
+    final int REFERENCIAEDITARLEITURA = 15002;           //Referencia para editar leitura
     final int REFERENCIABOOLEANLEITURA = 30000;         //Referencia para boleano para editar leitura
     final int REFERENCIAEDITARBOOLEANLEITURA = 30036;   //Referencia para boleano para efetivar editção da leitura
     final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro

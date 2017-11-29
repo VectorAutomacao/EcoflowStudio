@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableRowSorter;
+import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.net.TCPMasterConnection;
 import util.outros.CampoInt;
 
@@ -326,9 +327,12 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         //Salva xml da Central
                         controleCentral.saveCentralXML(centralSelcionada);
                         
+                    } catch (ModbusException ex) {
+                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao alterar leitura da remota.", "Erro", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ex) {
-                        Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                 }                
             }

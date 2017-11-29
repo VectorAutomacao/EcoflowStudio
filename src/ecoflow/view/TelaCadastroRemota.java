@@ -123,6 +123,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfNomeUnidade = new javax.swing.JTextField();
         tfNumeroUnidade = new javax.swing.JTextField();
         tfMatriculaUnidade = new javax.swing.JTextField();
+        btAplicarUnidade = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -199,7 +200,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         jLabel8.setText("Nome:");
 
         btAterarUnidade.setText("Alterar");
-        btAterarUnidade.setNextFocusableComponent(tbRemota);
+        btAterarUnidade.setNextFocusableComponent(btAplicarUnidade);
         btAterarUnidade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAterarUnidadeActionPerformed(evt);
@@ -224,6 +225,14 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         tfMatriculaUnidade.setDocument(new CampoInt(8));
         tfMatriculaUnidade.setNextFocusableComponent(tfNumeroUnidade);
 
+        btAplicarUnidade.setText("Aplicar");
+        btAplicarUnidade.setNextFocusableComponent(tbRemota);
+        btAplicarUnidade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAplicarUnidadeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -247,8 +256,10 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btAterarUnidade)))
-                .addContainerGap(162, Short.MAX_VALUE))
+                        .addComponent(btAterarUnidade)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btAplicarUnidade)))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,7 +280,8 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                             .addComponent(ccServicoUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btAterarUnidade)
                             .addComponent(tfNumeroUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfMatriculaUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(tfMatriculaUnidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btAplicarUnidade))))
                 .addContainerGap())
         );
 
@@ -479,36 +491,20 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 !tfNumeroUnidade.getText().trim().isEmpty()
             ){
                 if(tbUnidade.getSelectedRow() != -1){
-                    
-                    try {
-                        
-                        //Configurando a conexao
-                        tcp = controleConexao.getTcpMasterConnection();
-                        controleCentral.setTcpMasterConnection(tcp);
-                        
-                        //Seleciona unidade
-                        un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+                                            
+                    //Seleciona unidade
+                    un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
 
-                        //Altera unidade
-                        un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
-                        un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
-                        un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
-                        un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
+                    //Altera unidade
+                    un.setNome(tfNomeUnidade.getText().trim().toUpperCase() );
+                    un.setServico( Integer.parseInt(ccServicoUnidade.getSelectedItem().toString() ) );
+                    un.setMatriculaHidrometro( Integer.parseInt(tfMatriculaUnidade.getText()) );
+                    un.setNumeroHidrometro(tfNumeroUnidade.getText().trim().toUpperCase() );
 
-                        //Escreve na central
-                        controleCentral.setUnidades( remotaSelecionada );
-                        //Atualiza tbUnidade
-                        unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                        //Salva xml da Central
-                        controleCentral.saveCentralXML(centralSelcionada);
-                    } catch (ModbusException ex) {
-                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
-                    }
-                    
+                    //Atualiza tbUnidade
+                    unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
+                    //Salva xml da Central
+                    controleCentral.saveCentralXML(centralSelcionada);
                     
                 }else{
                     JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -598,9 +594,30 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         } 
     }//GEN-LAST:event_tbUnidadeKeyReleased
 
+    private void btAplicarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarUnidadeActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            //Configurando a conexao
+            tcp = controleConexao.getTcpMasterConnection();
+            controleCentral.setTcpMasterConnection(tcp);
+            
+            //Escreve na central
+            controleCentral.setUnidades( remotaSelecionada );
+            
+        } catch (ModbusException ex) {
+            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btAplicarUnidadeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAdicionarRemota;
+    private javax.swing.JButton btAplicarUnidade;
     private javax.swing.JButton btAterarUnidade;
     private javax.swing.JButton btExcluirRemota;
     private javax.swing.JComboBox<String> ccServicoRemota;

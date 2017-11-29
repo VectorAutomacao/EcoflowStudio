@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
 /**
@@ -42,6 +40,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         tfTimeOut.setText(Integer.toString(conexao.getTimeOut() ) );
         
         //Fechar Janela
+        /*
         this.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
@@ -53,6 +52,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             }
             
         });
+        */
         
     }
      
@@ -204,6 +204,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
     private void btAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarActionPerformed
         if(setConexao() ){
             JOptionPane.showMessageDialog(null, "Configurações salvo com sucesso", "Infomativo", JOptionPane.INFORMATION_MESSAGE);
+            controleConexao.setTcpMasterConnection(null); // Remove conexão anterior
         }else{
             JOptionPane.showMessageDialog(null, "Problemas ao salvar no arquivo de configurações", "Erro", JOptionPane.ERROR_MESSAGE);
         }
@@ -213,7 +214,8 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         setConexao();
         try {
-            tcp = controleConexao.getTcpMasterConnection();
+            controleConexao.setTcpMasterConnection(null); //Remove conexões anteriores
+            tcp = controleConexao.getTcpMasterConnection(); // Cria uma nova conexão
             if(controleConexao.testarConexao() ){
                 JOptionPane.showMessageDialog(null, "Conexão com sucesso.", "Informativo", JOptionPane.INFORMATION_MESSAGE);
             }
