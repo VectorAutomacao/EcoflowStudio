@@ -74,6 +74,10 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         
         if(centralSelcionada != null){
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
+                
+                //Le todas as leitura da central
+                controleCentral.getRemotasLeituras(centralSelcionada.getRemotas() );
+                
                 //Configurar tbRemota
                 tbRemota.setModel(remotasTableModel);
                 tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
@@ -97,47 +101,11 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
     public void selecionaTbRemota(){
          //Verifica se uma linha foi selecionada
         if(tbRemota.getSelectedRow() != -1){
-            
-            if(flag){
-                flag = false;
-                
-                //Inicia tela carregando
-                final TelaCarregando telaCarregando = new TelaCarregando();
-                telaCarregando.setVisible(true);
-                
-                Thread t = new Thread(){
-                    @Override
-                    public void run(){
-                        
-                        try {
-                            //Configurando a conexao
-                            tcp = controleConexao.getTcpMasterConnection();
-                            controleCentral.setTcpMasterConnection(tcp);  
-                    
-                            //Seleciona remota
-                            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
-                        
-                            //Leitura da central
-                            controleCentral.getUnidadesLeituras(remotaSelecionada);
+            //Seleciona remota
+            remotaSelecionada = centralSelcionada.getRemota(tbRemota.getSelectedRow() );
 
-                            //Atualiza tabela
-                            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                            
-                        } catch (Exception ex) {
-                            Logger.getLogger(TelaEditarLeitura.class.getName()).log(Level.SEVERE, null, ex);
-                            JOptionPane.showMessageDialog(null, "Problema ao criar conexão com remota.", "Erro", JOptionPane.ERROR_MESSAGE);
-                        }
-                        
-                        //fecha tela de carregando
-                        telaCarregando.dispose();
-                        
-                    }
-                };
-                
-                t.start();
-                                
-                flag = true;
-            }
+            //Atualiza tabela
+            unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
         }
     }
     
@@ -321,7 +289,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         un.setLeitura( Integer.parseInt(tfLeitura.getText().trim() ) );
                         
                         //Escreve na central
-                        controleCentral.setUnidadesLeituras(remotaSelecionada );
+                        controleCentral.setUnidadeLeitura(un, remotaSelecionada.getId() );
                         //Atualiza tbUnidade
                         unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
                         //Salva xml da Central

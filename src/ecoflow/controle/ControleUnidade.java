@@ -17,7 +17,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import util.modbus.ModbusRegistro;
-import util.modbus.ModbusSolenoide;
 import util.outros.Arquivo;
 import util.outros.Converte;
 
@@ -35,9 +34,10 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
-    final int REFERENCIAEDITARLEITURA = 15002;           //Referencia para editar leitura
-    final int REFERENCIABOOLEANLEITURA = 30000;         //Referencia para boleano para editar leitura
-    final int REFERENCIAEDITARBOOLEANLEITURA = 30036;   //Referencia para boleano para efetivar editção da leitura
+    final int REFERENCIAEDITARLEITURA = 5130;          //Referencia das leituras a serem editadas
+    final int REFERENCIANUMEROUNIDADELEITURA = 5132;    //Referencia unidade que tera sua leitura editada
+    final int REFERENCIANUMEROREMOTA = 5133;           //Referencia remota que tera sua leitura editada
+    final int REFERENCIABOLEANONLEITURA = 5134;        //Referencia para 1-escrita/ 0-leitura
     final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
@@ -113,43 +113,24 @@ public class ControleUnidade {
     }
     
     //Escreve na central leitura de uma remota
-    public void setUnidadesLeituras(Remota remota) throws ModbusException{
+    public void setUnidadeLeitura(Unidade unidade, int idRemota) throws ModbusException{
         int contador = CONTADOR * 2; // 2 word
-        int[] matriculas = new int[contador];
-        int referencia;
-        int referenciaBoleano;
-        int contar = 0;
-        List<Unidade> unidades = remota.getUnidades();
+        int[] leituras = new int[contador];
 
-        //Converte em double word
-        for(Unidade un: unidades){
-            int a, b;
-            
-            a = Converte.intWordMais(un.getLeitura(), FATORMULTIPLICATIVO);
-            b = Converte.intWordMenos(un.getLeitura(), FATORMULTIPLICATIVO);
-            matriculas[contar] = a;
-            contar++;
-            matriculas[contar] = b;
-            contar++;
-        }
+        leituras[0] = Converte.intWordMais(unidade.getLeitura(), FATORMULTIPLICATIVO);
+        leituras[1] = Converte.intWordMenos(unidade.getLeitura(), FATORMULTIPLICATIVO);
         
-        //Calculo referencia para inicio dos registro editar leitura
-        referencia = REFERENCIAEDITARLEITURA + contador * remota.getId();
-
-        //Escreve em uma remota
-        ModbusRegistro.escrever(tcpMasterConnection, referencia, matriculas);
+        //Escreve leitura da unidade
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAEDITARLEITURA, leituras);
         
-        //Referencia para boleano de editar remota selecionada
-        referenciaBoleano = REFERENCIABOOLEANLEITURA + (remota.getId() / 8 + remota.getId() % 8);
+        //Escrever numero da remota a ser editada
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROREMOTA, idRemota + 1);
         
-        //Escrever boleano de qual remota editar
-        ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, true);
-        
-        //Escrever boleano para efetivar edição da leitura no mestre
-        ModbusSolenoide.escrever(tcpMasterConnection, REFERENCIAEDITARBOOLEANLEITURA, true);
-        
-        //Reescrever boleano de qual remota editar
-        ModbusSolenoide.escrever(tcpMasterConnection, referenciaBoleano, false);
+        //Escrever numero da unidade a ser editada
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROUNIDADELEITURA, unidade.getPorta() + 1);
+                
+        //Escrever para leitura/escrita
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIABOLEANONLEITURA, 1);
         
     }
         
