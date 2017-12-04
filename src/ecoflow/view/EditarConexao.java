@@ -20,6 +20,10 @@ import net.wimpi.modbus.net.TCPMasterConnection;
  */
 public class EditarConexao extends javax.swing.JInternalFrame {
     
+    private final String IP = "192.168.1.8";
+    private final int PORTA = 502;
+    private final int TIMEOUT = 4000;
+    
     private ControleConexao controleConexao = new ControleConexao();
     private Conexao         conexao         = new Conexao();
     
@@ -79,6 +83,29 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         }
         return false;
     }
+    
+    private Boolean setConexaoPadrao(){
+        //Verifica se campos não estão nulos
+        
+        //Edita textfield
+        tfIp.setText(IP);
+        tfPorta.setText( Integer.toString(PORTA) );
+        tfTimeOut.setText( Integer.toString(TIMEOUT) );
+       
+        //Configura objeto conexão
+        conexao.setIp(IP);
+        conexao.setPorta(PORTA);
+        conexao.setTimeOut(TIMEOUT);
+
+        try {
+            //Edita o arquivos properties
+            controleConexao.setConexao(conexao);
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(EditarConexao.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,6 +126,7 @@ public class EditarConexao extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         tfTimeOut = new javax.swing.JTextField();
         btTestarConexao = new javax.swing.JButton();
+        btPadrao = new javax.swing.JButton();
 
         setClosable(true);
         setMaximizable(true);
@@ -157,6 +185,18 @@ public class EditarConexao extends javax.swing.JInternalFrame {
             }
         });
 
+        btPadrao.setText("Padrão");
+        btPadrao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPadraoActionPerformed(evt);
+            }
+        });
+        btPadrao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btPadraoKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -179,6 +219,8 @@ public class EditarConexao extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btPadrao)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btTestarConexao)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btAplicar)))
@@ -198,7 +240,8 @@ public class EditarConexao extends javax.swing.JInternalFrame {
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btAplicar)
-                    .addComponent(btTestarConexao))
+                    .addComponent(btTestarConexao)
+                    .addComponent(btPadrao))
                 .addContainerGap())
         );
 
@@ -275,9 +318,27 @@ public class EditarConexao extends javax.swing.JInternalFrame {
        }
     }//GEN-LAST:event_tfTimeOutKeyPressed
 
+    private void btPadraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPadraoActionPerformed
+        // TODO add your handling code here:
+        if(setConexaoPadrao() ){
+            JOptionPane.showMessageDialog(null, "Configurações salvo com sucesso", "Infomativo", JOptionPane.INFORMATION_MESSAGE);
+            controleConexao.setTcpMasterConnection(null); // Remove conexão anterior
+        }else{
+            JOptionPane.showMessageDialog(null, "Problemas ao salvar no arquivo de configurações", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btPadraoActionPerformed
+
+    private void btPadraoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btPadraoKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+           btPadrao.doClick();
+       }
+    }//GEN-LAST:event_btPadraoKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAplicar;
+    private javax.swing.JButton btPadrao;
     private javax.swing.JButton btTestarConexao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

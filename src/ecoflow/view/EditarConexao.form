@@ -58,6 +58,8 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btPadrao" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btTestarConexao" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btAplicar" min="-2" max="-2" attributes="0"/>
@@ -83,6 +85,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btAplicar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btTestarConexao" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btPadrao" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -157,6 +160,15 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btTestarConexaoActionPerformed"/>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btTestarConexaoKeyPressed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btPadrao">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Padr&#xe3;o"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btPadraoActionPerformed"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btPadraoKeyPressed"/>
           </Events>
         </Component>
       </SubComponents>
