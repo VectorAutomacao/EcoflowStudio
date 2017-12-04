@@ -274,7 +274,8 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
 
     private void btAplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarActionPerformed
         // TODO add your handling code here:
-        Unidade un;
+        Unidade un = new Unidade();
+        Unidade unidadeSelecionada;
         
         if(flag){
             flag = false;
@@ -288,13 +289,16 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         controleCentral.setTcpMasterConnection(tcp);
                         
                         //Seleciona unidade
-                        un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
-                        
+                        unidadeSelecionada = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
+                                                
                         //Alterar unidade
+                        un.setPorta(unidadeSelecionada.getPorta() );
                         un.setLeitura( Integer.parseInt(tfLeitura.getText().trim() ) );
                         
                         //Escreve na central
                         controleCentral.setUnidadeLeitura(un, remotaSelecionada.getId() );
+                        //Alterar unidade
+                        unidadeSelecionada.setLeitura( un.getLeitura() );
                         //Atualiza tbUnidade
                         unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
                         //Salva xml da Central
@@ -305,9 +309,13 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(null, "Problema ao alterar leitura da remota.", "Erro", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ex) {
                         Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Seleciona uma unidade!", "Aviso", JOptionPane.WARNING_MESSAGE);
                 }                
+            }else{
+                JOptionPane.showMessageDialog(null, "Campo inválido!", "Aviso", JOptionPane.WARNING_MESSAGE);
             }
             
             flag = true;

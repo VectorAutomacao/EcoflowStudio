@@ -34,7 +34,10 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
-    final int REFERENCIAEDITARLEITURA = 15034;          //Inicio da referencia das leituras a serem editadas
+    final int REFERENCIANUMEROREMOTA = 15034;           //Referencia numero da remota
+    final int REFERENCIATRIGGER = 15035;                //Referencia TRIGGER
+    final int REFERENCIANUMEROUNIDADE = 15036;          //Referencia posição da unidade
+    final int REFERENCIAEDITARLEITURA = 15037;          //Referencia da leitura
     final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
@@ -110,11 +113,12 @@ public class ControleUnidade {
     }
     
     //Escreve na central leitura de uma remota
-    public void setUnidadeLeitura(Unidade unidade, int idRemota) throws ModbusException{
+    public void setUnidadeLeitura(Unidade unidade, int idRemota) throws ModbusException, Exception{
         int[] vetor = new int[5];
+        int[] trigger;
         
         //Numero da remota
-        vetor[0] = idRemota = 1;
+        vetor[0] = idRemota + 1;
         
         //Trigger
         vetor[1] = 1;
@@ -133,7 +137,14 @@ public class ControleUnidade {
         Numero da unidade %MW15036
         Leitura da unidade HI-%MW15037 LO-%MW15038
         */
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAEDITARLEITURA, vetor);
+        
+        trigger = ModbusRegistro.ler(tcpMasterConnection, REFERENCIATRIGGER, 1);
+        if(trigger[0] != 0 ){
+            throw new Exception("Não foi possivel editar leitura! Tente novamente.");
+        }
+        
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROREMOTA, vetor);
+        
     }
         
     //Le da central os servicos de uma remota
