@@ -34,10 +34,7 @@ public class ControleUnidade {
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
     final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
-    final int REFERENCIAEDITARLEITURA = 5130;           //Referencia das leituras a serem editadas
-    final int REFERENCIANUMEROUNIDADELEITURA = 5132;    //Referencia unidade que tera sua leitura editada
-    final int REFERENCIANUMEROREMOTA = 5133;            //Referencia remota que tera sua leitura editada
-    final int REFERENCIABOLEANONLEITURA = 5134;         //Referencia para 1-escrita/ 0-leitura
+    final int REFERENCIAEDITARLEITURA = 15034;          //Inicio da referencia das leituras a serem editadas
     final int FATORMULTIPLICATIVO = 65536;              //fator multiplicativo para o segundo registro
     
     TCPMasterConnection tcpMasterConnection;
@@ -114,24 +111,29 @@ public class ControleUnidade {
     
     //Escreve na central leitura de uma remota
     public void setUnidadeLeitura(Unidade unidade, int idRemota) throws ModbusException{
-        int contador = CONTADOR * 2; // 2 word
-        int[] leituras = new int[contador];
-
-        leituras[0] = Converte.intWordMais(unidade.getLeitura(), FATORMULTIPLICATIVO);
-        leituras[1] = Converte.intWordMenos(unidade.getLeitura(), FATORMULTIPLICATIVO);
+        int[] vetor = new int[5];
         
-        //Escreve leitura da unidade
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAEDITARLEITURA, leituras);
+        //Numero da remota
+        vetor[0] = idRemota = 1;
         
-        //Escrever numero da remota a ser editada
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROREMOTA, idRemota + 1);
+        //Trigger
+        vetor[1] = 1;
         
-        //Escrever numero da unidade a ser editada
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROUNIDADELEITURA, unidade.getPorta() + 1);
+        //Numero da unidade
+        vetor[2] = unidade.getPorta() + 1;
+        
+        //Valor da leitura
+        vetor[3] = Converte.intWordMais(unidade.getLeitura(), FATORMULTIPLICATIVO);
+        vetor[4] = Converte.intWordMenos(unidade.getLeitura(), FATORMULTIPLICATIVO);
                 
-        //Escrever para leitura/escrita
-        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIABOLEANONLEITURA, 1);
-        
+        /*
+        Escreve edição da leitura
+        Numero da remota %MW15034
+        Trigger %MW15035
+        Numero da unidade %MW15036
+        Leitura da unidade HI-%MW15037 LO-%MW15038
+        */
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIAEDITARLEITURA, vetor);
     }
         
     //Le da central os servicos de uma remota
