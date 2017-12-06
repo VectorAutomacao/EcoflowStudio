@@ -5,11 +5,12 @@
  */
 package ecoflow.view;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 
 /**
  *
- * @author v1n1c
+ * @author vinicius
  */
 public class TelaCarregando extends javax.swing.JFrame {
 
@@ -18,6 +19,15 @@ public class TelaCarregando extends javax.swing.JFrame {
      */
     public TelaCarregando() {
         initComponents();
+        
+        //Inicia Jframe posição relativa ao centro
+        centralizarComponente();
+    }
+    
+    public void centralizarComponente() {
+        Dimension ds = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dw = getSize();
+        setLocation((ds.width - dw.width) / 2, (ds.height - dw.height) / 2 - 150);
     }
 
     /**
@@ -65,7 +75,6 @@ public class TelaCarregando extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**

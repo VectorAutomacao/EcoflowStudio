@@ -101,23 +101,22 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
         if(flag){
             flag = false;
 
-            try {
+            //Inicia tela carregando
+            final TelaCarregando telaCarregando = new TelaCarregando();
+            telaCarregando.setVisible(true);
+            
+            //Thread para processamento
+            Thread t = new Thread(){
+                @Override
+                public void run(){
+                    try {
 
-                //Configurando a conexao
-                tcp = controleConexao.getTcpMasterConnection();
-                controleCentral.setTcpMasterConnection(tcp);
+                        //Configurando a conexao
+                        tcp = controleConexao.getTcpMasterConnection();
+                        controleCentral.setTcpMasterConnection(tcp);
 
-                //Verifica se central selecionada na tabela é mesma conectada
-                if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
-
-                    //Inicia tela carregando
-                    final TelaCarregando telaCarregando = new TelaCarregando();
-                    telaCarregando.setVisible(true);
-
-                    //Thread para processamento
-                    Thread t = new Thread(){
-                        @Override
-                        public void run(){
+                        //Verifica se central selecionada na tabela é mesma conectada
+                        if(controleCentral.getIdCentral() == listaCentral.get(tbCentral.getSelectedRow() ).getId() ){
 
                             //Inicia tela cadastro de remotas
                             TelaCadastroRemota telaRemota;
@@ -133,24 +132,30 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                             telaCarregando.dispose();
 
                             flag = true; 
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
+                            flag = true;
+                            //Fechar tela carregando
+                            telaCarregando.dispose();
                         }
-                    };
+                    } catch (ModbusException ex) {
+                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        flag = true;
+                        //Fechar tela carregando
+                        telaCarregando.dispose();
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        flag = true; 
+                        //Fechar tela carregando
+                        telaCarregando.dispose();
+                    }
 
-                    t.start();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Central selecionada inválida.", "Alerta", JOptionPane.WARNING_MESSAGE);
-                    flag = true; 
                 }
-            } catch (ModbusException ex) {
-                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Problema para indentificar central.", "Erro", JOptionPane.ERROR_MESSAGE);
-                flag = true; 
-            } catch (Exception ex) {
-                Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
-                flag = true; 
-            }
+            };
 
+            t.start();
         }
     }
 

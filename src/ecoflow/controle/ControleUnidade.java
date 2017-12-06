@@ -115,7 +115,6 @@ public class ControleUnidade {
     //Escreve na central leitura de uma remota
     public void setUnidadeLeitura(Unidade unidade, int idRemota) throws ModbusException, Exception{
         int[] vetor = new int[5];
-        int[] trigger;
         
         //Numero da remota
         vetor[0] = idRemota + 1;
@@ -137,12 +136,7 @@ public class ControleUnidade {
         Numero da unidade %MW15036
         Leitura da unidade HI-%MW15037 LO-%MW15038
         */
-        
-        trigger = ModbusRegistro.ler(tcpMasterConnection, REFERENCIATRIGGER, 1);
-        if(trigger[0] != 0 ){
-            throw new Exception("Não foi possivel editar leitura! Tente novamente.");
-        }
-        
+                
         ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROREMOTA, vetor);
         
     }
