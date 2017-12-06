@@ -13,6 +13,7 @@ import ecoflow.modelo.RemotasTableModel;
 import ecoflow.modelo.Unidade;
 import ecoflow.modelo.UnidadesTableModel;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -445,7 +446,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
     private void btAdicionarRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAdicionarRemotaActionPerformed
         // TODO add your handling code here:
         
-        
         if(flag){
             flag = false;
                                     
@@ -460,7 +460,6 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     //Adicionar remota nova
                     controleCentral.addRemota(
                             centralSelcionada,
-                            "UN",
                             Integer.parseInt(ccServicoRemota.getSelectedItem().toString() )            
                     );
 
@@ -500,12 +499,12 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
         if(flag){
             flag = false;
             
-            if(
-                !tfNomeUnidade.getText().trim().isEmpty() &&
-                !tfMatriculaUnidade.getText().trim().isEmpty() &&
-                !tfNumeroUnidade.getText().trim().isEmpty()
-            ){
-                if(tbUnidade.getSelectedRow() != -1){
+            if(tbUnidade.getSelectedRow() != -1){
+                if(
+                    !tfNomeUnidade.getText().trim().isEmpty() &&
+                    !tfMatriculaUnidade.getText().trim().isEmpty() &&
+                    !tfNumeroUnidade.getText().trim().isEmpty()
+                ){
                                             
                     //Seleciona unidade
                     un = remotaSelecionada.getUnidade(tbUnidade.getSelectedRow() );
@@ -522,10 +521,10 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                     controleCentral.saveCentralXML(centralSelcionada);
                     
                 }else{
-                    JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }
             }else{
-                JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Selecione uma linha da tabela de unidades!", "Alerta", JOptionPane.WARNING_MESSAGE);
             }
             
             flag = true;
@@ -539,35 +538,42 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
     private void btExcluirRemotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirRemotaActionPerformed
         // TODO add your handling code here:
+        ArrayList<Unidade> unidades = new ArrayList();
+        
         
         if(flag){
             flag = false;
             
-            try {
-                //Configurando a conexao
-                tcp = controleConexao.getTcpMasterConnection();
-                controleCentral.setTcpMasterConnection(tcp);
-                                
-                //Excluir ultima remota
-                controleCentral.removeRemota(centralSelcionada);
-                                
-                //Recupera a ultima remota da lista
-                remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
-                //Atualiza tbRemota
-                remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
-                //Atualiza tbUnidade
-                unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                //Salva xml da Central
-                controleCentral.saveCentralXML(centralSelcionada);
-                
-            } catch (ModbusException ex) {
-                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Problema ao remover uma remota.", "Erro", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+            //Verifica se a lista de remosta não esta vazia
+            if(centralSelcionada.getRemotas().size() > 0){
+                try {
+                    //Configurando a conexao
+                    tcp = controleConexao.getTcpMasterConnection();
+                    controleCentral.setTcpMasterConnection(tcp);
+
+                    //Excluir ultima remota
+                    controleCentral.removeRemota(centralSelcionada);
+                    
+                    //Limpar remota selecionada
+                    remotaSelecionada = null;
+
+                    //Recupera a ultima remota da lista
+                    //remotaSelecionada = centralSelcionada.getRemota(centralSelcionada.getRemotas().size() - 1);
+                    //Atualiza tbRemota
+                    remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
+                    //Atualiza tbUnidade
+                    unidadesTableModel.setUnidades( unidades );
+                    //Salva xml da Central
+                    controleCentral.saveCentralXML(centralSelcionada);
+
+                } catch (ModbusException ex) {
+                    Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema ao remover uma remota.", "Erro", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Problema ao criar conexão.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            
             flag = true;
         }
         
@@ -611,21 +617,25 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
     private void btAplicarUnidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAplicarUnidadeActionPerformed
         // TODO add your handling code here:
+       
         
-        try{
-            //Configurando a conexao
-            tcp = controleConexao.getTcpMasterConnection();
-            controleCentral.setTcpMasterConnection(tcp);
-            
-            //Escreve na central
-            controleCentral.setUnidades( remotaSelecionada );
-            
-        } catch (ModbusException ex) {
-            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
+        //verifica se existe uma remota selecionada
+        if(remotaSelecionada != null){
+            try{
+                //Configurando a conexao
+                tcp = controleConexao.getTcpMasterConnection();
+                controleCentral.setTcpMasterConnection(tcp);
+
+                //Escreve na central
+                controleCentral.setUnidades( remotaSelecionada );
+
+            } catch (ModbusException ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Erro ao escrever nos multiplos registro!", "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Problema ao criar conexão", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btAplicarUnidadeActionPerformed
 

@@ -403,21 +403,15 @@ public class ControleUnidade {
     }
     
     //Cria uma lista de unidades para uma remota
-    public void addUnidades(Remota remota, String nome, int servico) throws ModbusException{
-        int nRemota = remota.getId();
+    public void addUnidades(Remota remota, int servico) throws ModbusException{
         List<Unidade> unidades = remota.getUnidades();
 
        for(int i = 0; i < CONTADOR; i++ ){           
            Unidade un = new Unidade();
-           String idRemota, idUnidade;
-           
-           //Formata string para 2 digitos
-           idRemota = String.format("%02d", remota.getId() + 1 );
-           idUnidade = String.format("%02d", i + 1 );
            
            //Altera nome e as configurações da unidade
            un.setPorta(i);
-           un.setNome(nome + idRemota + idUnidade );
+           un.setNome("");
            un.setServico(servico);
            un.setMatriculaHidrometro(0);
            un.setNumeroHidrometro("0");

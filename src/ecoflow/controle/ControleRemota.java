@@ -76,7 +76,7 @@ public class ControleRemota extends ControleUnidade{
                 
     }
     
-    public void addRemota(Central central, String nome, int servico) throws ModbusException{
+    public void addRemota(Central central, int servico) throws ModbusException{
         Remota r = new Remota();
         int qtd;
         List<Remota> remotas = central.getRemotas();
@@ -92,7 +92,7 @@ public class ControleRemota extends ControleUnidade{
         //Configura id da nova remota
         r.setId(remotas.size() );
         //Cria uma lista de 16 unidades para remota
-        addUnidades(r, nome, servico);
+        addUnidades(r, servico);
 
         //Escrever na central
         setUnidades(r);
