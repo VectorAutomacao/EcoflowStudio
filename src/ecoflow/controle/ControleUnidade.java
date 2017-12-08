@@ -131,13 +131,22 @@ public class ControleUnidade {
                 
         /*
         Escreve edição da leitura
-        Numero da remota %MW15034
-        Trigger %MW15035
-        Numero da unidade %MW15036
-        Leitura da unidade HI-%MW15037 LO-%MW15038
-        */
-                
+        Numero da remota %MW8000
+        Trigger %MW8001
+        Numero da unidade %MW8002
+        Leitura da unidade HI-%MW8003 LO-%MW8004
+        */        
         ModbusRegistro.escrever(tcpMasterConnection, REFERENCIANUMEROREMOTA, vetor);
+        
+        //Tempo de espera
+        Thread.sleep(10);
+        
+        /*
+        0 - Leitura
+        1 - Escrita
+        Trigger modo de leitura
+        */
+        ModbusRegistro.escrever(tcpMasterConnection, REFERENCIATRIGGER, 0);
         
     }
         

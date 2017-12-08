@@ -475,7 +475,11 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         // TODO add your handling code here:
+        
         if(tbCentral.getSelectedRow() != -1){
+            
+            //Excluir xml da central
+            controleCentral.removeCentralXML(listaCentral.get(tbCentral.getSelectedRow() ) );
             
             //Altera lista de centrais
             listaCentral.remove(tbCentral.getSelectedRow() );

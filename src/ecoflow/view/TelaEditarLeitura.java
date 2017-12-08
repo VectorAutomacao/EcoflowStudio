@@ -68,11 +68,12 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
         //Configura Central
         centralSelcionada.setId(idCentral);
 
-        //Le arquivo xml
-        centralSelcionada = controleCentral.getCentralXML(idCentral);
 
         
-        if(centralSelcionada != null){
+        if(centralSelcionada.getId() != 0){
+            //Le arquivo xml
+            centralSelcionada = controleCentral.getCentralXML(idCentral);
+            
             if(centralSelcionada.getQtdRemotas() == qtdRemota){
                 
                 //Le todas as leitura da central
@@ -142,7 +143,7 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Leitura");
 
-        tfLeitura.setDocument(new CampoInt(10));
+        tfLeitura.setDocument(new CampoInt(8));
         tfLeitura.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tfLeituraKeyPressed(evt);

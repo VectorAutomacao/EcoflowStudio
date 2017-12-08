@@ -80,6 +80,10 @@ public class Arquivo {
         return (caminhoArquivo);
     }
     
+    public static Boolean excluir(String caminho){
+        return new File(caminho).delete();
+    }
+    
     public static void salvar(String caminho,String texto) throws FileNotFoundException{
         
         File file = new File(caminho);

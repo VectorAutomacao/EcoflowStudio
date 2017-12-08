@@ -200,7 +200,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                         Tela.chamarInternalFrame(dpTelaPrincipal, telaEditarLeitura, true);
                     } catch (Exception ex) {
                         Logger.getLogger(TelaCadastroCentral.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Problema na conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
 
                     //Fechar tela carregando

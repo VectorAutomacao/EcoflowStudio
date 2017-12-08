@@ -146,6 +146,11 @@ public class ControleCentral extends ControleRemota{
         }
     }
     
+    //Excluir o arquivo da central
+    public boolean removeCentralXML(Central central){
+        return Arquivo.excluir(LOCALARQUIVO + central.getId() + ".xml");
+    }
+    
     //Cria o arquivo listaCentral.xml senão existir
     public void criarListaCentralXML(List<Central> listaCentral){
         File file = new File(NOMEARQUIVO);
