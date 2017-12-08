@@ -517,9 +517,7 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
                     //Atualiza tbUnidade
                     unidadesTableModel.setUnidades(remotaSelecionada.getUnidades() );
-                    //Salva xml da Central
-                    controleCentral.saveCentralXML(centralSelcionada);
-                    
+                                        
                 }else{
                     JOptionPane.showMessageDialog(null, "Preencha corretamente os campos!", "Alerta", JOptionPane.WARNING_MESSAGE);
                 }
@@ -628,6 +626,9 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
 
                 //Escreve na central
                 controleCentral.setUnidades( remotaSelecionada );
+                
+                //Salva xml da Central
+                controleCentral.saveCentralXML(centralSelcionada);
 
             } catch (ModbusException ex) {
                 Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
