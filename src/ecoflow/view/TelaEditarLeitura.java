@@ -305,6 +305,9 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                         //Salva xml da Central
                         controleCentral.saveCentralXML(centralSelcionada);
                         
+                        //Tempo de espera para aplicar nova edição
+                        Thread.sleep(4000); // 4 seg.
+                        
                     } catch (ModbusException ex) {
                         Logger.getLogger(TelaCadastroRemota.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(null, "Problema ao alterar leitura da remota.", "Erro", JOptionPane.ERROR_MESSAGE);

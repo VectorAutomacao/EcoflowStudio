@@ -33,7 +33,7 @@ public class ControleUnidade {
     final int REFERENCIAMATRICULAHIDROMETRO = 962;      //Referencia matricula 962 a 1601 (2 words)
     final int REFERENCIANUMEROHIDROMETRO = 1602;        //Referencia Numero de hidrometro 1602 a 3521 (6 words)
     final int REFERENCIANOME = 3522;                    //Referencia nome das unidades 3522 a 5122 (5 words)
-    final int REFERENCIAIDCENTRAL = 5123;               //Referencia para quantidade de remota
+    final int REFERENCIAIDCENTRAL = 7099;               //Referencia para identificador da central
     final int REFERENCIANUMEROREMOTA = 8000;            //Referencia numero da remota
     final int REFERENCIATRIGGER = 8001;                 //Referencia TRIGGER
     final int REFERENCIANUMEROUNIDADE = 8002;           //Referencia posição da unidade
