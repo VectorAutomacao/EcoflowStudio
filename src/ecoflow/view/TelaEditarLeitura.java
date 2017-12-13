@@ -81,12 +81,10 @@ public class TelaEditarLeitura extends javax.swing.JInternalFrame {
                 
                 //Configurar tbRemota
                 tbRemota.setModel(remotasTableModel);
-                tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
                 remotasTableModel.setRemotas(centralSelcionada.getRemotas() ); //Atualiza tabela remota
 
                 //Configurando tbUnidades
                 tbUnidade.setModel(unidadesTableModel);
-                tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
                 tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta     
             }else{
                 Exception e = new Exception("Central desatualizada no sistema.");

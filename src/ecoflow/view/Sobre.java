@@ -68,7 +68,7 @@ public class Sobre extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel1.setText("Ecoflow Studio");
 
-        jLabel2.setText("Versão 2.2.4");
+        jLabel2.setText("Versão 2.2.5");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

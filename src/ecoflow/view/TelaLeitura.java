@@ -48,7 +48,6 @@ public class TelaLeitura extends javax.swing.JInternalFrame {
                        
         //Configurando tbUnidades
         tbUnidade.setModel(unidadesTableModel);
-        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordenar tbUnidades
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(0) ); //Remove coluna Porta
         
         //UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);

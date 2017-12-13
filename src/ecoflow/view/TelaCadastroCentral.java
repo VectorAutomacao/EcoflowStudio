@@ -51,7 +51,6 @@ public class TelaCadastroCentral extends javax.swing.JInternalFrame {
                         
         //Configurando tbCentral
         tbCentral.setModel(centralTableModel);
-        tbCentral.setRowSorter(new TableRowSorter(centralTableModel) ); // Ordenar tbCentral
         
         //Verifica se arquivo existe senão existir cria um arquivo com ListaCentral
         controleCentral.criarListaCentralXML(listaCentral);

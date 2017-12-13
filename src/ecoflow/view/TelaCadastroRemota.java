@@ -67,12 +67,10 @@ public class TelaCadastroRemota extends javax.swing.JInternalFrame {
                 
         //Configurar tbRemota
         tbRemota.setModel(remotasTableModel);
-        tbRemota.setRowSorter(new TableRowSorter(remotasTableModel) ); //Ordena tbRemota
         remotasTableModel.setRemotas(centralSelcionada.getRemotas() );
         
         //Configurar tbUnidade
         tbUnidade.setModel(unidadesTableModel);
-        tbUnidade.setRowSorter(new TableRowSorter(unidadesTableModel) ); //Ordena tbUnidade
         tbUnidade.getColumnModel().removeColumn(tbUnidade.getColumnModel().getColumn(5) ); //Remove coluna leitura
          
     }
